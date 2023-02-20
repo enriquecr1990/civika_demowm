@@ -1,0 +1,35 @@
+body {
+    background-image: url('../../imagenes/constancia_cigede/fondo_fdh_sello3.jpg');
+}
+
+.titulo_constancia_instructor{
+    font-family: nueva_fuente_bau;
+}
+
+.nombre_instructor_curso{
+    font-family: nueva_fuente_zillmo;
+    font-size: 40px;
+}
+
+.entidad_certificacion_titulo{
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+
+.nombre_curso_impartido{
+    font-family: nueva_fuente_zillmo;
+    font-weight: bold !important;
+}
+
+.centrado{
+    text-align: center;
+}
+.auten{
+    font-size: 9px;
+}
+
+.folio_constancia_instructor{
+    font-size: 5px !important;
+    color: #ffbf00; /* #9f5702*/
+    font-family: nueva_fuente_modern;
+}

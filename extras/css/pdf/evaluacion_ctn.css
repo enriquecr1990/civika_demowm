@@ -1,0 +1,21 @@
+.td_preguntas_examen{
+    height: 20px !important;
+}
+
+input[type="radio"] input[type="checkbox"]{
+    width: 20px !important;
+}
+
+.cuerpo_examen{
+    font-size: 12px !important;
+    font-family: "Calibri" !important;
+}
+
+.img_examen{
+    width: 80px !important;
+    height: auto !important;
+}
+
+.border_inferior{
+    border-bottom-color: black !important;
+}

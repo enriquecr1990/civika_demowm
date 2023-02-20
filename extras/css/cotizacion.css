@@ -1,0 +1,9 @@
+body {
+    background-image: url('../imagenes/fondos_pdf/cotizacion.png');
+    width: auto;
+}
+
+.contenido_cotizacion{
+    font-size: 12px !important;
+    font-family: Arial !important;
+}

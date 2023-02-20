@@ -1,0 +1,167 @@
+/***
+body {
+    background-image: url('../imagenes/constancia_habilidades/fondo.png');
+}
+***/
+table{
+    border: 0px solid white;
+    border-collapse: collapse;
+}
+
+.salto_linea{
+    padding: 4px;
+}
+.salto_linea1{
+    padding: 1px;
+}
+.salto_linea2{
+    padding: 2px;
+}
+.salto_linea4{
+    padding: 4px;
+}
+.salto_linea_instrucciones{
+    padding: 1px;
+}
+
+
+
+.pie_pagina_dc3{
+    width: 95%;
+    text-align: right;
+    font-size: 10px;
+    font-family: "Arial Narrow";
+}
+
+.titulo_dc3{
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: "Arial" !important;
+}
+
+.titulo_tabla_dc3{
+    text-align: center;
+    background-color: black;
+    font-size: 14px;
+    color: white;
+    font-family: "Arial Narrow";
+    font-weight: bold;
+}
+
+.contenido_celda{
+    margin: 5px;
+    padding: 5px;
+    /*height: 23px;*/
+    font-size: 11px;
+    font-family: "Arial Narrow";
+}
+
+.contenido_celda_prog_capa{
+    margin: 5px;
+    height: 10px;
+    font-size: 11px;
+    font-family: "Arial Narrow";
+}
+
+.contenido_celda_firmas{
+    margin: 5px;
+    padding:15px;
+    /*height: 35px;*/
+    font-size: 11px;
+    font-weight: bold;
+    font-family: "Arial Narrow";
+}
+
+.border_laterales{
+    border-top-color: white;
+    border-bottom-color: white;
+}
+
+.border_no_superior{
+    border-top-color: white;
+}
+
+.border_no_inferior{
+    border-bottom-color: white;
+}
+
+.border_no_izquierdo{
+    border-left-color: white;
+}
+
+.border_no_derecho{
+    border-right-color: white;
+}
+
+.superindice{
+    vertical-align: super;
+    font-size: 7px;
+}
+
+.superindice_normal{
+    vertical-align: super;
+    font-size: 11px;
+}
+
+.subindice{
+    vertical-align: sub;
+    padding: 10px;
+}
+
+.centrado{  text-align: center;  }
+
+.izquierda{
+    text-align: left;
+}
+
+.derecha{
+    text-align: right;
+}
+
+
+.border_ninguno{
+    border-top-color: #b7cebd;
+    border-bottom-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #ffffff;
+}
+
+.border_inferior{
+    border-bottom: 0.5px solid black;
+
+}
+
+.contenido_instrucciones{
+    width: 90%;
+    font-size: 9px;
+    font-family: "Arial Narrow";
+    
+ }
+td.w30{ font-size: 8px; }
+td.w9{ font-size: 9px; }
+
+.salto_pagina {
+    page-break-after: always;
+}
+
+/*
+.tabla_dc3,table.tabla_dc3 td, table.tabla_dc3 th{
+    border: 1px solid #000000;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.bordes_laterales{
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid blue;
+    border-top: 1px solid white;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.contenido_celda{  margin: 5px;  padding: 5px;  }
+
+.contenido_celda_centrado{text-align: center;  margin: 5px;  padding: 5px;  }
+
