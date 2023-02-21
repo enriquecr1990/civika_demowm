@@ -859,6 +859,9 @@ class DocumentosPDFModel extends CI_Model
             }
         }
         $data['qr_image_WM'] = base_url().'imagenes/QRWM'.$qr_image;
+        //$usuario_datos = $this->ControlUsuariosModel->obtenerUsuarioDetalle($data['usuario']->id_usuario,'alumno');
+        $data['usuario'] = $usuario_datos['usuario'];
+        $data = array_merge($data,$usuario_datos);
         $paginaHTMLConstanciaWM = $this->load->view('cursos_civik/documentos_pdf/evaluacion_conocimientos', $data, true);
         $paginaHTMLConstanciaDC3 = $this->load->view('cursos_civik/documentos_pdf/constancias/formato_dc3_todos', $data, true);
         $paginaHTMLEvaluacionLectura = $this->load->view('cursos_civik/documentos_pdf/examen_publicacion_ctn_lectura', $data, true);
