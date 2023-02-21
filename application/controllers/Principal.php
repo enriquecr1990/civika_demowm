@@ -19,7 +19,7 @@ class Principal extends CI_Controller {
         }else{
             $this->usuario = false;
         }
-        $this->ContadorVisitasModel->registro_contador_visitas();
+        //$this->ContadorVisitasModel->registro_contador_visitas();
     }
 
     public function index() {
