@@ -807,8 +807,10 @@ class DocumentosPDFModel extends CI_Model
         $tipo = 'final';
         $this->load->model('Evaluacion_model');
         //$mpdf = new mpdf('', 'letter', '12', 'Arial', 10, 10, 7, 7, '', '', 'p');
-        $this->default_pdf_params['margin_top'] = 5;
-        $this->default_pdf_params['margin_bottom'] = 7;
+        $this->default_pdf_params['margin_left'] = 5;
+        $this->default_pdf_params['margin_right'] = 5;
+        $this->default_pdf_params['margin_top'] = 3;
+        $this->default_pdf_params['margin_bottom'] = 3;
         $mpdf = $this->pdf->load($this->default_pdf_params);
 
         //datos para la evaluacion de conocimientos
@@ -819,9 +821,14 @@ class DocumentosPDFModel extends CI_Model
 
         //datos para la dc3
         $data['Constancia_dc3'][0] = $this->DocumentosModel->obtenerDatosConstanciaAlumno($data['usuario_alumno']->id_alumno, $id_publicacion_ctn);
+        $firma_instructor = false;
         if ($data['Constancia_dc3'][0] === false) {
             echo 'Sin registro de alumno(s) con asistencia';
             exit;
+        }else{
+            if(isset($data['Constancia_dc3'][0]->ruta_documento_firma) && existe_valor($data['Constancia_dc3'][0]->ruta_documento_firma)){
+                $firma_instructor = true;
+            }
         }
         //para integrar logo empresa a la dc3
         $data['logo_empresa'] = $this->obtener_logo_empresa_publicacion_masiva($id_publicacion_ctn);
@@ -861,6 +868,7 @@ class DocumentosPDFModel extends CI_Model
         $mpdf->AddPage();
         $mpdf->SetWatermarkImage(base_url().'extras/imagenes/fondos_pdf/marca_agua_demo.png',0.5,'');
         $mpdf->showWatermarkImage = true;
+
         $mpdf->WriteHTML($paginaHTMLConstanciaDC3);
 
         $mpdf->AddPage();
