@@ -104,7 +104,7 @@
         <td class="w5"></td>
         <td class="centrado" style="background-color: yellow" ><span class=" semaforo_evaluacion">Competente de 80% a 94%</span></td>
         <td class="w5"></td>
-        <td class="centrado" style="background-color: green"><span class=" semaforo_evaluacion">Competente de 95% a 100%</span></td>
+        <td class="centrado" style="background-color: green"><span class=" semaforo_evaluacion">Experto de 95% a 100%</span></td>
         <td class="w5"></td>
     </tr>
 </table>
