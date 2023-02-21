@@ -817,6 +817,7 @@ class DocumentosPDFModel extends CI_Model
         $data = $this->Evaluacion_model->obtener_examen_alumno_lectura($id_evaluacion_alumno_publicacion_ctn);
         $data['publicacion'] = $this->get_ctn($id_publicacion_ctn);
         $usuario_datos = $this->ControlUsuariosModel->obtenerUsuarioDetalle($data['usuario']->id_usuario,'alumno');
+        $data['usuario'] = $usuario_datos['usuario'];
         $data = array_merge($data,$usuario_datos);
 
         //datos para la dc3
@@ -858,7 +859,6 @@ class DocumentosPDFModel extends CI_Model
             }
         }
         $data['qr_image_WM'] = base_url().'imagenes/QRWM'.$qr_image;
-        //echo '<pre>'.print_r($data);exit;
         $paginaHTMLConstanciaWM = $this->load->view('cursos_civik/documentos_pdf/evaluacion_conocimientos', $data, true);
         $paginaHTMLConstanciaDC3 = $this->load->view('cursos_civik/documentos_pdf/constancias/formato_dc3_todos', $data, true);
         $paginaHTMLEvaluacionLectura = $this->load->view('cursos_civik/documentos_pdf/examen_publicacion_ctn_lectura', $data, true);
