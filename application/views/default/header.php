@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <meta name="author" content="Enrique Corona Ricaño - Civika Holding Latinoamerica">
-    <meta name="description" content="Cursos presenciales Civika Holding Latinoamérica, S.A. de C.V.">
-    <meta name="keywords" content="Cursos presenciales, Cursos de capacitación, Consultoría Industrial Cívika, Seguridad e Higiene, Protección civil, Certificación de competencias, Cursos Cívika, Cívika, Civika Holding, civika.edu.mx">
+    <meta name="author" content="Mtro. Enrique Corona Ricaño - Civika Holding Latinoamerica">
+    <meta name="description" content="Evaluaciones online para grupo Walmart Mexico - Civika Holding Latinoamérica, S.A. de C.V.">
+    <meta name="keywords" content="Evaluaciones online Civika Holding, Cívika, Civika Holding, civika.com.mx">
 
     <!-- CSS de bootstrap -->
     <link href="<?=base_url() . 'extras/plugins/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet" type="text/css">

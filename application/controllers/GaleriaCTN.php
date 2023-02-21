@@ -19,7 +19,7 @@ class GaleriaCTN extends CI_Controller {
         }
         if(!es_produccion()){
             $this->load->model('ContadorVisitasModel','ContadorVisitasModel');
-            $this->ContadorVisitasModel->registro_contador_visitas();
+            //$this->ContadorVisitasModel->registro_contador_visitas();
         }
     }
 

@@ -19,3 +19,68 @@ input[type="radio"] input[type="checkbox"]{
 .border_inferior{
     border-bottom-color: black !important;
 }
+
+.titulo_evaluacion_conocimientos{
+    font-size: 22px !important;
+    font-family: "Calibri" !important;
+}
+
+.titulo_empresa {
+    font-size: 18px !important;
+    font-family: "Calibri" !important;
+    color: #0D7EB8 !important;
+}
+
+.img_evaluacion_conocimiento{
+    width: 150px !important;
+    height: 200px !important;
+}
+
+.texto_ayuda_evaluacion{
+    font-size: 11px !important;
+    font-family: "Calibri" !important;
+    color: #808080 !important;
+}
+
+.titulo_calificacion{
+    font-size: 29px !important;
+    display: inline-block !important;
+    color: white !important;
+    vertical-align: middle;
+    background-color: black !important;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid white;
+    border-collapse: collapse;
+}
+
+.calificacion{
+    font-size: 71px !important;
+    font-family: "Calibri" !important;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid white;
+    border-collapse: collapse;
+    display: block;
+    margin-top: -20px;
+}
+
+table.bordes, table.bordes td, table.bordes th {
+    border: 1px solid #000;
+    border-collapse: collapse;
+}
+
+.semaforo_evaluacion{
+    color: black !important;
+    font-size: 11px !important;
+    font-family: "Calibri" !important;
+}
+
+
+.semaforo_evaluacion_rojo{
+    color: white !important;
+    font-size: 11px !important;
+    font-family: "Calibri" !important;
+}

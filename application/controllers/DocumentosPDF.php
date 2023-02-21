@@ -134,6 +134,15 @@ funcion de evaluavion pdf
     public function evaluacion($id_publicacion_ctn,$tipo = 'diagnostica',$id_evaluacion_alumno_publicacion_ctn = false,$es_html = false){
         $this->DocumentosPDFModel->evaluacion($id_publicacion_ctn,$tipo,$id_evaluacion_alumno_publicacion_ctn,$es_html);
     }
+
+    public function evaluacion_lectura($id_publicacion_ctn,$tipo = 'diagnostica',$id_evaluacion_alumno_publicacion_ctn = false,$es_html = false){
+        $this->DocumentosPDFModel->evaluacion_lectura($id_publicacion_ctn,$tipo,$id_evaluacion_alumno_publicacion_ctn,$es_html);
+    }
+
+    public function evaluacion_conocimientos($id_publicacion_ctn,$id_evaluacion_alumno_publicacion_ctn,$es_html = false){
+        $this->DocumentosPDFModel->evaluacion_conocimientos($id_publicacion_ctn,$id_evaluacion_alumno_publicacion_ctn,$es_html);
+    }
+
     public function crenciales_instructor(){
        $this->DocumentosPDFModel->crenciales_instructor();
 

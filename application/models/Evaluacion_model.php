@@ -164,13 +164,19 @@ class Evaluacion_model extends CI_Model{
         $data['pregunta_publicacion_ctn'] = $this->buscar_preguntas_evaluacion_publicacion_ctn($data['evaluacion_publicacion_ctn']->id_evaluacion_publicacion_ctn);
         $data['respuestas_alumno'] = array();
         $respuestas_alumno = $this->obtener_respuestas_alumno_publicacion_ctn($id_evaluacion_alumno_publicacion_ctn);
+        $opciones_correctas = 0;
         foreach ($data['pregunta_publicacion_ctn'] as $pregunta) {
             $pregunta->respuestas_alumno = $this->obtener_respuestas_alumno($pregunta->id_pregunta_publicacion_ctn,$id_evaluacion_alumno_publicacion_ctn);
         }
         foreach ($respuestas_alumno as $index => $ra){
             $data['respuestas_alumno'][$ra->id_pregunta_publicacion_ctn]['es_correcta'] = $ra->correctas_alumno == $ra->numero_opciones_correctas;
             $data['respuestas_alumno'][$ra->id_pregunta_publicacion_ctn]['op_seleccionada'] = $ra->id_opcion_pregunta_publicacion_ctn;
+            $data['respuestas_alumno'][$ra->id_pregunta_publicacion_ctn]['es_correcta'] ? $opciones_correctas++ : false;
         }
+        //datos del usuario por evaluacion
+        $data['usuario'] = $this->obtenerUsuarioByEvaluacionAlumno($id_evaluacion_alumno_publicacion_ctn);
+        $data['opciones_correctas'] = $opciones_correctas;
+        $data['calificacion'] = number_format((($opciones_correctas / sizeof($data['pregunta_publicacion_ctn'])) * 100),2);
         //var_dump($data['pregunta_publicacion_ctn'],$respuestas_alumno);exit;
         return $data;
     }
@@ -415,6 +421,18 @@ class Evaluacion_model extends CI_Model{
         if($query->num_rows() == 0){
             return false;
         }
+        return $query->row();
+    }
+
+    private function obtenerUsuarioByEvaluacionAlumno($id_evaluacion_publicacion_ctn){
+        $consulta = "select 
+                u.* 
+            from alumno a 
+                inner join alumno_inscrito_ctn_publicado aicp on aicp.id_alumno = a.id_alumno 
+                inner join evaluacion_alumno_publicacion_ctn eapc on eapc.id_alumno_inscrito_ctn_publicado = aicp.id_alumno_inscrito_ctn_publicado 
+                inner join usuario u on u.id_usuario = a.id_usuario
+            where eapc.id_evaluacion_alumno_publicacion_ctn = $id_evaluacion_publicacion_ctn limit 1";
+        $query = $this->db->query($consulta);
         return $query->row();
     }
 

@@ -36,6 +36,8 @@
                     <?php if (isset($logo_empresa) && $logo_empresa !== false): ?>
                         <img src="<?= base_url() . $logo_empresa->ruta_directorio . $logo_empresa->nombre ?>"
                              width="130px" height="50px">
+                    <?php else: ?>
+                        <img src="<?= base_url('extras/imagenes/logo/logo_wm_constancias.jpg') ?>" width="200px" height="50px">
                     <?php endif; ?>
                 </td>
                 <td class="derecha">

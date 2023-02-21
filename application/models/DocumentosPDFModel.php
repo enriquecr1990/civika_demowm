@@ -109,6 +109,8 @@ class DocumentosPDFModel extends CI_Model
         $this->default_pdf_params['margin_top'] = 3;
         $this->default_pdf_params['margin_bottom'] = 3;
         $mpdf = $this->pdf->load($this->default_pdf_params);
+        $mpdf->SetWatermarkImage(base_url().'extras/imagenes/fondos_pdf/marca_agua_demo.png',0.5,'');
+        $mpdf->showWatermarkImage = true;
         //$data['constancia'] = $this->DocumentosModel->obtenerDatosConstanciaAlumno($id_alumno, $id_publicacion_ctn);
         $data['Constancia_dc3'][0] = $this->DocumentosModel->obtenerDatosConstanciaAlumno($id_alumno, $id_publicacion_ctn);
         if ($data['Constancia_dc3'][0] === false) {
@@ -736,6 +738,69 @@ class DocumentosPDFModel extends CI_Model
         //var_dump($data);exit;
         $mpdf->WriteHTML($paginaHTML);
         $mpdf->Output('Evaluación ' . $tipo . '.pdf', 'I');
+    }
+
+    public function evaluacion_lectura($id_publicacion_ctn, $tipo = 'diagnostica', $id_evaluacion_alumno_publicacion_ctn = false, $es_html = false)
+    {
+        $this->load->model('Evaluacion_model');
+        //$mpdf = new mpdf('', 'letter', '12', 'Arial', 10, 10, 7, 7, '', '', 'p');
+        $this->default_pdf_params['margin_top'] = 7;
+        $this->default_pdf_params['margin_bottom'] = 7;
+        $mpdf = $this->pdf->load($this->default_pdf_params);
+        $data = $this->Evaluacion_model->obtener_examen_alumno_lectura($id_evaluacion_alumno_publicacion_ctn);
+        $data['tipo_evaluacion'] = $tipo;
+        $data['publicacion'] = $this->get_ctn($id_publicacion_ctn);
+        //echo '<pre>'.print_r($data);exit;
+        $paginaHTML = $this->load->view('cursos_civik/documentos_pdf/examen_publicacion_ctn_lectura', $data, true);
+        if ($es_html) {
+            echo $paginaHTML;
+            exit;
+        }
+        //var_dump($data);exit;
+        $mpdf->WriteHTML($paginaHTML);
+        $mpdf->Output('Evaluación ' . $tipo . '.pdf', 'I');
+    }
+
+    public function evaluacion_conocimientos($id_publicacion_ctn, $id_evaluacion_alumno_publicacion_ctn, $es_html = false)
+    {
+
+        $this->load->model('Evaluacion_model');
+        //$mpdf = new mpdf('', 'letter', '12', 'Arial', 10, 10, 7, 7, '', '', 'p');
+        $this->default_pdf_params['margin_top'] = 5;
+        $this->default_pdf_params['margin_bottom'] = 7;
+        $mpdf = $this->pdf->load($this->default_pdf_params);
+        $data = $this->Evaluacion_model->obtener_examen_alumno_lectura($id_evaluacion_alumno_publicacion_ctn);
+        $data['publicacion'] = $this->get_ctn($id_publicacion_ctn);
+        $usuario_datos = $this->ControlUsuariosModel->obtenerUsuarioDetalle($data['usuario']->id_usuario,'alumno');
+        $data = array_merge($data,$usuario_datos);
+
+        //para el QR
+        $this->load->library('ciqrcode');
+        $nombreQR = fechaDBToNameQR($data['evaluacion_alumno_publicacion_ctn']->fecha_envio);
+        $nombreQR .= '-'.$data['evaluacion_alumno_publicacion_ctn']->id_evaluacion_alumno_publicacion_ctn;
+        $nombreQR .= '-'.$data['evaluacion_alumno_publicacion_ctn']->id_alumno_inscrito_ctn_publicado;
+        $qr_image = $nombreQR.'.png';
+        $params['data'] = base_url().'DocumentosPDF/evaluacion_conocimientos/'.$id_publicacion_ctn.'/'.$id_evaluacion_alumno_publicacion_ctn;
+        $params['level'] = 'l';
+        $params['size'] = 2;
+
+        $params['savename'] =FCPATH."imagenes/QR".$qr_image;
+        if(!file_exists($params['savename'])){
+            if($this->ciqrcode->generate($params))
+            {
+                //se genero el qr correctamente
+            }
+        }
+        $data['qr_image'] = base_url().'imagenes/QR'.$qr_image;
+        //echo '<pre>'.print_r($data);exit;
+        $paginaHTML = $this->load->view('cursos_civik/documentos_pdf/evaluacion_conocimientos', $data, true);
+        if ($es_html) {
+            echo $paginaHTML;
+            exit;
+        }
+        //var_dump($data);exit;
+        $mpdf->WriteHTML($paginaHTML);
+        $mpdf->Output('Evaluación Conocimientos - '.$id_publicacion_ctn.' - '.$id_evaluacion_alumno_publicacion_ctn.'.pdf', 'I');
     }
 
     /**

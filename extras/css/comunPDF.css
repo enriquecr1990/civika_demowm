@@ -347,3 +347,15 @@ td.cent {
 .requerido {
     color: red;
 }
+
+.correcta {
+    color: white;
+    border-radius: 10%;
+    background-color: green;
+}
+
+.incorrecta {
+    color: white;
+    border-radius: 100px;
+    background-color: red;
+}

@@ -23,6 +23,13 @@ function fechaHoraBDToHTML($fecha){
     return $fecha_html;
 }
 
+function fechaDBToNameQR($fecha){
+    if(isset($fecha) && !is_null($fecha) && trim($fecha)!=''){
+        $fecha_html = date_format(date_create($fecha), 'Ymd');
+        return $fecha_html;
+    }return '';
+}
+
 function enConstrucion()
 {
     redirect(base_url() . 'Asea/enCostruccion');

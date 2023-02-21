@@ -246,6 +246,7 @@ class Instructores extends CI_Controller {
     public function resultados_evaluacion($id_publicacion_ctn,$id_alumno){
         $data['evaluaciones_alumno'] = $this->Evaluacion_model->obtener_evaluaciones_publicacion_alumno($id_publicacion_ctn,$id_alumno);
         $data['usuario'] = $this->usuario;
+        $data['id_publicacion_ctn'] = $id_publicacion_ctn;
         $this->load->view('cursos_civik/admin_ctn/cursos/publicacion/resultados_examen',$data);
     }
 
