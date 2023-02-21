@@ -29,7 +29,7 @@
                 <th width="15%">Fechas</th>
                 <th>¿Factura?</th>
                 <th>Instructor</th>
-                <th width="18%">Constancia(s)</th>
+                <th width="18%">Constancia</th>
                 <th width="20%">Operaciones</th>
             </tr>
             </thead>
@@ -97,55 +97,14 @@
                         <td>
                             <?php if($alumno->id_catalogo_proceso_inscripcion == PROCESO_PAGO_FINALIZADO_INSCRITO): ?>
                                 <ul class="text-center">
-                                    <?php if(isset($publicacion_ctn->aplica_dc3) && $publicacion_ctn->aplica_dc3 ): ?>
-                                        <li class="mb-3">
-                                            <a href="<?=base_url().'DocumentosPDF/constancia_dc3/'.$alumno->id_alumno.'/'.$alumno->id_publicacion_ctn?>"
-                                               class="btn btn-info btn-sm btn-pill mr-3"
-                                               data-toggle="tooltip"
-                                               title="Ver DC-3" target="_blank">
-                                                <i class="fa fa-download fa-white"></i> DC-3
-                                            </a>
-                                        </li>
-                                    <?php endif; ?>
-                                    <?php if(isset($publicacion_ctn->aplica_fdh) && $publicacion_ctn->aplica_fdh): ?>
-                                        <li class="mb-3">
-                                            <a href="<?=base_url().'DocumentosPDF/constancia_fdh_alumno/'.$alumno->id_publicacion_ctn.'/'.$alumno->id_alumno?>"
-                                               class="btn btn-primary btn-sm btn-pill mr-3"
-                                               data-toggle="tooltip"
-                                               title="Ver DC-3" target="_blank">
-                                                <i class="fa fa-download fa-white"></i> FDH
-                                            </a>
-                                        </li>
-                                    <?php endif; ?>
-                                    <?php if(isset($publicacion_ctn->aplica_habilidades) && $publicacion_ctn->aplica_habilidades ): ?>
-                                        <li class="mb-3">
-                                            <a href="<?=base_url().'DocumentosPDF/habilidades_const/'.$alumno->id_alumno .'/'.$publicacion_ctn->id_publicacion_ctn?>"
-                                               class="btn btn-success btn-sm btn-pill mr-3"
-                                               data-toggle="tooltip"
-                                               title="Ver Constancia Habilidades" target="_blank">
-                                                <i class="fa fa-download fa-white"></i> Habilidades
-                                            </a>
-                                        </li>
-                                    <?php endif;?>
-                                    <?php if(isset($publicacion_ctn->aplica_otra) && $publicacion_ctn->aplica_otra ): ?>
-                                        <li><span class="help-span"><?=$publicacion_ctn->aplica_otra->especifique_otra_constancia?></span></li>
-                                        <li class="mb-3">
-                                            <a href="<?=base_url().'DocumentosPDF/constancia_cigede/'.$alumno->id_alumno .'/'.$publicacion_ctn->id_publicacion_ctn?>"
-                                               class="btn btn-warning btn-sm btn-pill mr-3 text-white"
-                                               data-toggle="tooltip"
-                                               title="Ver Constancia Cigede" target="_blank">
-                                                <i class="fa fa-download fa-white"></i> Otra
-                                            </a>
-                                        </li>
-                                        <li class="mb-3">
-                                            <a href="<?=base_url().'DocumentosPDF/constancia_cigede_blanco/'.$alumno->id_alumno .'/'.$publicacion_ctn->id_publicacion_ctn?>"
-                                               class="btn btn-warning btn-sm btn-pill mr-3 text-white"
-                                               data-toggle="tooltip"
-                                               title="<?=$publicacion_ctn->aplica_otra->especifique_otra_constancia?>" target="_blank">
-                                                <i class="fa fa-download fa-white"></i> Otra blanco
-                                            </a>
-                                        </li>
-                                    <?php endif;?>
+                                    <li class="mb-3">
+                                        <a href="<?=base_url().'DocumentosPDF/constancia_wm/'.$alumno->id_publicacion_ctn.'/'.$alumno->id_alumno_inscrito_ctn_publicado?>"
+                                           class="btn btn-success btn-sm btn-pill mr-3"
+                                           data-toggle="tooltip"
+                                           title="Ver Constancia Walmart" target="_blank">
+                                            <i class="fa fa-download fa-white"></i> Constancia WM
+                                        </a>
+                                    </li>
                                 </ul>
                             <?php endif; ?>
                         </td>

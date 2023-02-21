@@ -167,10 +167,7 @@
     </ul>
 <?php endforeach; ?>
 <br><br>
-<div align="justify" class="col-md-12 col-sm-12">
-    <?php echo nl2br($formas_pago_detalle->descripcion); ?>
-</div>
-<br>
+
 <ul>
     <li>  
         <p class="negrita">EN CASO DE REQUERIR FACTURA EL PRECIO ES MÁS I.V.A.</p>

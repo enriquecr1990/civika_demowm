@@ -68,7 +68,7 @@
         </td>
         <td class="w10"></td>
         <td class="w-50 centrado" rowspan="6">
-            <img src="<?=$qr_image?>" width="150px" height="150px">
+            <img src="<?=$qr_image_WM?>" width="150px" height="150px">
         </td>
     </tr>
     <tr>

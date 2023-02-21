@@ -8,6 +8,7 @@ class Evaluacion_model extends CI_Model{
     private $evaluacion_aprobatoria;
     private $puede_realizar_evaluacion;
     private $etiqueta_evaluacion;
+    private $id_evaluacion_alumno_publicacion_ctn;
 
     public function __construct(){
         $this->load->model('DocumentosModel');
@@ -53,6 +54,7 @@ class Evaluacion_model extends CI_Model{
         $query = $this->db->query($consulta);
         $result = $query->result();
         foreach ($result as $r){
+            $this->id_evaluacion_alumno_publicacion_ctn[] = $r->id_evaluacion_alumno_publicacion_ctn;
             $r->calificacion_evaluacion = $this->calcular_calificacion_evalucion($r->id_evaluacion_alumno_publicacion_ctn,$r->tipo);
             $r->etiqueta_evaluacion = 'danger';
             if($r->calificacion_evaluacion >= 70){
@@ -198,6 +200,9 @@ class Evaluacion_model extends CI_Model{
         $alumno_inscrito_ctn_publicado = $this->InscripcionModel->obtenerAlumnoInscritoCTNPublicacion($id_publicacion_ctn, $id_alumno);
         $evaluaciones_alumno = $this->obtener_evaluacion_calificacion_alumno_publicacion_ctn($alumno_inscrito_ctn_publicado->id_alumno_inscrito_ctn_publicado,$tipo);
         $evaluacion_publicacion_ctn = $this->obtener_evaluacion_publicacion_ctn($id_publicacion_ctn,$tipo);
+
+        //para sacar el reqgistro de la evaluacion alumno publicaion ctn
+
         if(sizeof($evaluaciones_alumno) >= $evaluacion_publicacion_ctn->intentos_evaluacion
             && existe_valor($evaluacion_publicacion_ctn->intentos_evaluacion)){
             $this->puede_realizar_evaluacion = false;
@@ -207,6 +212,13 @@ class Evaluacion_model extends CI_Model{
         }if($this->evaluacion_aprobatoria > 95){
             $this->etiqueta_evaluacion = 'success';
         }return $evaluacion_publicacion_ctn;
+    }
+
+    private function evaluacionAlumnoPubCTN($id_alumno_inscrito,$id_evaluacion){
+        $this->db->where('id_alumno_inscrito_ctn_publicado',$id_alumno_inscrito);
+        $this->db->where('id_evaluacion_publicacion_ctn',$id_evaluacion);
+        $query = $this->db->get('evaluacion_alumno_publicacion_ctn');
+        return $query->row();
     }
 
     public function obtener_evaluaciones_publicacion_alumno($id_publicacion_ctn,$id_alumno){
@@ -281,6 +293,10 @@ class Evaluacion_model extends CI_Model{
         return $this->etiqueta_evaluacion;
     }
 
+    public function getIdsEvaluacionAlumno(){
+        return $this->id_evaluacion_alumno_publicacion_ctn;
+    }
+
     /**
      * apartado de funciones para guardar informacion
      */
@@ -336,6 +352,7 @@ class Evaluacion_model extends CI_Model{
         $this->evaluacion_aprobatoria = 0;
         $this->puede_realizar_evaluacion = true;
         $this->etiqueta_evaluacion = 'warning';
+        $this->id_evaluacion_alumno_publicacion_ctn = [];
     }
 
     private function obtener_evaluacion_alumno_publicacion_ctn($id_publicacion_ctn,$id_alumno,$id_evaluacion_publicacion_ctn){

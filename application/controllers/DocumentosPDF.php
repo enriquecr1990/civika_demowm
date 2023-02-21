@@ -147,6 +147,9 @@ funcion de evaluavion pdf
        $this->DocumentosPDFModel->crenciales_instructor();
 
     }
-  
+
+    public function constancia_wm($id_publicacion_ctn,$id_evaluacion_alumno_publicacion_ctn = false,$es_html = false){
+        $this->DocumentosPDFModel->constancia_wm($id_publicacion_ctn,$id_evaluacion_alumno_publicacion_ctn,$es_html);
+    }
 
 }

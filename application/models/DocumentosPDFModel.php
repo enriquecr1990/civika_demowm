@@ -791,7 +791,7 @@ class DocumentosPDFModel extends CI_Model
                 //se genero el qr correctamente
             }
         }
-        $data['qr_image'] = base_url().'imagenes/QR'.$qr_image;
+        $data['qr_image_WM'] = base_url().'imagenes/QR'.$qr_image;
         //echo '<pre>'.print_r($data);exit;
         $paginaHTML = $this->load->view('cursos_civik/documentos_pdf/evaluacion_conocimientos', $data, true);
         if ($es_html) {
@@ -801,6 +801,72 @@ class DocumentosPDFModel extends CI_Model
         //var_dump($data);exit;
         $mpdf->WriteHTML($paginaHTML);
         $mpdf->Output('Evaluación Conocimientos - '.$id_publicacion_ctn.' - '.$id_evaluacion_alumno_publicacion_ctn.'.pdf', 'I');
+    }
+
+    public function constancia_wm($id_publicacion_ctn,$id_evaluacion_alumno_publicacion_ctn = false,$es_html = false){
+        $tipo = 'final';
+        $this->load->model('Evaluacion_model');
+        //$mpdf = new mpdf('', 'letter', '12', 'Arial', 10, 10, 7, 7, '', '', 'p');
+        $this->default_pdf_params['margin_top'] = 5;
+        $this->default_pdf_params['margin_bottom'] = 7;
+        $mpdf = $this->pdf->load($this->default_pdf_params);
+
+        //datos para la evaluacion de conocimientos
+        $data = $this->Evaluacion_model->obtener_examen_alumno_lectura($id_evaluacion_alumno_publicacion_ctn);
+        $data['publicacion'] = $this->get_ctn($id_publicacion_ctn);
+        $usuario_datos = $this->ControlUsuariosModel->obtenerUsuarioDetalle($data['usuario']->id_usuario,'alumno');
+        $data = array_merge($data,$usuario_datos);
+
+        //datos para la dc3
+        $data['Constancia_dc3'][0] = $this->DocumentosModel->obtenerDatosConstanciaAlumno($data['usuario_alumno']->id_alumno, $id_publicacion_ctn);
+        if ($data['Constancia_dc3'][0] === false) {
+            echo 'Sin registro de alumno(s) con asistencia';
+            exit;
+        }
+        //para integrar logo empresa a la dc3
+        $data['logo_empresa'] = $this->obtener_logo_empresa_publicacion_masiva($id_publicacion_ctn);
+
+        //datos para la evaluacion lectura
+        $data_evaluacion_lectura = $this->Evaluacion_model->obtener_examen_alumno_lectura($id_evaluacion_alumno_publicacion_ctn);
+        $data['tipo_evaluacion'] = $tipo;
+        $data['publicacion'] = $this->get_ctn($id_publicacion_ctn);
+
+        $data = array_merge($data,$data_evaluacion_lectura);
+
+        //para el QR
+        $this->load->library('ciqrcode');
+        $nombreQR = fechaDBToNameQR($data['evaluacion_alumno_publicacion_ctn']->fecha_envio);
+        $nombreQR .= '-'.$data['evaluacion_alumno_publicacion_ctn']->id_evaluacion_alumno_publicacion_ctn;
+        $nombreQR .= '-'.$data['evaluacion_alumno_publicacion_ctn']->id_alumno_inscrito_ctn_publicado;
+        $qr_image = $nombreQR.'.png';
+        $params['data'] = base_url().'DocumentosPDF/evaluacion_conocimientos/'.$id_publicacion_ctn.'/'.$id_evaluacion_alumno_publicacion_ctn;
+        $params['level'] = 'l';
+        $params['size'] = 2;
+
+        $params['savename'] =FCPATH."imagenes/QRWM".$qr_image;
+        if(!file_exists($params['savename'])){
+            if($this->ciqrcode->generate($params))
+            {
+                //se genero el qr correctamente
+            }
+        }
+        $data['qr_image_WM'] = base_url().'imagenes/QRWM'.$qr_image;
+        //echo '<pre>'.print_r($data);exit;
+        $paginaHTMLConstanciaWM = $this->load->view('cursos_civik/documentos_pdf/evaluacion_conocimientos', $data, true);
+        $paginaHTMLConstanciaDC3 = $this->load->view('cursos_civik/documentos_pdf/constancias/formato_dc3_todos', $data, true);
+        $paginaHTMLEvaluacionLectura = $this->load->view('cursos_civik/documentos_pdf/examen_publicacion_ctn_lectura', $data, true);
+
+        $mpdf->WriteHTML($paginaHTMLConstanciaWM);
+
+        $mpdf->AddPage();
+        $mpdf->SetWatermarkImage(base_url().'extras/imagenes/fondos_pdf/marca_agua_demo.png',0.5,'');
+        $mpdf->showWatermarkImage = true;
+        $mpdf->WriteHTML($paginaHTMLConstanciaDC3);
+
+        $mpdf->AddPage();
+        $mpdf->showWatermarkImage = false;
+        $mpdf->WriteHTML($paginaHTMLEvaluacionLectura);
+        $mpdf->Output('Constancia WM - '.$id_publicacion_ctn.' - '.$id_evaluacion_alumno_publicacion_ctn.'.pdf', 'I');
     }
 
     /**

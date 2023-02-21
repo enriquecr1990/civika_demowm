@@ -16,13 +16,6 @@
                             <img class="card-img-top" src="<?= base_url() . $cd->img_banner ?>"
                                  alt="<?= $cd->nombre ?>" width="100%" height="180px">
                             <div class="card-body">
-                                <?php if (isset($cd->campus_aula)): ?>
-                                    <span class="badge badge-campus-curso">
-                                        <i class="fa fa-thumb-tack" style="transform: rotate(45deg)"></i>
-                                        <br>Campus:
-                                        <br>"<?= strtoupper($cd->campus_aula->campus) ?>"
-                                    </span>
-                                <?php endif; ?>
                                 <h5 class="card-title"><?= strtoupper($cd->nombre_curso_comercial) ?></h5>
                                 <p class="card-text text-justify">
                                         <span class="text-descripcion-curso">
@@ -152,13 +145,6 @@
                                 <img class="card-img-top" src="<?= base_url() . $cdeo->img_banner ?>"
                                      alt="<?= $cdeo->nombre ?>" width="100%" height="180px">
                                 <div class="card-body">
-                                    <?php if (isset($cdeo->campus_aula)): ?>
-                                        <span class="badge badge-campus-curso">
-                                        <i class="fa fa-thumb-tack" style="transform: rotate(45deg)"></i>
-                                        <br>Campus:
-                                        <br>"ONLINE"
-                                    </span>
-                                    <?php endif; ?>
                                     <h5 class="card-title"><?= strtoupper($cdeo->nombre_curso_comercial) ?></h5>
                                     <p class="card-text text-justify">
                                         <span class="text-descripcion-curso">

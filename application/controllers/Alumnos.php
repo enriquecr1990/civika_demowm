@@ -184,6 +184,8 @@ class Alumnos extends CI_Controller {
             $retorno->puede_realizar_evaluacion = $this->Evaluacion_model->isPuedeRealizarEvaluacion();
             $retorno->etiqueta_evaluacion = $this->Evaluacion_model->getEtiquetaEvaluacion();
             $retorno->titulo_evaluacion = $evaluacion_publicacion_ctn->titulo_evaluacion;
+            $retorno->alumno_inscrito_ctn_publicado = $this->InscripcionModel->obtenerAlumnoInscritoCTNPublicacion($id_publicacion_ctn, $id_alumno);
+            $retorno->evaluaciones_alumno_id = $this->Evaluacion_model->getIdsEvaluacionAlumno();
         }
         return $retorno;
     }

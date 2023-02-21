@@ -1,6 +1,7 @@
-body {
+#fondo_sello_dc3 {
     background-image: url('../imagenes/constancia_habilidades/fondo.png');
 }
+
 table{
     border: 0px solid white;
     border-collapse: collapse;

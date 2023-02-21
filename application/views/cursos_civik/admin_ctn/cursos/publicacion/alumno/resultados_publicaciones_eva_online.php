@@ -106,7 +106,8 @@
                                                     <li class="list-group-item">
                                                         <?php
                                                         $data['publicacion_ctn'] = $pc;
-                                                        $this->load->view('cursos_civik/admin_ctn/cursos/publicacion/alumno/btn_constancias', $data);
+                                                        $data['evaluaciones_alumno'] = $pc->prueba_final->evaluaciones_alumno_id;
+                                                        $this->load->view('cursos_civik/admin_ctn/cursos/publicacion/alumno/btn_constancias_wm', $data);
                                                         ?>
                                                     </li>
                                                 </ul>

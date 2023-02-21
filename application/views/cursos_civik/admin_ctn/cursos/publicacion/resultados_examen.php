@@ -27,8 +27,6 @@
                                     <td>
                                         <span class="badge badge-<?=$ea->etiqueta_evaluacion?>"><?=$ea->calificacion_evaluacion?></span>
                                         <br class="mb-1">
-                                        <a href="<?=base_url()?>DocumentosPDF/evaluacion_lectura/<?=$id_publicacion_ctn.'/'.$ea->tipo.'/'.$ea->id_evaluacion_alumno_publicacion_ctn?>" target="_blank" class="btn btn-sm btn-pill btn-info">Ver evaluacion PDF</a>
-                                        <a href="<?=base_url()?>DocumentosPDF/evaluacion_conocimientos/<?=$id_publicacion_ctn.'/'.$ea->id_evaluacion_alumno_publicacion_ctn?>" target="_blank" class="btn btn-sm btn-pill btn-primary">Ver evaluacion conocimientos PDF</a>
                                         <?php if(isset($usuario) && $usuario->tipo_usuario != 'alumno'): ?>
                                             <br class="mb-1">
                                             <button data-id_evaluacion_alumno_publicacion_ctn="<?=$ea->id_evaluacion_alumno_publicacion_ctn?>" class="btn btn-sm btn-pill btn-secondary btn_ver_evaluacion_lectura"><i class="fa fa-eye"></i> Ver examen</button>

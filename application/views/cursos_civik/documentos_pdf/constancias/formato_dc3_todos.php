@@ -7,7 +7,8 @@
     <link href="<?= base_url('extras/css/constanciaDC3.css') ?>" rel="stylesheet" type="text/css">
 </head>
 <body>
-    
+
+<div style="background-image: url('<?=base_url()?>/extras/imagenes/constancia_habilidades/fondo.png')">
     
 <?php foreach ($Constancia_dc3 as $index => $dc_3): ?>
 <?php
@@ -365,7 +366,7 @@
                             <td class="w9" align="center"> 
                                 Codigo QR de Autenticidad.
                                 
-                                     <img class="qr_ima" src="<?=base_url('imagenes/QR'.$dc_3->qr_img); ?>" alt="QRCode Image">
+                                     <img class="qr_ima" src="<?=isset($qr_image_WM) ? $qr_image_WM : base_url('imagenes/QR'.$dc_3->qr_img); ?>" alt="QRCode Image">
  
                                    Folio: <?=$dc_3->folio_habilidades?>
                                     </td>
@@ -393,4 +394,5 @@
 
 <?php endforeach; ?>
 </body>
+</div>
 </html>
