@@ -847,7 +847,7 @@ class DocumentosPDFModel extends CI_Model
         $nombreQR .= '-'.$data['evaluacion_alumno_publicacion_ctn']->id_evaluacion_alumno_publicacion_ctn;
         $nombreQR .= '-'.$data['evaluacion_alumno_publicacion_ctn']->id_alumno_inscrito_ctn_publicado;
         $qr_image = $nombreQR.'.png';
-        $params['data'] = base_url().'DocumentosPDF/evaluacion_conocimientos/'.$id_publicacion_ctn.'/'.$id_evaluacion_alumno_publicacion_ctn;
+        $params['data'] = base_url().'DocumentosPDF/constancia_wm/'.$id_publicacion_ctn.'/'.$id_evaluacion_alumno_publicacion_ctn;
         $params['level'] = 'l';
         $params['size'] = 2;
 
