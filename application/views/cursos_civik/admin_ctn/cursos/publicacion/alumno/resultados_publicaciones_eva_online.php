@@ -26,7 +26,7 @@
                     </th>
                     <th class="text-center">Evaluaciones</th>
                     <th class="text-center">Carpeta de evidencias</th>
-                    <th class="text-center">Constancias</th>
+                    <th class="text-center">Constancias/Gafete</th>
                 </tr>
                 </thead>
                 <?php if (isset($array_publicacion_ctn) && is_array($array_publicacion_ctn) && sizeof($array_publicacion_ctn) != 0): ?>

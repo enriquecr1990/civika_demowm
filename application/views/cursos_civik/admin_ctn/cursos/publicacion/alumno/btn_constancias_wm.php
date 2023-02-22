@@ -2,7 +2,7 @@
     <?php if(isset($publicacion_ctn->tiene_constancia_externa) && $publicacion_ctn->tiene_constancia_externa == 'no'): ?>
         <ul class="text-center">
             <?php if(isset($evaluaciones_alumno) && is_array($evaluaciones_alumno)): ?>
-            <?php foreach ($evaluaciones_alumno as $ea): ?>
+                <?php foreach ($evaluaciones_alumno as $ea): ?>
                     <li class="mb-3">
                         <a href="<?=base_url().'DocumentosPDF/constancia_wm/'.$publicacion_ctn->id_publicacion_ctn.'/'.$ea?>"
                            class="btn btn-info btn-sm btn-pill mr-3"
@@ -11,7 +11,15 @@
                             <i class="fa fa-download fa-white"></i> Constancia WM
                         </a>
                     </li>
-            <?php endforeach; ?>
+                    <li class="mb-3">
+                        <a href="<?=base_url().'DocumentosPDF/gafete_wm/'.$publicacion_ctn->id_publicacion_ctn.'/'.$ea?>"
+                           class="btn btn-danger btn-sm btn-pill mr-3"
+                           data-toggle="tooltip"
+                           title="Ver gafete WM" target="_blank">
+                            <i class="fa fa-download fa-white"></i> Gafete WM
+                        </a>
+                    </li>
+                <?php endforeach; ?>
             <?php endif; ?>
         </ul>
     <?php else: ?>

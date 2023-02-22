@@ -859,7 +859,7 @@ class DocumentosPDFModel extends CI_Model
             }
         }
         $data['qr_image_WM'] = base_url().'imagenes/QRWM'.$qr_image;
-        //$usuario_datos = $this->ControlUsuariosModel->obtenerUsuarioDetalle($data['usuario']->id_usuario,'alumno');
+
         $data['usuario'] = $usuario_datos['usuario'];
         $data = array_merge($data,$usuario_datos);
         $paginaHTMLConstanciaWM = $this->load->view('cursos_civik/documentos_pdf/evaluacion_conocimientos', $data, true);
@@ -878,6 +878,42 @@ class DocumentosPDFModel extends CI_Model
         $mpdf->showWatermarkImage = false;
         $mpdf->WriteHTML($paginaHTMLEvaluacionLectura);
         $mpdf->Output('Constancia WM - '.$id_publicacion_ctn.' - '.$id_evaluacion_alumno_publicacion_ctn.'.pdf', 'I');
+    }
+
+    public function gafete_wm($id_publicacion_ctn,$id_evaluacion_alumno_publicacion_ctn){
+        $this->default_pdf_params['margin_left'] = 15;
+        $this->default_pdf_params['margin_right'] = 5;
+        $this->default_pdf_params['margin_top'] = 7;
+        $this->default_pdf_params['margin_bottom'] = 3;
+        $mpdf = $this->pdf->load($this->default_pdf_params);
+        //datos para la evaluacion de conocimientos
+        $data = $this->Evaluacion_model->obtener_examen_alumno_lectura($id_evaluacion_alumno_publicacion_ctn);
+        $usuario_datos = $this->ControlUsuariosModel->obtenerUsuarioDetalle($data['usuario']->id_usuario,'alumno');
+        $data['usuario'] = $usuario_datos['usuario'];
+        $data = array_merge($data,$usuario_datos);
+
+        //para el QR
+        $this->load->library('ciqrcode');
+        $nombreQR = fechaDBToNameQR($data['evaluacion_alumno_publicacion_ctn']->fecha_envio);
+        $nombreQR .= '-'.$data['evaluacion_alumno_publicacion_ctn']->id_evaluacion_alumno_publicacion_ctn;
+        $nombreQR .= '-'.$data['evaluacion_alumno_publicacion_ctn']->id_alumno_inscrito_ctn_publicado;
+        $qr_image = $nombreQR.'.png';
+        $params['data'] = base_url().'DocumentosPDF/constancia_wm/'.$id_publicacion_ctn.'/'.$id_evaluacion_alumno_publicacion_ctn;
+        $params['level'] = 'l';
+        $params['size'] = 2;
+
+        $params['savename'] =FCPATH."imagenes/QRWM".$qr_image;
+        if(!file_exists($params['savename'])){
+            if($this->ciqrcode->generate($params))
+            {
+                //se genero el qr correctamente
+            }
+        }
+        $data['qr_image_WM'] = base_url().'imagenes/QRWM'.$qr_image;
+
+        $paginaHTMLgafeteWM = $this->load->view('cursos_civik/documentos_pdf/gafete_wm', $data, true);
+        $mpdf->WriteHTML($paginaHTMLgafeteWM);
+        $mpdf->Output('Gafete WM - '.$id_evaluacion_alumno_publicacion_ctn.'.pdf', 'I');
     }
 
     /**

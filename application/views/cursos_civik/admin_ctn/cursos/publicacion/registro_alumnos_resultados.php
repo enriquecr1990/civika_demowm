@@ -105,6 +105,14 @@
                                             <i class="fa fa-download fa-white"></i> Constancia WM
                                         </a>
                                     </li>
+                                    <li class="mb-3">
+                                        <a href="<?=base_url().'DocumentosPDF/gafete_wm/'.$alumno->id_publicacion_ctn.'/'.$alumno->id_alumno_inscrito_ctn_publicado?>"
+                                           class="btn btn-danger btn-sm btn-pill mr-3"
+                                           data-toggle="tooltip"
+                                           title="Ver gafete Walmart" target="_blank">
+                                            <i class="fa fa-download fa-white"></i> Gafete PDF
+                                        </a>
+                                    </li>
                                 </ul>
                             <?php endif; ?>
                         </td>

@@ -152,4 +152,7 @@ funcion de evaluavion pdf
         $this->DocumentosPDFModel->constancia_wm($id_publicacion_ctn,$id_evaluacion_alumno_publicacion_ctn,$es_html);
     }
 
+    public function gafete_wm($id_publicacion_ctn,$id_evaluacion_alumno_publicacion_ctn,$es_html = false){
+        $this->DocumentosPDFModel->gafete_wm($id_publicacion_ctn,$id_evaluacion_alumno_publicacion_ctn,$es_html);
+    }
 }

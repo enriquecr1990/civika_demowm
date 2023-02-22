@@ -76,6 +76,17 @@ table.bordes, table.bordes td, table.bordes th {
     border-collapse: collapse;
 }
 
+table.bordes_gafete {
+    border: 1px solid #000;
+    border-collapse: collapse;
+    border-radius: 100% !important;
+}
+
+
+td.w10 {
+    width: 10px;
+}
+
 .semaforo_evaluacion{
     color: black !important;
     font-size: 11px !important;
@@ -88,3 +99,8 @@ table.bordes, table.bordes td, table.bordes th {
     font-size: 11px !important;
     font-family: "Calibri" !important;
 }
+
+.centrado{
+    text-align: center;
+}
+

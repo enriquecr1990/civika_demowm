@@ -83,7 +83,7 @@ class Evaluacion_model extends CI_Model{
                 ppc.*,ctop.opcion_pregunta
             from pregunta_publicacion_ctn ppc
                 inner join catalogo_tipo_opciones_pregunta ctop on ctop.id_opciones_pregunta = ppc.id_opciones_pregunta
-            where ppc.id_evaluacion_publicacion_ctn = $id_evaluacion_publicacion_ctn order by ppc.id_pregunta_publicacion_ctn asc";
+            where ppc.id_evaluacion_publicacion_ctn = $id_evaluacion_publicacion_ctn order by rand()";
         $query = $this->db->query($consulta);
         if($query->num_rows() == 0){
             return false;
