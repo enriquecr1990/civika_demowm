@@ -21,13 +21,13 @@
         <td class="w10"></td>
         <td class="w-50 izquierda">
             <?php if(isset($usuario->foto_perfil) && is_object($usuario->foto_perfil)): ?>
-                <img src="<?=$usuario->foto_perfil->ruta_documento?>" class="img_evaluacion_conocimiento">
+                <img src="<?=$usuario->foto_perfil->ruta_documento?>" class="img_evaluacion_conocimiento" >
             <?php else: ?>
                 <img src="<?=base_url()?>extras/imagenes/logo/person.png">
             <?php endif; ?>
         </td>
         <td class="w-50 centrado">
-            <img src="<?=$qr_image_WM?>" width="150px" height="150px">
+            <img src="<?=$qr_image_WM?>" width="100px" height="100px">
         </td>
         <td class="w10"></td>
     </tr>
@@ -85,7 +85,7 @@
     <tr>
         <td class="w10"></td>
         <td colspan="2" class="centrado">
-            <img src="<?= base_url('extras/imagenes/logo/logo_wm_constancias.jpg') ?>" width="200px" height="50px">
+            <img src="<?= base_url('extras/imagenes/logo/logo_wm_constancias.jpg') ?>" width="150px" height="40px">
         </td>
         <td class="w10"></td>
     </tr>
