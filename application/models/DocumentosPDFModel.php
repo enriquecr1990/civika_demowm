@@ -136,7 +136,7 @@ class DocumentosPDFModel extends CI_Model
         $pattern = '1234567890';
         $max = strlen($pattern) - 1;
         for ($i = 0; $i < $longitud; $i++) {
-            $key .= $pattern{mt_rand(0, $max)};
+            $key .= $pattern[mt_rand(0, $max)];
         }
 
         return $key;
@@ -169,7 +169,7 @@ class DocumentosPDFModel extends CI_Model
         $mpdf->Output('Constancia de habilidades.pdf', 'I');
     }
 
-    public function cigede_const_blanco($id_alumno = false, $id_publicacion_ctn)
+    public function cigede_const_blanco($id_alumno, $id_publicacion_ctn)
     {
         $this->load->model('DocumentosModel', 'DocumentosModel');
         //$mpdf = new mpdf('', 'letter-l', '12', 'Arial', 1.5, 1.5, 1.4, 1.4, '', '', '-l');

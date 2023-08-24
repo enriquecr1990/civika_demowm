@@ -136,12 +136,12 @@
                                                         <a class="dropdown-item" href="<?=base_url()?>Instructores/evaluacion_final/<?=$pc->id_publicacion_ctn?>">
                                                             Final
                                                         </a>
-                                                        <?php if($pc->evaluacion_diagnostica_disponible): ?>
+                                                        <?php if(isset($pc->evaluacion_diagnostica_disponible) && $pc->evaluacion_diagnostica_disponible): ?>
                                                             <a class="dropdown-item" href="<?=base_url()?>DocumentosPDF/evaluacion/<?=$pc->id_publicacion_ctn.'/diagnostica'?>" target="_blank" >
                                                                 Diagnóstica PDF
                                                             </a>
                                                         <?php endif; ?>
-                                                        <?php if($pc->evaluacion_final_disponible): ?>
+                                                        <?php if(isset($pc->evaluacion_final_disponible) && $pc->evaluacion_final_disponible): ?>
                                                             <a class="dropdown-item" href="<?=base_url()?>DocumentosPDF/evaluacion/<?=$pc->id_publicacion_ctn.'/final'?>" target="_blank" >
                                                                 Final PDF
                                                             </a>
