@@ -1,0 +1,106 @@
+/* css para la ficha de registro */
+.table_bordes{
+	border: 0px solid white;
+	border-collapse: collapse;
+}
+
+.titulo_ficha_registro{
+	font-family: Arial !important;
+	font-size: 14pt !important;
+}
+
+.margenes_ficha_registro{
+	margin-left: 30px;
+	margin-right: 30px;
+}
+
+.titulo_tabla_ficha_registro{
+	font-family: Arial !important;
+	font-size: 10pt !important;
+	font-weight: bold;
+}
+
+.contenido_tabla_ficha_registro{
+	font-family: Arial !important;
+	font-size: 10pt;
+}
+
+.pie_pagina_ficha_registro{
+	font-family: Arial !important;
+	font-size: 8pt;
+}
+
+.foto_certificado{
+	width: 100px;
+	height: 120px;
+}
+
+.foto_firma{
+	width: 85px;
+	height: auto;
+}
+
+.contenedor_firma_ficha_registro{
+	position: absolute; left: 120px; right: 0; top: 565px; bottom: 0;
+}
+
+.contenido_tabla_ficha_footer{
+	font-family: Arial !important;
+	font-size: 6pt;
+}
+
+/** css para la evaluacion diagnostica */
+.contenedor_encabezado_eva_diagnostica{
+	position: absolute; left: 0px; right: 0; top: 0px; bottom: 0;
+}
+
+.img_encabezado_diagnostico{
+	width: 100% !important;
+}
+
+.titulo_encabezado_diagnostico{
+	font-family: Calibri !important;
+	font-size: 10pt !important;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.fondo_gris{
+	background-color: lightgrey;
+}
+
+.contenido_tabla_diagnostico{
+	padding-left: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	font-family: Calibri;
+	font-size: 10pt;
+}
+
+.preguntas_evaluacion{
+	font-family: Calibri;
+	font-size: 10pt;
+}
+.evaluacion_opciones{width: 33.33%; padding-top: 5px; padding-bottom: 5px; vertical-align: center}
+.respuesta_evaluacion{border-radius: 50%; color: white;}
+.respuesta_correcta{background-color: green !important;}
+.respuesta_incorrecta{background-color: red !important;}
+.img_opciones_pregunta{
+	width: 130px;
+	height: 130px;
+}
+
+.img_expediente_digital{width: 320px; height: auto;}
+
+.img_encuesta_satisfaccion{width: 13px; height: auto;}
+
+/** css para el plan de evaluacion*/
+.titulo_encabezado_plan_evaluacion{
+	font-family: "Century Gothic";
+	font-size: 12px;
+}
+
+.contenido_tabla_plan_evaluacion{
+	font-family: "Century Gothic";
+	font-size: 11px;
+}

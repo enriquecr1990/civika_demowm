@@ -23,43 +23,6 @@ function fechaHoraBDToHTML($fecha){
     return $fecha_html;
 }
 
-function fechaDBToNameQR($fecha){
-    if(isset($fecha) && !is_null($fecha) && trim($fecha)!=''){
-        $fecha_html = date_format(date_create($fecha), 'Ymd');
-        return $fecha_html;
-    }return '';
-}
-
-function enConstrucion()
-{
-    redirect(base_url() . 'Asea/enCostruccion');
-}
-
-function testHost()
-{
-    var_dump($_SERVER);
-}
-
-function esServerAndroid()
-{
-    $retorno = false;
-    $server = $_SERVER;
-    if (strpos($server['SERVER_SOFTWARE'], 'AndroPHP')) {
-        $retorno = true;
-    }
-    return $retorno;
-}
-
-function base_url_asea()
-{
-    $esAndroid = esServerAndroid();
-    if ($esAndroid) {
-        return base_url() . 'index.php/';
-    } else {
-        return base_url();
-    }
-}
-
 function is_ajax()
 {
     $CI =& get_instance();
@@ -127,7 +90,7 @@ function upload_file_pdf($file, $values = array()){
     }
 
     $config['upload_path'] = FCPATH . $options['path'];
-    $config['allowed_types'] = EXTENSION_FILES_DOC_PDF;
+    $config['allowed_types'] = EXTENSIONES_FILES_PDF;
     $config['max_size'] = MAX_FILESIZE;
     $config['file_name'] = $options['pre'] . remove_caracteres_especiales($file['name']);
     $CI =& get_instance();
@@ -136,6 +99,41 @@ function upload_file_pdf($file, $values = array()){
         return array('error' => $CI->upload->display_errors() . ' ' . $config['file_name']);
     else
         return $CI->upload->data();
+}
+
+function upload_file_ati($file, $values = array()){
+	$options = array(
+		'field' => 'file',
+		'pre' => rand(1000000, 9999999) . '-',
+		'path' => '',
+		'filename' => ''
+	);
+	$options = array_merge($options, $values);
+	//falta agregar subdirectorios en caso de existan
+	if ($options['path'] != '') {
+		$path = explode('/',$options['path'] );
+		$ruta = '';
+		foreach ($path as $directorio){
+			$ruta .= $directorio;
+			if (!file_exists(FCPATH . $ruta)) {
+				mkdir(FCPATH . $ruta, 0777, true);
+				chmod(FCPATH . $ruta,0777);
+			}
+			$ruta .= '/';
+		}
+	}
+
+	$config['upload_path'] = FCPATH . $options['path'];
+	$config['allowed_types'] = EXTENSIONES_FILES_ATI;
+	$config['max_size'] = MAX_FILESIZE;
+	//formatoArrayData(remove_caracteres_especiales($file['name']));exit;
+	$config['file_name'] = $options['pre'] . remove_caracteres_especiales($file['name']);
+	$CI =& get_instance();
+	$CI->load->library('upload', $config);
+	if (!$CI->upload->do_upload($options['field']))
+		return array('error' => $CI->upload->display_errors() . ' ' . $config['file_name']);
+	else
+		return $CI->upload->data();
 }
 
 function upload_file_material_evidencia($file, $values = array()){
@@ -206,6 +204,21 @@ function upload_file_xml($file, $values = array()){
         return $CI->upload->data();
 }
 
+function subdirectorios_files($path){
+	if ($path != '') {
+		$path = explode('/',$path);
+		$ruta = '';
+		foreach ($path as $directorio){
+			$ruta .= $directorio;
+			if (!file_exists(FCPATH . $ruta)) {
+				mkdir(FCPATH . $ruta, 0777, true);
+				chmod(FCPATH . $ruta,0777);
+			}
+			$ruta .= '/';
+		}
+	}
+}
+
 function remove_caracteres_especiales($str)
 {
     $str = strtolower($str);
@@ -245,12 +258,6 @@ function remove_caracteres_especiales($str)
         '/&ouml;/' => 'o',
         '/&uuml;/' => 'u',
 
-        '/&auml;/' => 'a',
-        '/&euml;/' => 'e',
-        '/&iuml;/' => 'i',
-        '/&ouml;/' => 'o',
-        '/&uuml;/' => 'u',
-
         // Otras letras y caracteres especiales
         '/&aring;/' => 'a',
         '/&ntilde;/' => 'n',
@@ -260,7 +267,7 @@ function remove_caracteres_especiales($str)
     );
 
     $text = preg_replace(array_keys($patron), array_values($patron), $text);
-    $text = stripslashes(str_replace(array('\\', ')', '[', ']', '{', '}', '(', ' ', '.', '/', '\/'), '', $text));
+    $text = stripslashes(str_replace(array('\\', ')', '[', ']', '{', '}', '(', ' ','/', '\/'), '', $text));
     return $text;
 
 }
@@ -277,6 +284,15 @@ function getRouteFilesDirectorio(){
     return $route;
 }
 
+function es_development(){
+	$es_development = false;
+	if($_SERVER['SERVER_NAME'] == 'civika-ped.local.com'
+		|| $_SERVER['SERVER_ADDR'] == '127.0.0.1'){
+		$es_development = true;
+	}
+	return $es_development;
+}
+
 function es_produccion(){
     $es_produccion = false;
     if($_SERVER['SERVER_NAME'] == 'cursos.civika.edu.mx'){
@@ -287,7 +303,7 @@ function es_produccion(){
 
 function es_pruebas(){
     $es_pruebas = false;
-    if($_SERVER['SERVER_NAME'] == 'pruebas-cursos.civika.edu.mx'){
+    if($_SERVER['SERVER_NAME'] == 'enriquecr-mx.info' || $_SERVER['SERVER_NAME'] == 'demo-ped.enriquecr-mx.info'){
         $es_pruebas = true;
     }
     return $es_pruebas;
@@ -323,37 +339,27 @@ function listar_directorios_ruta($ruta)
 
 function sesionActive()
 {
-    if(es_produccion()){
-        header('Location: '.base_url());exit;
-    }
     $ch =& get_instance();
     $sesion = $ch->session->userdata();
     //var_dump($sesion);exit;
-    if (isset($sesion['usuario']) && $sesion['usuario']) {
+    if (isset($sesion['ped']['usuario']) && $sesion['ped']['usuario']) {
         return $sesion;
     }
     return false;
 }
 
-function encriptarAsea($strEncriptar)
-{
-    return base64_encode($strEncriptar);
+function usuarioSession(){
+	$ch =& get_instance();
+	$sesion = $ch->session->userdata();
+	//var_dump($sesion);exit;
+	if (isset($sesion['ped']['usuario']) && $sesion['ped']['usuario']) {
+		return $sesion['ped']['usuario'];
+	}
+	return false;
 }
 
-function desencritarAsea($strDesencriptar)
-{
-    return base64_decode($strDesencriptar);
-}
+function redirect_login(){
 
-function encrypStr($strEncriptar)
-{
-    return sha1($strEncriptar);
-}
-
-function decrypStr($strDesencriptar)
-{
-    $ch =& get_instance();
-    return $ch->encrypt->decode($strDesencriptar);
 }
 
 function enviarCorreo($to, $subject, $message)
@@ -469,6 +475,94 @@ function existe_valor($campo){
         $existe = true;
     }
     return $existe;
+}
+
+function perfil_sesion($perfil = array('root')){
+	$ch =& get_instance();
+	$sesion = $ch->session->userdata();
+	//var_dump($sesion,isset($sesion['ped']['usuario']),$sesion['ped']['usuario'], !in_array($sesion['ped']['usuario']->perfil,$perfil));exit;
+	if (isset($sesion['ped']['usuario']) && $sesion['ped']['usuario'] && !in_array($sesion['ped']['usuario']->perfil,$perfil)) {
+		redirect(base_url().'403');
+	}
+	return true;
+}
+
+function perfil_permiso_operacion_menu($modulo_permiso){
+	$ch =& get_instance();
+	$sesion = $ch->session->userdata();
+	$permiso = false;
+	if(isset($sesion['ped']['usuario']->perfiles) && isset($sesion['ped']['usuario']->perfil_modulo_permisos)){
+		//validamos si es un usuario root
+		if(in_array('root',$sesion['ped']['usuario']->perfiles)){
+			$permiso = true;
+		}else{
+			foreach ($sesion['ped']['usuario']->perfiles as $pu){
+				$pmp = $pu.'.'.$modulo_permiso;
+				if(in_array($pmp,$sesion['ped']['usuario']->perfil_modulo_permisos)){
+					$permiso = true;
+				}
+			}
+		}
+	}
+	return $permiso;
+}
+
+function perfil_permiso_operacion($modulo_permiso){
+	if(perfil_permiso_operacion_menu($modulo_permiso)){
+		return true;
+	}else{
+		redirect(base_url('403'));
+	}
+}
+
+function data_paginacion($pagina,$limit,$total_registros){
+	$data['pagina_select'] = $pagina;
+	$data['limit_select'] = $limit;
+	$data['paginas'] = 1;
+	if($total_registros != 0 && $total_registros > $limit){
+		$data['paginas'] = intval($total_registros / $limit);
+		if($total_registros % $limit){
+			$data['paginas']++;
+		}
+	}
+	return $data;
+}
+
+function imagenFondoTransparente($archivo){
+	try{
+		$ruta_imagen = FCPATH.$archivo->ruta_directorio.$archivo->nombre;
+		$archivo_explode = explode('.',$archivo->nombre);
+		$destino_imagen = FCPATH.$archivo->ruta_directorio.$archivo_explode[0].'.png';
+		switch (strtolower($archivo_explode[1])){
+			//si es png no es necesario poner el fondo transparente
+			case 'png': break;
+			case 'jpg':case 'jpeg':
+				$imagen_edit = imagecreatefromjpeg($ruta_imagen);
+				$blanco = imagecolorallocate($imagen_edit,255,255,255);
+				imagecolortransparent($imagen_edit,$blanco);
+				imagepng($imagen_edit,$destino_imagen);
+				imagedestroy($imagen_edit);
+				//removemos el archivo original sin findo transparente
+				if(file_exists(FCPATH.$archivo->ruta_directorio.$archivo->nombre)){
+					unlink(FCPATH.$archivo->ruta_directorio.$archivo->nombre);
+				}
+				break;
+		}
+		$archivo_imagen_transparente = array(
+			'ruta_directorio' => $archivo->ruta_directorio,
+			'nombre' => $archivo_explode[0].'.png'
+		);
+		return $archivo_imagen_transparente;
+	}catch (Exception $ex){
+		log_message('error','******* comun_helper -> imagenFondoTransparente');
+		log_message('info',$ex->getMessage());
+		return false;
+	}
+}
+
+function formatoArrayData($data){
+	echo '<pre>';
+	echo print_R($data);
 }
 
 ?>

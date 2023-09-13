@@ -49,7 +49,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-//$route['default_controller'] = 'Asea';
-$route['default_controller'] = 'Principal';
-$route['404_override'] = '';
+//$route['default_controller'] = 'admin/index';
+$route['default_controller'] = 'publico/index';
+$route['404_override'] = 'admin/no_encontrado';
 $route['translate_uri_dashes'] = FALSE;
+
+//rutas extras
+$route['login'] = 'Login/index';
+$route['cerrar_sesion'] = 'Login/cerrar_sesion';
+$route['recuperar_password'] = 'Login/recuperar_password';
+$route['unsubscribe'] = 'Login/darse_baja';
+$route['perfil_permisos'] = 'PerfilPermiso/index';
+$route['estandar_competencia'] = 'EC/index';
+$route['tecnicas_instrumentos/(:any)'] = 'TecnicasInstrumentos/index/$1';
+$route['evaluacion_ec/(:any)'] = 'EvaluacionEC/index/$1';
+$route['evaluacion/(:num)/(:num)'] = 'AlumnosEC/evaluacion/$1/$2';
+$route['cuestionario_ati/(:num)/(:num)'] = 'EvaluacionEC/cuestionario_ati/$1/$2';
+$route['evaluacion_calificacion/(:num)'] = 'AlumnosEC/calificacion_evaluacion/$1';
+$route['ver_evaluacion/(:num)'] = 'AlumnosEC/ver_evaluacion/$1';
+$route['encuesta/(:num)/(:num)'] = 'EncuestaSatisfaccion/candidato/$1/$2';
+$route['encuesta_candidato/(:num)/(:num)'] = 'EncuestaSatisfaccion/candidato_lectura/$1/$2';
+//rutas para la evaluacion del cuestionario del instrumento
+$route['evaluacion_instrumento/(:num)/(:num)'] = 'AlumnosEC/evaluacion_instrumento/$1/$2';
+$route['403'] = 'admin/sin_permisos';
+$route['404'] = 'admin/no_encontrado';
+
+//rutas para las opciones del menu
+$route['contacto'] = 'Informacion/contacto';
+$route['quienes_somos'] = 'Informacion/quienes_somos';
+
+$route['show-session'] = 'Welcome/sesion';

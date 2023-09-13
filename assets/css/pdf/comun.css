@@ -1,0 +1,26 @@
+hr{height: 5px !important;width: 1500px;}
+.centrado{text-align: center !important;}
+.justificado{text-align: justify !important;}
+.izquierda{ text-align: left !important}
+.derecha{ text-align: right !important}
+.negritas{font-weight: bold !important;}
+.cursivas{font-style: italic !important;}
+.mayusculas{text-transform: uppercase !important;}
+.titulo{font-family: PalatinoLinotype-Roman !important;font-size: 40pt !important;}
+.subtitulo{font-family: PalatinoLinotype-Roman !important;font-size: 26pt !important;}
+.texto_encabezado{font-family: "Century Gothic" !important;font-size: 20pt !important;}
+.texto_normal{font-family: "Century Gothic" !important;font-size: 14pt !important;}
+.margenes{margin-left: 60px;margin-right: 60px;}
+.img_footer{width: 100%;height: auto;}
+.no_borde_superior{border-top-color: white;}
+.no_borde_derecho{border-right-color: white;}
+.no_borde_izquierdo{border-left-color: white;}
+.no_borde_inferior{border-bottom-color: white;}
+.no_borde_todos{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+	border-bottom-color: white;
+}
+.texto_blanco{ color: white; }
+.texto_azul{ color: dodgerblue;}

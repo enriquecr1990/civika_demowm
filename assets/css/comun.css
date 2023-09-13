@@ -1,0 +1,144 @@
+.img_foto_certificado{
+	width: 100px !important;
+	height: 100px !important;
+}
+
+.no_list_style{
+	list-style: none !important;
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
+.respuesta_correcta{
+	color: green !important;
+	font-weight: bold;
+}
+
+#overlay_full_page{
+	opacity:    0.5; 
+	background: #000; 
+	width:      100%;
+  	height:     100%; 
+  	z-index:    10;
+  	top:        0; 
+  	left:       0; 
+  	position:   fixed; 
+}
+
+.img_encuesta_satisfaccion{width: 20px; height: auto;}
+.mayusculas{text-transform: uppercase !important;}
+
+.modal {
+	overflow-y:auto;
+}
+
+#backgroundImage:after {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	top: 50px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-image: url('../imgs/logos/walmart_fondo.png');
+	background-repeat: unset;
+	background-size: 80%;
+	/*-webkit-transform: rotate(5deg);
+	-moz-transform: rotate(5deg);
+	-ms-transform: rotate(5deg);
+	-o-transform: rotate(5deg);
+	transform: rotate(-5deg);*/
+	filter:alpha(opacity=1);
+	opacity: 0.2;
+	height:100% !important;
+	width:100% !important;
+ }
+
+ 
+.fullscreen-bg {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;
+	z-index: -100;
+ }
+
+ .content-wrapper{
+	background-image: url('../imgs/logos/walmart_fondo.png');
+	background-repeat: unset;
+	background-size: 80%;
+	filter:alpha(opacity=0.2);
+	height:auto !important;
+	width:auto !important;
+ }
+
+ /**
+ para los colores de walmart
+ */
+
+.bg-primary,
+.nav-link.active,
+.btn-primary{
+	background-color: #0d7bb2 !important;
+	background-image: none !important;
+}
+
+.sidebar-dark-primary{
+	background-color: #0d7bb2 !important;
+	background-image: none !important;
+	color: white !important;
+}
+
+.breadcrumb-item:not(.active) > a{
+	color: #0d7bb2 !important;
+}
+
+a.nav-link.active{
+	background-color: #fdbb30 !important;
+    background-image: none !important;
+    color: black !important;
+}
+
+.brand-text{
+	color:white !important;
+}
+
+.nav-item > a.nav-link:not(.active){
+	color: white !important;
+}
+
+.navbar-nav {
+	.nav-item > a.nav-link:not(.active){
+		color: #6c757d !important;
+	}
+}
+
+.card-primary{
+	.card-header{
+		background-color: #0d7bb2 !important;
+		background-image: none !important;
+	}
+}
+
+.btn-outline-primary{
+	color:  #0d7bb2 !important;
+	border-color:  #0d7bb2 !important;;
+}
+
+.btn-outline-primary:hover{
+	background-color:  #0d7bb2 !important;
+	color: white !important;
+}

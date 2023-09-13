@@ -2,20 +2,19 @@
 
 application/cache/*
 !application/cache/index.html
-!application/cache/.htaccess
 
 application/logs/*
 !application/logs/index.html
-!application/logs/.htaccess
+
+!application/*/.htaccess
+
+composer.lock
 
 user_guide_src/build/*
 user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
 /vendor/
-/imagenes/
-
-/files_uploads/
 
 # IDE Files
 #-------------------------
@@ -29,20 +28,8 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-workspace
 *.sublime-project
 *.bak
-/.htaccess
+/tests/tests/
+/tests/results/
+/files_uploads/
+/files_usr/
 /application/config/database.php
-/.idea
-
-*.GDEFdata.php
-*.GPOSdatadata.php
-*.GPOSdata.php
-*.GSUBGPOStables.dat
-*.GSUBdata.php
-*.cw.dat
-*.cw127.php
-*.gid.dat
-*.mtx.php
-*.cgm
-*.cw
-*.z
-*.lock
