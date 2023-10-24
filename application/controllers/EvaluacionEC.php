@@ -27,32 +27,22 @@ class EvaluacionEC extends CI_Controller {
         }
     }
 
-	public function index($id_estandar_competencia){
+    /**
+	* es por el tipo de evaluacion que se estara registrando
+	* preferenmente usar la constante por lo de la BD
+	* lo de la referencia sera el id de la relacion utilizada
+	* 1. la evaluacion diagnostica va con el estandar de competencia
+	* 2. la evaluacion del entregable sera en base a entregable
+     */
+	public function index($evaluacion,$id_referencia){
     	//tecnicas_instrumentos
 		perfil_permiso_operacion('evaluacion.consultar');
 		try{
-			$data['titulo_pagina'] = 'Evaluación diagnóstica del Estándar de Competencia';
-			$data['migas_pan'] = array(
-				array('nombre' => 'Inicio','activo' => false,'url' => base_url()),
-				array('nombre' => 'Estándar de competencias','activo' => false,'url' => base_url().'estandar_competencia'),
-				array('nombre' => 'Evaluaciones de la EC','activo' => true,'url' => '#'),
-			);
-			$data['sidebar'] = 'estandar_competencias';
-			$data['usuario'] = $this->usuario;
-			$data['id_estandar_competencia'] = $id_estandar_competencia;
-			$data['extra_js'] = array(
-				base_url() . 'assets/js/ec/evaluacion.js',
-				base_url().'assets/frm/fileinput/js/fileinput.js',
-				base_url().'assets/frm/fileupload/js/vendor/jquery.ui.widget.js',
-				base_url().'assets/frm/fileupload/js/jquery.iframe-transport.js',
-				base_url().'assets/frm/fileupload/js/jquery.fileupload.js',
-			);
-			$data['extra_css'] = array(
-				base_url().'assets/frm/adm_lte/plugins/summernote/summernote-bs4.min.css',
-				base_url().'assets/frm/fileinput/css/fileinput.css',
-				base_url().'assets/frm/fileupload/css/jquery.fileupload.css',
-			);
-			$this->load->view('evaluacion/tablero',$data);
+			switch($evaluacion){
+				default:
+					$this->evaluacionDiagnostica($id_referencia);
+					break;
+			}
 		}catch (Exception $ex){
 			$response['success'] = false;
 			$response['msg'][] = 'Hubo un error en el sistema, intente nuevamente';
@@ -61,15 +51,18 @@ class EvaluacionEC extends CI_Controller {
 		}
 	}
 
-	public function resultado($id_estandar_competencia){
+	/**
+	 * actualizacion de la funcion dado que tiene que ser dinamico conforme al los tipos de evaluacion
+	 * tomamos lo mismo que tiene en el index, el tipo y el id de referencia
+	 */
+	public function resultado($evaluacion, $id_referencia){
 		perfil_permiso_operacion('evaluacion.consultar');
-    	try{
-    		$busqueda = array(
-    			'id_estandar_competencia' => $id_estandar_competencia
-			);
-			$data = $this->EvaluacionModel->tablero($busqueda);
-			$data['estandar_competencia'] = $this->EstandarCompetenciaModel->obtener_row($id_estandar_competencia);
-			$this->load->view('evaluacion/resultado',$data);
+    		try{
+			switch($evaluacion){
+				default:
+					$this->resultadoEvaluacionEC($id_referencia);
+					break;
+			}
 		}catch (Exception $ex){
 			$response['success'] = false;
 			$response['msg'][] = 'Hubo un error en el sistema, intente nuevamente';
@@ -183,21 +176,15 @@ class EvaluacionEC extends CI_Controller {
 		}
 	}
 
-	public function agregar_modificar_ec($tipo = 'diagnostica',$id_evaluacion = false){
-    	perfil_permiso_operacion('evaluacion.agregar');
-    	try{
-			switch ($tipo){
-				case 'diagnostica':
-					$data['tipo'] = EVALUACION_DIAGNOSTICA;
-					break;
-				case 'cuestionario':
-					$data['tipo'] = EVALUACION_CUESTIONARIO_INSTRUMENTO;
-					break;
-			}
-    		$data['cat_evaluacion'] = $this->CatalogoModel->get_catalogo('cat_evaluacion');
+	public function agregar_modificar_ec($tipo,$id_evaluacion = false){
+    		perfil_permiso_operacion('evaluacion.agregar');
+    		try{
+			$data['tipo'] = $tipo;
+    			$data['cat_evaluacion'] = $this->CatalogoModel->get_catalogo('cat_evaluacion');
 			if($id_evaluacion){
 				$data['evaluacion'] = $this->EvaluacionModel->obtener_row($id_evaluacion);
 			}
+			//dd($data);exit;
 			$this->load->view('evaluacion/agregar_modificar_form',$data);
 		}catch (Exception $ex){
 			$response['success'] = false;
@@ -230,27 +217,13 @@ class EvaluacionEC extends CI_Controller {
 		echo json_encode($response);exit;
 	}
 
-	public function guardar_evaluacion_ec($id_estandar_competencia,$id_evaluacion = false){
+	public function guardar_evaluacion_ec($tipo,$id_referencia,$id_evaluacion = false){
 		perfil_permiso_operacion('evaluacion.agregar');
 		try{
-			$post = $this->input->post();
-			$validacion = Validaciones_Helper::formEvaluacionEC($post);
-			if($validacion['success']){
-				$id_evaluacion ? $post['fecha_actualizacion'] = date('Y-m-d H:i:s') : $post['fecha_creacion'] = date('Y-m-d H:i:s');
-				$post['eliminado'] = 'no';
-				$guardar = $this->EvaluacionModel->guardar_row($post,$id_evaluacion);
-				$response['success'] = $guardar['success'];
-				$response['msg'] = array($guardar['msg']);
-				if($guardar['success']){
-					$guardar_ec_eval = $id_evaluacion ? true : $this->EvaluacionModel->guardar_estandar_competencia_evaluacion($id_estandar_competencia,$guardar['id']);
-					if(!$guardar_ec_eval){
-						$response['success'] = false;
-						$response['msg'] = array('No fue posible guardar la evaluación con la EC seleccionada, favor de intentar más tarde');
-					}
-				}
-			}else{
-				$response['success'] = false;
-				$response['msg'] = $validacion['msg'];
+			switch($tipo){
+				default:
+					$response = $this->guardarEvaluacionEstandarCompetencia($id_referencia,$id_evaluacion);
+				break;
 			}
 		}catch (Exception $ex){
 			$response['success'] = false;
@@ -488,6 +461,89 @@ class EvaluacionEC extends CI_Controller {
 			$response['msg'][] = $ex->getMessage();
 			echo json_encode($response);
 		}
+	}
+
+	/**
+	 * 
+	 */
+	private function evaluacionDiagnostica($id_estandar_competencia){
+		$data['titulo_pagina'] = 'Evaluación diagnóstica del Estándar de Competencia';
+		$data['migas_pan'] = array(
+			array('nombre' => 'Inicio','activo' => false,'url' => base_url()),
+			array('nombre' => 'Estándar de competencias','activo' => false,'url' => base_url().'estandar_competencia'),
+			array('nombre' => 'Evaluaciones de la EC','activo' => true,'url' => '#'),
+		);
+		$data['sidebar'] = 'estandar_competencias';
+		$data['usuario'] = $this->usuario;
+		$data['id_estandar_competencia'] = $id_estandar_competencia;
+		$data['extra_js'] = array(
+			base_url().'assets/js/ec/evaluacion.js',
+			base_url().'assets/frm/fileinput/js/fileinput.js',
+			base_url().'assets/frm/fileupload/js/vendor/jquery.ui.widget.js',
+			base_url().'assets/frm/fileupload/js/jquery.iframe-transport.js',
+			base_url().'assets/frm/fileupload/js/jquery.fileupload.js',
+		);
+		$data['extra_css'] = array(
+			base_url().'assets/frm/adm_lte/plugins/summernote/summernote-bs4.min.css',
+			base_url().'assets/frm/fileinput/css/fileinput.css',
+			base_url().'assets/frm/fileupload/css/jquery.fileupload.css',
+		);
+		$data['estandar_competencia'] = $this->EstandarCompetenciaModel->obtener_row($id_estandar_competencia);
+		$busqueda = array(
+			'id_estandar_competencia' => $id_estandar_competencia,
+			'id_cat_evaluacion' => EVALUACION_DIAGNOSTICA,
+			'eliminado' => 'no'
+		);
+		$evaluacionLiberada = $this->EvaluacionModel->tablero($busqueda);
+		$data['existe_evaluacion_diagnostica'] = $evaluacionLiberada['total_registros'] != 0;
+		//apoyo de variables para la busqueda
+		$data['tipo_evaluacion'] = EVALUACION_DIAGNOSTICA;
+		$data['id_referencia'] = $id_estandar_competencia;
+		$this->load->view('evaluacion/tablero',$data);
+	}
+
+	private function resultadoEvaluacionEC($id_estandar_competencia){
+		$busqueda = array(
+			'id_estandar_competencia' => $id_estandar_competencia
+		);
+		$data = $this->EvaluacionModel->tablero($busqueda);
+		$data['estandar_competencia'] = $this->EstandarCompetenciaModel->obtener_row($id_estandar_competencia);
+		$this->load->view('evaluacion/resultado',$data);
+	}
+
+	private function guardarEvaluacionEstandarCompetencia($id_estandar_competencia, $id_evaluacion = ''){
+		$post = $this->input->post();
+		$validacion = Validaciones_Helper::formEvaluacionEC($post);
+		if($validacion['success']){
+			$id_evaluacion ? $post['fecha_actualizacion'] = date('Y-m-d H:i:s') : $post['fecha_creacion'] = date('Y-m-d H:i:s');
+			$post['eliminado'] = 'no';
+			//validar si existe una evaluacion diagnostica sin eliminar
+			$busqueda = array(
+				'id_estandar_competencia' => $id_estandar_competencia,
+				'id_cat_evaluacion' => EVALUACION_DIAGNOSTICA,
+				'eliminado' => 'no'
+			);
+			$evaluacion = $this->EvaluacionModel->tablero($busqueda);
+			if($evaluacion['total_registros'] == 0){
+				$guardar = $this->EvaluacionModel->guardar_row($post,$id_evaluacion);
+				$response['success'] = $guardar['success'];
+				$response['msg'] = array($guardar['msg']);
+				if($guardar['success']){
+					$guardar_ec_eval = $id_evaluacion ? true : $this->EvaluacionModel->guardar_estandar_competencia_evaluacion($id_estandar_competencia,$guardar['id']);
+					if(!$guardar_ec_eval){
+						$response['success'] = false;
+						$response['msg'] = array('No fue posible guardar la evaluación con la EC seleccionada, favor de intentar más tarde');
+					}
+				}
+			}else{
+				$response['success'] = false;
+				$response['msg'][] = 'Existe una evaluación diagnóstica que esta en en proceso de carga o ha sido liberada para el candidato, no es posible agregar una nueva evaluación';	
+			}
+		}else{
+			$response['success'] = false;
+			$response['msg'] = $validacion['msg'];
+		}		
+		return $response;
 	}
 
 }

@@ -87,8 +87,8 @@ class EC extends CI_Controller {
 
 	public function tablero($pagina = 1, $registros = 5){
 		perfil_permiso_operacion('estandar_competencia.consultar');
-    	try{
-    		$post = $this->input->post();
+    		try{
+    			$post = $this->input->post();
 			if(in_array($this->usuario->perfil,array('instructor','alumno'))){
 				$post['id_usuario'] = $this->usuario->id_usuario;
 			}
@@ -133,7 +133,7 @@ class EC extends CI_Controller {
 
 	public function guardar_form($id_estandar_competencia = false){
 		perfil_permiso_operacion('estandar_competencia.agregar');
-    	try{
+    		try{
 			$post = $this->input->post();
 			$validaciones = Validaciones_Helper::formEstandarCompetencia($post);
 			if($validaciones['success']){

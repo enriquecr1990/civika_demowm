@@ -27,10 +27,10 @@ $(document).ready(function(){
 
 	$(document).on('click','.txt_guardar_comentario_instructor',function(){
 		var id_body_comentarios = $(this).data('id_body_comentarios');
-		var id_ec_instrumento_alumno = $(this).data('id_ec_instrumento_alumno');
-		var valor = $('#txt_comentarios_candidato_'+id_ec_instrumento_alumno).val();
+		var id_entregable = $(this).data('id_entregable');
+		var valor = $('#txt_comentarios_candidato_'+id_entregable).val();
 		if(valor.length > 0){
-			EvaluadoresEC.guardar_comentario_instructor(id_body_comentarios,id_ec_instrumento_alumno,valor);
+			EvaluadoresEC.guardar_comentario_instructor(id_body_comentarios,id_entregable,valor);
 		}
 	});
 
@@ -84,6 +84,26 @@ $(document).ready(function(){
 		var id_usuario_has_estandar_competencia = $(this).data('id_usuario_has_estandar_competencia');
 		EvaluadoresEC.guardar_form_resultados_evaluacion(id_usuario_has_estandar_competencia);
 	});
+
+	$(document).on('click','.rechazar-entregable',function(){
+		var id_entregable = $(this).data('id_entregable');
+		var id_entregable_formulario = $(this).data('id_entregable_formulario');
+		EvaluadoresEC.cambiar_estatus_entregable_alumno(id_entregable,3, id_entregable_formulario)
+	})
+
+	$(document).on('click','.liberar-entregable',function(){
+		var id_entregable = $(this).data('id_entregable');
+		var id_entregable_formulario = $(this).data('id_entregable_formulario');
+		EvaluadoresEC.cambiar_estatus_entregable_alumno(id_entregable,4,id_entregable_formulario)
+	})
+
+	$(document).on('click','.mostrar_formulario',function(){
+		var id_entregable = $(this).data('id_entregable');
+		var id_entregable_formulario = $(this).data('id_entregable_formulario');
+		var id_usuario = $(this).data('id_usuario');
+		EvaluadoresEC.obtener_formulario_alumno(id_entregable_formulario,id_usuario, id_entregable)
+	})
+
 
 	//funcionalidad para el paginado por scroll
 	$(window).scroll(function(){
@@ -214,12 +234,15 @@ var EvaluadoresEC = {
 		);
 	},
 
-	guardar_comentario_instructor : function(id_body_comentarios,id_ec_instrumento_alumno, comentario){
+	guardar_comentario_instructor : function(id_body_comentarios,id_entregable, comentario){
+		console.log($('#id_alumno').val())
+		var id_usuario = $('#id_alumno').val();
 		Comun.obtener_contenido_peticion_json(
 			base_url + 'EvaluadoresEC/guardar_comentario',
 			{
 				comentario : comentario,
-				id_ec_instrumento_alumno : id_ec_instrumento_alumno,
+				id_entregable : id_entregable,
+				id_usuario_alumno : id_usuario,
 				quien : 'instructor'
 			},
 			function(response){
@@ -232,7 +255,7 @@ var EvaluadoresEC = {
 						'</tr>'
 					$(id_body_comentarios).append(html_row_comentario);
 					Comun.mensajes_operacion(response.msg,'success');
-					$('#txt_comentarios_candidato_'+id_ec_instrumento_alumno).val('');
+					$('#txt_comentarios_candidato_'+id_entregable).val('');
 				}else{
 					Comun.mensajes_operacion(response.msg,'error');
 				}
@@ -483,6 +506,39 @@ var EvaluadoresEC = {
 				}
 			)
 		}
+	},
+
+	cambiar_estatus_entregable_alumno(id_entregable, id_estatus,id_entregable_formulario = null){
+		var id_usuario_alumno = $('#id_alumno').val();
+		Comun.obtener_contenido_peticion_json(base_url +'Entregable/cambiar_estatus/'+id_entregable+'/'+ id_estatus+'/'+id_usuario_alumno+'/'+id_entregable_formulario,{},function (response) {
+			if (response.success) {
+				Comun.mensajes_operacion( ['Evidencia actualizada'], 'success');
+				EvaluadoresEC.obtener_tablero()
+			}else {
+				Comun.mensajes_operacion(response.msg, 'error');
+			}
+		})
+	},
+
+	obtener_formulario_alumno(id_entregable_formulario, id_usuario, id_entregable){
+		// var id_usuario_alumno = $('#id_alumno').val();
+		Comun.obtener_contenido_peticion_html(base_url +'PreguntasAbiertas/respuesta_alumno/'+id_entregable_formulario+'/'+ id_usuario,{},function (response) {
+			if (response) {
+				$('#contenedor_formulario_'+id_entregable).html(response)
+			}else {
+				Comun.mensajes_operacion(response.msg, 'error');
+			}
+		})
+	},
+
+	obtener_tablero(){
+		var id_estandar_competencia = $('#val_id_estandar_competencia').val();
+		var id_usuario_alumno = $('#id_alumno').val();
+		Comun.obtener_contenido_peticion_html(base_url+'EvaluadoresEC/tablero_evaluador/'+id_estandar_competencia+'/'+id_usuario_alumno,{}, function (response) {
+			$('#div_leyend_fecha_envio_ati_tablero').empty();
+				$('#div_leyend_fecha_envio_ati_tablero').html(response)
+		})
 	}
+
 
 };

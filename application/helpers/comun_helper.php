@@ -1,5 +1,6 @@
 <?php
 
+
 function fechaHtmlToBD($fecha)
 {
     if ($fecha == '' || $fecha == null) {
@@ -402,7 +403,7 @@ function fechaCastellano($fecha){
     $meses_EN = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
     $nombreMes = str_replace($meses_EN, $meses_ES, $mes);
 //return $nombredia." ".$numeroDia." de ".$nombreMes." de ".$anio;
-    return $numeroDia." de ".$nombreMes." de ".$anio;
+    return $numeroDia." de ".$nombreMes." del ".$anio;
 }
 
 function fecha_castellano_sin_anio($fecha){
@@ -471,7 +472,7 @@ function rango_fecha_castellano($fecha_inicio,$fecha_fin){
 
 function existe_valor($campo){
     $existe = false;
-    if(!is_null($campo) && $campo != ''){
+    if(!is_null($campo) && $campo != '' && trim($campo) != ''){
         $existe = true;
     }
     return $existe;
@@ -560,9 +561,71 @@ function imagenFondoTransparente($archivo){
 	}
 }
 
-function formatoArrayData($data){
+function dd($data){
 	echo '<pre>';
 	echo print_R($data);
+}
+
+function old( &$object, $atributo ){
+	if (isset($object)){
+		if (is_array($object)){
+			return  $object[$atributo] ;
+		}else{
+			return $object->{$atributo};
+		}
+	}
+	return null;
+}
+
+
+function pathDirectorioArchivos($pathArchivos){
+    if ($pathArchivos != '') {
+        $path = explode('/',$pathArchivos );
+        $ruta = '';
+        foreach ($path as $directorio){
+            $ruta .= $directorio;
+            if (!file_exists(FCPATH . $ruta)) {
+                mkdir(FCPATH . $ruta, 0777, true);
+                chmod(FCPATH . $ruta,0777);
+            }
+            $ruta .= '/';
+        }
+    }
+}
+
+
+function upload_file_all($file, $values = array()){
+    $options = array(
+        'field' => 'file',
+        'pre' => rand(1000000, 9999999) . '-',
+        'path' => '',
+        'filename' => ''
+    );
+    $options = array_merge($options, $values);
+    //falta agregar subdirectorios en caso de existan
+    if ($options['path'] != '') {
+        $path = explode('/',$options['path'] );
+        $ruta = '';
+        foreach ($path as $directorio){
+            $ruta .= $directorio;
+            if (!file_exists(FCPATH . $ruta)) {
+                mkdir(FCPATH . $ruta, 0777, true);
+                chmod(FCPATH . $ruta,0777);
+            }
+            $ruta .= '/';
+        }
+    }
+
+    $config['upload_path'] = FCPATH . $options['path'];
+    $config['allowed_types'] = EXTENSIONES_FILES_ALL;
+    $config['max_size'] = MAX_FILESIZE;
+    $config['file_name'] = $options['pre'] . remove_caracteres_especiales($file['name']);
+    $CI =& get_instance();
+    $CI->load->library('upload', $config);
+    if (!$CI->upload->do_upload($options['field']))
+        return array('error' => $CI->upload->display_errors() . ' ' . $config['file_name']);
+    else
+        return $CI->upload->data();
 }
 
 ?>

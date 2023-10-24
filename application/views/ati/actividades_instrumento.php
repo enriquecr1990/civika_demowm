@@ -47,6 +47,9 @@
 		</section>
 		<!-- /.content -->
 
+		<div id="contenedor_modal_instrumento">
+		</div>
+
 	</div>
 	<!-- /.content-wrapper -->
 

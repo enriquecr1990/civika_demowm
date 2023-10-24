@@ -63,7 +63,7 @@ input[type=number] {
 	opacity: 0.2;
 	height:100% !important;
 	width:100% !important;
- }
+}
 
  
 .fullscreen-bg {
@@ -74,71 +74,26 @@ input[type=number] {
 	left: 0;
 	overflow: hidden;
 	z-index: -100;
- }
+}
 
- .content-wrapper{
+.content-wrapper{
 	background-image: url('../imgs/logos/walmart_fondo.png');
 	background-repeat: unset;
 	background-size: 80%;
 	filter:alpha(opacity=0.2);
 	height:auto !important;
 	width:auto !important;
- }
-
- /**
- para los colores de walmart
- */
-
-.bg-primary,
-.nav-link.active,
-.btn-primary{
-	background-color: #0d7bb2 !important;
-	background-image: none !important;
 }
 
-.sidebar-dark-primary{
-	background-color: #0d7bb2 !important;
-	background-image: none !important;
-	color: white !important;
+.img-detalle-convocatoria{
+	max-width: 500px !important;
 }
 
-.breadcrumb-item:not(.active) > a{
-	color: #0d7bb2 !important;
+.img-perfil-usuario-tablero{
+	height: 100px !important;
+	width: 100px !important;
 }
 
-a.nav-link.active{
-	background-color: #fdbb30 !important;
-    background-image: none !important;
-    color: black !important;
-}
-
-.brand-text{
-	color:white !important;
-}
-
-.nav-item > a.nav-link:not(.active){
-	color: white !important;
-}
-
-.navbar-nav {
-	.nav-item > a.nav-link:not(.active){
-		color: #6c757d !important;
-	}
-}
-
-.card-primary{
-	.card-header{
-		background-color: #0d7bb2 !important;
-		background-image: none !important;
-	}
-}
-
-.btn-outline-primary{
-	color:  #0d7bb2 !important;
-	border-color:  #0d7bb2 !important;;
-}
-
-.btn-outline-primary:hover{
-	background-color:  #0d7bb2 !important;
-	color: white !important;
+.centrado{
+	text-align: center !important;
 }

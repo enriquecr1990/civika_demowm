@@ -93,4 +93,72 @@ class UsuarioHasECModel extends ModeloBase
 		}
 	}
 
+	public function obtener_instructor_para_registro_candidato($data){
+		try{
+			$consulta = $this->obtener_query_base().$this->criterios_busqueda($data)." ORDER BY RAND() limit 1";
+			//pasamos los parametros en el data
+			$query = $this->db->query($consulta);
+			return $query->row();
+		}catch (Exception $ex){
+			log_message('error','UsuarioHasECModel->alumnos_inscritos_ec');
+			log_message('error',$ex->getMessage());
+			return 0;
+		}
+	}
+
+	public function registrar_usuario_ec_by_convocatoria($id_estandar_compentencia_convocatoria,$id_usuario){
+		try{
+			if(!$this->existe_registro_usuario_ec_by_convocatoria($id_estandar_compentencia_convocatoria,$id_usuario)){
+				$estandar_competencia_convocatoria = $this->EstandarCompetenciaConvocatoriaModel->obtener_row($id_estandar_compentencia_convocatoria);
+				$insert = array(
+					'id_estandar_competencia' => $estandar_competencia_convocatoria->id_estandar_competencia,
+					'id_usuario' => $id_usuario,
+					//'id_usuario_evaluador' => $instructor->id_usuario,
+					'fecha_registro' => date('Y-m-d')
+				);
+				$insert['id_usuario_evaluador'] = $estandar_competencia_convocatoria->id_usuario;
+				//validamos si existe un instructor que haya registrado la convocatoria
+				if(is_null($estandar_competencia_convocatoria->id_usuario)){
+					$parametros_busqueda = [
+						'id_estandar_competencia' => $estandar_competencia_convocatoria->id_estandar_competencia,
+						'perfil' => 'instructor'
+					];
+					$instructor = $this->UsuarioHasECModel->obtener_instructor_para_registro_candidato($parametros_busqueda);
+					$insert['id_usuario_evaluador'] = $instructor->id_usuario;
+				}
+				$guardar = $this->UsuarioHasECModel->guardar_row($insert);
+				return [
+					'success' => true,
+					'msg' => ['Se registro el candidato en la convocatoria del Estándar de competencia']
+				];
+			}else{
+				return [
+					'success' => false,
+					'msg' => ['No fue posible registro el candidato en la convocatoria del Estándar de competencia']
+				];
+			}
+		}catch (Exception $ex){
+			log_message('error','UsuarioHasECModel->registrar_usuario_ec_by_convocatoria');
+			log_message('error',$ex->getMessage());
+			return 0;
+		}
+	}
+
+	public function existe_registro_usuario_ec_by_convocatoria($id_estandar_competencia_convocatoria,$id_usuario){
+		try{
+			$consulta = "select 
+					if(count(*) = 0,false,true) if(count(*) = 0,false,true) existe_registro  
+				from estandar_competencia_convocatoria ecc 
+					inner join usuario_has_estandar_competencia uhec ON uhec.id_estandar_competencia = ecc.id_estandar_competencia 
+				where uhec.id_usuario = $id_usuario
+					and ecc.id_estandar_competencia_convocatoria = $id_estandar_competencia_convocatoria";
+			$query = $this->db->query($consulta);
+			return $query->row()->existe_registro;
+		}catch (Exception $ex){
+			log_message('error','UsuarioHasECModel->obtener_usuario_registrado_por_convocatoria');
+			log_message('error',$ex->getMessage());
+			return 0;
+		}
+	}
+
 }

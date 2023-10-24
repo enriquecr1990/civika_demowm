@@ -1,0 +1,64 @@
+/**
+ para los colores de walmart
+ */
+.nav-link.active,
+.bg-primary,
+.btn-primary{
+	background-color: #0d7bb2 !important;
+	background-image: none !important;
+} 
+
+.sidebar-dark-primary{
+	background-color: #0d7bb2 !important;
+	background-image: none !important;
+	color: white !important;
+} 
+
+.breadcrumb-item:not(.active) > a{
+	color: #0d7bb2 !important;
+}
+
+a.nav-link-wm.active{
+	background-color: white !important;
+    	background-image: none !important;
+    	color: #0d7bb2 !important;
+}
+
+.brand-text{
+	color:white !important;
+}
+
+.nav-item > a.nav-link-wm:not(.active){
+	color: white !important;
+}
+
+.navbar-nav {
+	.nav-item > a.nav-link-wm:not(.active){
+		color: #6c757d !important;
+	}
+}
+
+.card-primary{
+	.card-header{
+		background-color: #0d7bb2 !important;
+		background-image: none !important;
+	}
+}
+
+.card-primary.card-outline{
+	border-top: 3px solid #0d7bb2 !important;
+}
+
+.btn-outline-primary{
+	color:  #0d7bb2 !important;
+	border-color:  #0d7bb2 !important;;
+}
+
+.btn-outline-primary:hover{
+	background-color:  #0d7bb2 !important;
+	color: white !important;
+}  
+
+.img-convocatoria-publicada{
+	max-height: 250px !important;
+}

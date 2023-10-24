@@ -32,6 +32,12 @@ $(document).ready(function(){
 		PerfilCandidato.obtener_tab_direcciones(id_usuario);
 	});
 
+	$(document).on('click','#tab_datos_empresa',function(e){
+		e.preventDefault();
+		var id_usuario = $(this).data('id_usuario');
+		PerfilCandidato.obtener_tab_empresa(id_usuario);
+	});
+
 	$(document).on('click','#tab_expediente_digital',function(e){
 		e.preventDefault();
 		var id_usuario = $(this).data('id_usuario');
@@ -49,6 +55,19 @@ $(document).ready(function(){
 		var id_usuario = $(this).data('id_usuario');
 		var id_datos_domicilio = $(this).data('id_datos_domicilio');
 		PerfilCandidato.guardar_domicilio(id_usuario,id_datos_domicilio);
+	});
+
+	//apartado para los datos de empresa
+	$(document).on('click','.btn_modificar_empresa',function () {
+		var id_usuario = $(this).data('id_usuario');
+		var id_datos_empresa = $(this).data('id_datos_empresa');
+		PerfilCandidato.modal_empresa(id_usuario,id_datos_empresa);
+	});
+
+	$(document).on('click','#btn_guardar_form_empresa',function(){
+		var id_usuario = $(this).data('id_usuario');
+		var id_datos_empresa = $(this).data('id_datos_empresa');
+		PerfilCandidato.guardar_empresa(id_usuario,id_datos_empresa);
 	});
 
 });
@@ -75,6 +94,18 @@ var PerfilCandidato = {
 		);
 	},
 
+	modal_empresa : function(id_usuario,id_datos_empresa = ''){
+		Comun.obtener_contenido_peticion_html(
+			base_url + 'Perfil/agregar_modificar_empresa/' + id_usuario + '/' + id_datos_empresa,{},
+			function(response){
+				$('#contenedor_modal_primario').html(response);
+				Comun.mostrar_ocultar_modal('#modal_form_empresa',true);
+				Comun.funcion_fileinput('#img_logotipo_emp','Logotipo');
+				PerfilCandidato.iniciar_carga_img_logo_empresa();
+			}
+		);
+	},
+
 	validar_form_usuario : function(){
 		var form_valido = Comun.validar_form('#form_agregar_modificar_usr',Comun.reglas_validacion_form());
 		if(form_valido){
@@ -96,6 +127,14 @@ var PerfilCandidato = {
 
 	validar_form_direccion : function(){
 		var form_valido = Comun.validar_form('#form_agregar_modificar_domicilio',Comun.reglas_validacion_form());
+		if(form_valido){
+
+		}
+		return form_valido;
+	},
+
+	validar_form_empresa : function(){
+		var form_valido = Comun.validar_form('#form_agregar_modificar_empresa',Comun.reglas_validacion_form());
 		if(form_valido){
 
 		}
@@ -137,6 +176,26 @@ var PerfilCandidato = {
 						Comun.mostrar_ocultar_modal('#modal_form_domicilio',false);
 						Comun.mensajes_operacion(response.msg,'success');
 						$('#tab_direcciones').trigger('click');
+					}else{
+						Comun.mensajes_operacion(response.msg,'error',5000);
+					}
+				}
+			)
+		}else{
+			Comun.mensaje_operacion('Error, hay campos requeridos','error');
+		}
+	},
+
+	guardar_empresa : function(id_usuario,id_datos_empresa = ''){
+		if(PerfilCandidato.validar_form_empresa()){
+			Comun.enviar_formulario_post(
+				'#form_agregar_modificar_empresa',
+				base_url + 'Perfil/guardar_empresa/' + id_usuario + '/' + id_datos_empresa,
+				function(response){
+					if(response.success){
+						Comun.mostrar_ocultar_modal('#modal_form_empresa',false);
+						Comun.mensajes_operacion(response.msg,'success');
+						$('#tab_datos_empresa').trigger('click');
 					}else{
 						Comun.mensajes_operacion(response.msg,'error',5000);
 					}
@@ -191,6 +250,17 @@ var PerfilCandidato = {
 			base_url + 'Perfil/obtener_tab_direcciones/'+id_usuario,{},
 			function(response){
 				$('#content_tab_mi_direccion').html(response);
+				Comun.tooltips()
+			}
+		);
+	},
+
+	obtener_tab_empresa : function(id_usuario){
+		$('#content_tab_datos_empresa').html(overlay);
+		Comun.obtener_contenido_peticion_html(
+			base_url + 'Perfil/obtener_tab_empresa/'+id_usuario,{},
+			function(response){
+				$('#content_tab_datos_empresa').html(response);
 				Comun.tooltips()
 			}
 		);
@@ -387,6 +457,14 @@ var PerfilCandidato = {
 				}
 			);
 		});
+	},
+
+	iniciar_carga_img_logo_empresa : function(){
+		Comun.iniciar_carga_imagen('#img_logotipo_emp','#procesando_img_logotipo_emp',function(archivo){
+			$('#input_id_archivo_logotipo').val(archivo.id_archivo);
+			var html_img = '<img src="'+base_url + archivo.ruta_directorio + archivo.nombre+'" style="max-width: 120px" class="img-fluid img-thumbnail" alt="Imagen logotipo empresa">';
+			$('#procesando_img_logotipo_emp').html(html_img);
+		})
 	}
 
 };

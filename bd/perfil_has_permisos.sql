@@ -83,5 +83,6 @@ INSERT INTO `perfil_has_permisos` (`id_cat_perfil`, `id_cat_modulo`, `id_cat_per
 (3, 4, 5),
 (3, 5, 3),
 (3, 5, 4),
-(3, 5, 5);
-COMMIT;
+(3, 5, 5),
+(3, 8, 3),
+(3, 5, 13);

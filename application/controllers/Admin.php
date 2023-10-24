@@ -71,6 +71,20 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	public function error_sistema(){
+		if(is_ajax()){
+			$this->output->set_status_header(500);
+		}else{
+			$data['titulo_pagina'] = '500 Error en el sistema';
+			$data['usuario'] = $this->usuario;
+			$data['migas_pan'] = array(
+				array('nombre' => 'Inicio','activo' => false,'url' => base_url()),
+				array('nombre' => '500 Error en el sistema','activo' => true,'url' => '#'),
+			);
+			$this->load->view('500',$data);
+		}
+	}
+
 	public function need_login(){
 		if(is_ajax()){
 			$this->output->set_status_header(401);

@@ -1,4 +1,4 @@
-<?php
+	<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
@@ -58,24 +58,48 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'Login/index';
 $route['cerrar_sesion'] = 'Login/cerrar_sesion';
 $route['recuperar_password'] = 'Login/recuperar_password';
+$route['registro/(:num)'] = 'Login/registro/$1';
 $route['unsubscribe'] = 'Login/darse_baja';
-$route['perfil_permisos'] = 'PerfilPermiso/index';
+
 $route['estandar_competencia'] = 'EC/index';
+$route['estandar_competencia/convocatoria/(:num)'] = 'ConvocatoriasEC/index/$1';
 $route['tecnicas_instrumentos/(:any)'] = 'TecnicasInstrumentos/index/$1';
-$route['evaluacion_ec/(:any)'] = 'EvaluacionEC/index/$1';
+$route['evaluacion_cerrada/(:any)/(:any)'] = 'EvaluacionEC/index/$1/$2';
 $route['evaluacion/(:num)/(:num)'] = 'AlumnosEC/evaluacion/$1/$2';
 $route['cuestionario_ati/(:num)/(:num)'] = 'EvaluacionEC/cuestionario_ati/$1/$2';
+$route['preguntas_abiertas/(:num)'] = 'PreguntasAbiertas/index/$1';
+$route['respuestas_preguntas_abiertas/(:num)'] = 'PreguntasAbiertas/formulario_respuestas/$1';
 $route['evaluacion_calificacion/(:num)'] = 'AlumnosEC/calificacion_evaluacion/$1';
 $route['ver_evaluacion/(:num)'] = 'AlumnosEC/ver_evaluacion/$1';
 $route['encuesta/(:num)/(:num)'] = 'EncuestaSatisfaccion/candidato/$1/$2';
 $route['encuesta_candidato/(:num)/(:num)'] = 'EncuestaSatisfaccion/candidato_lectura/$1/$2';
+$route['campania/(:num)'] = 'Curso/index/$1';
+$route['campania/modulo/(:num)'] = 'Curso/index_curso_modulos/$1';
 //rutas para la evaluacion del cuestionario del instrumento
 $route['evaluacion_instrumento/(:num)/(:num)'] = 'AlumnosEC/evaluacion_instrumento/$1/$2';
 $route['403'] = 'admin/sin_permisos';
 $route['404'] = 'admin/no_encontrado';
+$route['500'] = 'admin/error_sistema';
 
 //rutas para las opciones del menu
 $route['contacto'] = 'Informacion/contacto';
 $route['quienes_somos'] = 'Informacion/quienes_somos';
 
 $route['show-session'] = 'Welcome/sesion';
+$route['evidencias_esperadas/(:num)'] = 'Entregable/index/$1';
+$route['evidencias_esperadas/candidato/(:num)'] = 'Entregable/index_candidato/$1';
+
+/**
+ * rutas para los catalogos
+ */
+$route['catalogos/msg-bienvenida'] = 'Catalogos/bienvenida';
+$route['catalogos/sectores'] = 'Catalogos/sectores';
+
+/**
+ * rutas para los perfiles y usuarios
+ */
+$route['perfil_permisos'] = 'PerfilPermiso/index';
+$route['candidato/perfil/(:num)'] = 'Perfil/editar/$1';
+$route['usuario/administradores'] = 'Usuario/administradores';
+$route['usuario/evaluadores'] = 'Usuario/evaluadores';
+$route['usuario/candidatos'] = 'Usuario/candidatos';

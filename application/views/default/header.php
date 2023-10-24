@@ -8,7 +8,7 @@
 
 	<meta name="author" content="Enrique Corona Ricaño">
 	<meta name="description" content="Sistema Integral de Portafolio de Evidencias PED  Civika Holding Latinoamérica, S.A. de C.V.">
-	<meta name="keywords" content="Portafolio de evidencias Civika, PED Civika, https://civika.edu.mx">
+	<meta name="keywords" content="Portafolio de evidencias Civika, PED Civika, Certificaciones Walmart México, Walmart México">
 
 	<!-- css para el admin lte -->
 	<!-- Google Font: Source Sans Pro -->
@@ -21,6 +21,7 @@
 	<link href="<?=base_url()?>assets/frm/watnotif/css/bubble/watnotif.right-top-bubble.min.css" rel="stylesheet" type="text/css">
 
 	<link href="<?= base_url() ?>assets/css/comun.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/css/colores_wm.css" rel="stylesheet">
 
 	<!-- CSS extras -->
 	<?php if (isset($extra_css) && is_array($extra_css)): ?>
@@ -32,7 +33,7 @@
 	<!-- icono -->
 	<link href="<?=base_url()?>assets/imgs/logos/icono.png" rel="shortcut icon">
 
-	<title>Sistema Integral PED</title>
+	<title>Certificaciones WM MXCAM - Cívika</title>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

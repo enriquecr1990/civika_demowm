@@ -47,7 +47,7 @@ class TecnicasInstrumentos extends CI_Controller {
 				base_url().'assets/frm/fileupload/js/vendor/jquery.ui.widget.js',
 				base_url().'assets/frm/fileupload/js/jquery.iframe-transport.js',
 				base_url().'assets/frm/fileupload/js/jquery.fileupload.js',
-				base_url() . 'assets/js/ec/actividades_ie.js'
+				base_url().'assets/js/ec/actividades_ie.js'
 			);
 			$ec_instrumento_alumno = $this->ActividadIEModel->obtener_ec_instrumento_alumno($id_estandar_competencia);
 			$data['existe_evidencia_alumnos'] = is_array($ec_instrumento_alumno) && sizeof($ec_instrumento_alumno) > 0;
@@ -62,13 +62,13 @@ class TecnicasInstrumentos extends CI_Controller {
 
 	public function resultado_ati($id_estandar_competencia){
 		perfil_permiso_operacion('tecnicas_instrumentos.consultar');
-    	try{
+    		try{
 			$data['estandar_competencia'] = $this->EstandarCompetenciaModel->obtener_row($id_estandar_competencia);
 			$data['estandar_competencia_instrumento'] = $this->ActividadIEModel->obtener_instrumentos_ec($id_estandar_competencia);
 			$ec_instrumento_alumno = $this->ActividadIEModel->obtener_ec_instrumento_alumno($id_estandar_competencia);
 			$data['existe_evidencia_alumnos'] = is_array($ec_instrumento_alumno) && sizeof($ec_instrumento_alumno) > 0;
 			//echo json_encode($data['estandar_competencia_instrumento']);exit;
-    		$this->load->view('ati/resultado_ati',$data);
+    			$this->load->view('ati/resultado_ati',$data);
 		}catch (Exception $ex){
 			$response['success'] = false;
 			$response['msg'][] = 'Hubo un error en el sistema, intente nuevamente';

@@ -13,8 +13,8 @@ $(document).ready(function(){
 		Examen.guardar_form_decision_candidato();
 	});
 
-	if(es_pruebas == 1 || es_produccion == 1){
-	//if(true){
+	//if(es_pruebas == 1 || es_produccion == 1){
+	if(true){
 		$('#menu_lateral_izquierdo').fadeOut();
 		$('#menu_superior').fadeOut();
 

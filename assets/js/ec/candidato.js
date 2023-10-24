@@ -24,20 +24,20 @@ $(document).ready(function(){
 	$(document).on('click','.txt_guardar_comentario_candidato',function(e){
 		e.preventDefault();
 		var id_body_comentarios = $(this).data('id_body_comentarios');
-		var id_ec_instrumento_alumno = $(this).data('id_ec_instrumento_alumno');
-		var valor = $('#txt_comentarios_candidato_'+id_ec_instrumento_alumno).val();
+		var id_entregable = $(this).data('id_entregable');
+		var valor = $('#txt_comentarios_candidato_'+id_entregable).val();
 		if(valor.length > 0){
-			CandidatoEC.guardar_comentario(id_body_comentarios,id_ec_instrumento_alumno,valor);
+			CandidatoEC.guardar_comentario(id_body_comentarios,id_entregable,valor);
 		}
 	});
 
 	$(document).on('click','.txt_guardar_comentario_candidato_progreso',function(e){
 		e.preventDefault();
 		var id_body_comentarios = $(this).data('id_body_comentarios');
-		var id_ec_instrumento_alumno = $(this).data('id_ec_instrumento_alumno');
-		var valor = $('#txt_comentarios_candidato_'+id_ec_instrumento_alumno).val();
+		var id_entregable = $(this).data('id_entregable');
+		var valor = $('#txt_comentarios_candidato_'+id_entregable).val();
 		if(valor.length > 0){
-			CandidatoEC.guardar_comentario(id_body_comentarios,id_ec_instrumento_alumno,valor);
+			CandidatoEC.guardar_comentario(id_body_comentarios,id_entregable,valor);
 		}
 	});
 
@@ -172,6 +172,18 @@ $(document).ready(function(){
 		$(anterior_link).trigger('click');
 	});
 
+	$(document).on('click','.eliminar-archivo-alumno',function(){
+		var id_archivo_instrumento = $(this).data('id_archivo_instrumento');
+		var id_entregable_alumno_archivo = $(this).data('id_entregable_alumno_archivo');
+		var id_entregable = $(this).data('id_entregable');
+		CandidatoEC.eliminarArchivo(id_archivo_instrumento,id_entregable_alumno_archivo,id_entregable)
+	})
+	$(document).on('click','.boton-enviar-entregable',function(){
+		var id_entregable = $(this).data('id_entregable');
+		var id_entregable_formulario = $(this).data('id_entregable_formulario');
+		CandidatoEC.cambiar_estatus_entregable_alumno(id_entregable,2, id_entregable_formulario)
+	})
+
 	if(!window.location.pathname.includes('/estandar_competencia')){
 		CandidatoEC.pasos.evaluacion_diagnostica();
 		$('a#menu_bars').trigger('click');
@@ -207,12 +219,14 @@ var CandidatoEC = {
 		);
 	},
 
-	guardar_comentario : function(id_body_comentarios,id_ec_instrumento_alumno, comentario){
+	guardar_comentario : function(id_body_comentarios,id_entregable, comentario){
+		var id_usuario_alumno = $('#input_id_usuario_alumno').val();
 		Comun.obtener_contenido_peticion_json(
 			base_url + 'EvaluadoresEC/guardar_comentario',
 			{
 				comentario : comentario,
-				id_ec_instrumento_alumno : id_ec_instrumento_alumno,
+				id_entregable : id_entregable,
+				id_usuario_alumno : id_usuario_alumno,
 				quien : 'alumno'
 			},
 			function(response){
@@ -265,30 +279,34 @@ var CandidatoEC = {
 
 	inicializar_input_file_entregables : function(){
 		$.each($('.doc_evidencia_ati_alumno'),function(index,input){
-			CandidatoEC.iniciar_carga_doc_evidencia('#'+input.id);
+			CandidatoEC.iniciar_carga_doc_evidencia_old('#'+input.id);
 		});
 	},
 
 	iniciar_carga_doc_evidencia_old : function(input_file,div_procesando,id){
-		CandidatoEC.iniciar_carga_archivos_ati(input_file,function(archivo,id_ec_instrumento_alumno,div_procesando){
+		CandidatoEC.iniciar_carga_archivos_ati(input_file,function(archivo,id_entregable,div_procesando){
+			var id_usuario_alumno = $('#input_id_usuario_alumno').val();
 			Comun.obtener_contenido_peticion_json(
-				base_url + 'AlumnosEC/actualizar_ati/'+id_ec_instrumento_alumno,
+				base_url + 'AlumnosEC/actualizar_ati/'+id_entregable+'/'+id_usuario_alumno,
 				{
 					id_archivo_instrumento : archivo.id_archivo_instrumento
 				},
 				function(response){
 					if(response.success){
 						Comun.mensajes_operacion(response.msg,'success');
-						var html_documento = '' +
-							'<div class="col-md-4">' +
-							'<a target="_blank" class="archivo_doc_evidencia_ati" href="'+base_url + archivo.ruta_directorio + archivo.nombre+'">' +
-							'' + archivo.nombre + '' +
-							'</a>' +
-							'<button type="button" data-tag_parent="div" data-tabla_eliminar="ec_instrumento_alumno_evidencias" data-id_eliminar="id_ec_instrumento_alumno_evidencias" class="btn btn-sm btn-outline-danger btn_eliminar_comun_sistema" ' +
-							'data-id_eliminar_valor="'+response.data.id_insert+'"><i class="fa fa-trash"></i></button>' +
-							'</div>' +
-							'';
-						$('#contenedor_doc_evidencia_ati_'+id_ec_instrumento_alumno).append(html_documento);
+						var html_documento = '<tr>' +
+							'<td>'+archivo.id_archivo_instrumento+'</td>' +
+							'<td>'+archivo.nombre+'</td>' +
+							'<td>' +
+							'<button class="btn btn-sm btn-danger  eliminar-archivo-alumno"' +
+							'data-id_archivo_instrumento="'+archivo.id_archivo_instrumento+'"' +
+							'data-id_entregable="'+response.data.id_entregable+'"' +
+							'data-id_entregable_alumno_archivo="'+response.data.id_insert+'"' +
+							'><em class="fa fa-trash"></em>' +
+							'</button>' +
+							'</td>' +
+							'</tr>';
+						$('#tabla_evidencias_'+id_entregable).append(html_documento);
 						$(div_procesando).hide();
 					}else{
 						Comun.mensajes_operacion(response.msg,'error');
@@ -298,18 +316,6 @@ var CandidatoEC = {
 		},id);
 	},
 
-	iniciar_carga_doc_evidencia : function(input_file){
-		CandidatoEC.iniciar_carga_archivos_ati(input_file,function(archivo,id_ec_instrumento_alumno){
-			var html_archivo_link = '' +
-				'<input type="hidden" name="ec_instrumento_alumno_evidencia[id_ec_instrumento_alumno]" value="'+id_ec_instrumento_alumno+'">' +
-				'<a target="_blank" class="archivo_doc_evidencia_ati" href="'+base_url + archivo.ruta_directorio + archivo.nombre+'">' +
-				'' + archivo.nombre + '' +
-				'</a>';
-			$('#archivo_link_instrumento_act').html(html_archivo_link);
-			$('#select_instrumento_evidencia').val('');
-			$('.contenedor_select_instrumento_evidencia').fadeIn();
-		});
-	},
 
 	ver_evaluaciones_ec : function(id_estandar_competencia,id_usuario_alumno){
 		Comun.obtener_contenido_peticion_html(
@@ -389,7 +395,7 @@ var CandidatoEC = {
 		//funcion para cargar archivo via ajax
 		var nombre_archivo;
 		var div_procesando = $(input_file).data('div_procesando');
-		var id_ec_instrumento_alumno = $(input_file).data('id_ec_instrumento_alumno');
+		var id_entregable = $(input_file).data('id_entregable');
 		$(input_file).fileupload({
 			url : base_url + 'Uploads/uploadFileATICandidato',
 			dataType: 'json',
@@ -422,7 +428,7 @@ var CandidatoEC = {
 			done:function (e,data) {
 				if(data.result.success){
 					var archivo = data.result.archivo;
-					funcion_response(archivo,id_ec_instrumento_alumno);
+					funcion_response(archivo,id_entregable);
 				}else{
 					Comun.mensaje_operacion(data.result.msg,'error');
 					$(div_procesando).html('');
@@ -446,6 +452,42 @@ var CandidatoEC = {
 				}
 			}
 		);
+	},
+
+	eliminarArchivo(id_archivo_instrumento, id_entregable_alumno_archivo, id_entregable){
+		Comun.obtener_contenido_peticion_json(base_url +'Entregable/eliminar_archivo/'+id_archivo_instrumento+'/'+ id_entregable_alumno_archivo,{},function (response) {
+
+			if (response.success){
+				var trs = '';
+				response.data.forEach(item => {
+					trs = trs + '<tr>' +
+						'<td>'+item.id_archivo_instrumento+'</td>' +
+						'<td>'+item.nombre+'</td>' +
+						'<td>' +
+						'<button class="btn btn-sm btn-danger  eliminar-archivo-alumno"' +
+						'data-id_archivo_instrumento="'+item.id_archivo_instrumento+'"' +
+						'data-id_entregable="'+id_entregable+'"' +
+						'data-id_entregable_alumno_archivo="'+item.id_entregable_alumno_archivo+'"' +
+						'><em class="fa fa-trash"></em>' +
+						'</button>' +
+						'</td>' +
+						'</tr>'
+				} )
+				$('#tabla_evidencias_'+id_entregable).html(trs);
+			}
+
+		})
+	},
+	cambiar_estatus_entregable_alumno(id_entregable, id_estatus, id_entregable_formulario = null){
+		var id_usuario_alumno = $('#input_id_usuario_alumno').val();
+		Comun.obtener_contenido_peticion_json(base_url +'Entregable/cambiar_estatus/'+id_entregable+'/'+ id_estatus+'/'+id_usuario_alumno+'/'+id_entregable_formulario,{},function (response) {
+			if (response.success) {
+				Comun.mensajes_operacion( ['Evidencia enviada al evaluador'], 'success');
+				CandidatoEC.pasos.evidencias();
+			}else {
+				Comun.mensajes_operacion(response.msg, 'error');
+			}
+		})
 	},
 
 	pasos : {
@@ -520,12 +562,13 @@ var CandidatoEC = {
 			//if($('#contenedor_pasos_evidencias').html() == ''){
 				$('#contenedor_pasos_evidencias').html(overlay);
 				Comun.obtener_contenido_peticion_html(
-					base_url + 'AlumnosEC/ver_progreso_evidencias/' + id_estandar_competencia + '/' + id_usuario_alumno,{},
+					base_url + 'Entregable/index_candidato/' + id_estandar_competencia+'/'+id_usuario_alumno,{},
 					function(response){
 						$('#contenedor_pasos_evidencias').html(response);
-						Comun.funcion_fileinput('.doc_evidencia_ati_alumno','Evidencia PDF/Imágenes');
+						Comun.funcion_fileinput('.54','Evidencia PDF/Imágenes');
 						CandidatoEC.inicializar_input_file_entregables();
 						CandidatoEC.procesar_class_calificacion();
+
 						if($('#numero_actividades').val() != 0 && ($('#numero_actividades').val() == $('#numero_actividades_finalizadas').val())){
 							$('#contenedor_pasos_evidencias').find('button.guardar_progreso_pasos').removeAttr('disabled');
 						}
@@ -534,6 +577,8 @@ var CandidatoEC = {
 				);
 			//}
 		},
+
+
 
 		juicio_competencia : function(){
 			var id_estandar_competencia = $('#input_id_estandar_competencia').val();
@@ -590,7 +635,7 @@ var CandidatoEC = {
 				}
 			)
 		}
-	},
+	}
 
 };
 

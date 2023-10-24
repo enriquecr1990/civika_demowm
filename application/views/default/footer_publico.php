@@ -125,6 +125,7 @@
 	var extenciones_files_img = '<?=EXTENSIONES_FILES_IMG?>';
 	var extenciones_files_pdf = '<?=EXTENSIONES_FILES_PDF?>';
 	var extenciones_files_ati = '<?=EXTENSIONES_FILES_ATI?>';
+	var extenciones_files_all = '<?=EXTENSIONES_FILES_ALL?>';
 	var es_development = '<?=es_development()?>';
 	var es_pruebas = '<?=es_pruebas()?>';
 	var es_produccion = '<?=es_produccion()?>';

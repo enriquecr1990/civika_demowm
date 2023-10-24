@@ -21,9 +21,12 @@ class Login extends CI_Controller {
 	{
 		if(is_null($this->usuario)){
 			$get = $this->input->get();
+			//dd($get);exit;
 			$data = array();
 			if(isset($get['usr']) && $get['usr'] != ''){
 				$data['usuario_login'] = $get['usr'];
+			}if(isset($get['convocatoria']) && existe_valor($get['convocatoria'])){
+				$data['id_convocatoria'] = $get['convocatoria'];
 			}
 			$this->load->view('login',$data);
 		}else{
@@ -84,10 +87,17 @@ class Login extends CI_Controller {
 		$response['msg'] = array();
 		try{
 			$post = $this->input->post();
+			$id_convocatoria = false;
+			if(isset($post['id_convocatoria']) && $post['id_convocatoria'] != ''){
+				$id_convocatoria = $post['id_convocatoria'];
+				unset($post['id_convocatoria']);
+			}
 			$validacion_campos = Validaciones_Helper::formLogin($post);
 			if($validacion_campos['success']){
 				$usuario_login['ped'] = $this->UsuarioModel->login_usuario($post);
 				if($usuario_login['ped']['success']){
+					//procederemos a registrar este usuario login que trato de iniciar sesion desde una convocatoria
+					
 					$this->session->set_userdata($usuario_login);
 				}else{
 					$response['success'] = false;
@@ -120,5 +130,10 @@ class Login extends CI_Controller {
 
 	public function darse_baja(){
 		redirect(base_url());
+	}
+
+	public function registro($idEstandarCompetenciaConvocatoria){
+		$data['id_estandar_competencia_convocatoria'] = $idEstandarCompetenciaConvocatoria;
+		$this->load->view('registro_convocatoria',$data);
 	}
 }

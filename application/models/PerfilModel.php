@@ -77,7 +77,7 @@ class PerfilModel extends CI_Model
 				  inner join cat_estado ce on ce.id_cat_estado = dd.id_cat_estado
 				  inner join cat_municipio cm on cm.id_cat_municipio = dd.id_cat_municipio
 				  inner join cat_localidad cl on cl.id_cat_localidad = dd.id_cat_localidad
-				where dd.id_usuario = $id_usuario";
+				where dd.eliminado = 'no' and dd.id_usuario = $id_usuario";
 			if($principal){
 				$consulta .= " and dd.predeterminado = 'si'";
 				$query = $this->db->query($consulta);
@@ -87,6 +87,27 @@ class PerfilModel extends CI_Model
 			return $query->result();
 		}catch (Exception $ex){
 			log_message('error','******* PerfilModel->obtener_datos_expediente');
+			log_message('info',$ex->getMessage());
+			return false;
+		}
+	}
+
+	public function obtener_datos_empresa($id_usuario, $vigente = false){
+		try{
+			$consulta = "select 
+					de.*, a.nombre as nombre_archivo_logo, a.ruta_directorio as ruta_directorio_logo 
+				from datos_empresa de 
+					inner join archivo a on a.id_archivo = de.id_archivo_logotipo
+				where de.eliminado = 'no' and de.id_usuario = $id_usuario ";
+			if($vigente){
+				$consulta .= " and de.vigente = 'si'";
+				$query = $this->db->query($consulta);
+				return $query->row();
+			}
+			$query = $this->db->query($consulta);
+			return $query->result();
+		}catch (Exception $ex){
+			log_message('error','******* PerfilModel->obtener_datos_empresa');
 			log_message('info',$ex->getMessage());
 			return false;
 		}

@@ -3,8 +3,8 @@
 	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
 		<img src="<?=isset($usuario->foto_perfil) ? $usuario->foto_perfil : base_url('/assets/imgs/iconos/admin.png')?>" class="user-image img-circle elevation-2 img_foto_perfil" alt="Imagen de perfil">
 		<span class="d-none d-md-inline">
-			<?php if(isset($usuario->datos_usuario) && is_object($usuario->datos_usuario)): ?>
-				<?=$usuario->datos_usuario->nombre .' '. $usuario->datos_usuario->apellido_p ?>
+			<?php if(isset($datos_usuario) && is_object($datos_usuario)): ?>
+				<?=$datos_usuario->nombre .' '. $datos_usuario->apellido_p ?>
 			<?php else: ?>
 				<?=$usuario->usuario?>
 			<?php endif; ?>
@@ -15,8 +15,8 @@
 		<li class="user-header bg-primary">
 			<img src="<?=isset($usuario->foto_perfil) ? $usuario->foto_perfil : base_url('/assets/imgs/iconos/admin.png')?>" class="img-circle elevation-2" alt="User Image">
 			<p>
-				<?php if(isset($usuario->datos_usuario) && is_object($usuario->datos_usuario)): ?>
-					<?=$usuario->datos_usuario->nombre.' '.$usuario->datos_usuario->apellido_p.' '.$usuario->datos_usuario->apellido_m ?>
+				<?php if(isset($datos_usuario) && is_object($datos_usuario)): ?>
+					<?=$datos_usuario->nombre.' '.$datos_usuario->apellido_p.' '.$datos_usuario->apellido_m ?>
 				<?php else: ?>
 					<?=$usuario->usuario?>
 				<?php endif; ?>

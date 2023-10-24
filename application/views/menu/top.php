@@ -8,6 +8,9 @@
 			<a href="<?=base_url()?>" class="nav-link">Inicio</a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">
+			<a href="<?=base_url()?>admin" class="nav-link">Panel de Control</a>
+		</li>
+		<li class="nav-item d-none d-sm-inline-block">
 			<a href="<?=base_url()?>contacto" class="nav-link">Contacto</a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">

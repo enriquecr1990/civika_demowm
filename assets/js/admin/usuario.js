@@ -12,7 +12,7 @@ $(document).ready(function () {
 
 	$(document).on('click','#btn_buscar_instructores',function(e){
 		e.preventDefault();
-		UsuarioAdmin.buscar_usuarios_tablero_instructores();
+		UsuarioAdmin.buscar_usuarios_tablero_evaluadores();
 	});
 
 	$(document).on('click','#btn_buscar_candidatos',function(e){
@@ -77,7 +77,7 @@ $(document).ready(function () {
 						UsuarioAdmin.buscar_usuarios_tablero_admin(false,pagina_select);
 						break;
 					case 'instructores':
-						UsuarioAdmin.buscar_usuarios_tablero_instructores(false,pagina_select);
+						UsuarioAdmin.buscar_usuarios_tablero_evaluadores(false,pagina_select);
 						break;
 					case 'candidatos':
 						UsuarioAdmin.buscar_usuarios_tablero_candidatos(false,pagina_select);
@@ -149,14 +149,14 @@ var UsuarioAdmin = {
 		}
 	},
 
-	buscar_usuarios_tablero_instructores : function(inicial = true, pagina = 1, registros = 10){
+	buscar_usuarios_tablero_evaluadores : function(inicial = true, pagina = 1, registros = 10){
 		var post = {
 			busqueda : $('#input_buscar_usuarios').val()
 		};
 		if(inicial){
 			$('#contenedor_resultados_usuario').html(overlay);
 			Comun.obtener_contenido_peticion_html(
-				base_url + 'Usuario/tablero_instructores/' + pagina + '/' + registros,
+				base_url + 'Usuario/tablero_evaluadores/' + pagina + '/' + registros,
 				post,
 				function(response){
 					$('#contenedor_resultados_usuario').html(response);
@@ -166,7 +166,7 @@ var UsuarioAdmin = {
 		}else{
 			$('#overlay_full_page').fadeIn();
 			Comun.obtener_contenido_peticion_html(
-				base_url + 'Usuario/tablero_instructores/' + pagina + '/' + registros,
+				base_url + 'Usuario/tablero_evaluadores/' + pagina + '/' + registros,
 				post,
 				function(response){
 					$('#contenedor_resultados_usuario').append(response);

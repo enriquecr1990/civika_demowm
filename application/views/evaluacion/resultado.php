@@ -12,9 +12,9 @@
 
 <?php if (isset($evaluacion) && is_array($evaluacion) && sizeof($evaluacion) != 0): ?>
 	<div class="form-group row">
-		<?php foreach ($evaluacion as $e): ?>
+		<?php foreach ($evaluacion as $index => $e): ?>
 			<div class="col-md-12">
-				<div class="card card-<?=$e->eliminado == 'si' ? 'light' : 'info'?>">
+				<div class="card card-<?=$e->eliminado == 'si' ? 'light' : 'info'?>" <?=$index != 0 ? 'collapsed-card': ''?>>
 					<div class="card-header">
 						<h3 class="card-title <?=$e->eliminado == 'si' ? 'text-danger' : ''?>">
 							<?=isset($e->titulo) ? $e->titulo : 'Evaluacion de la EC - '.$estandar_competencia->codigo?> -
@@ -24,12 +24,12 @@
 						</h3>
 						<div class="card-tools">
 							<button type="button" class="btn btn-tool" data-card-widget="collapse">
-								<i class="fas fa-minus"></i>
+								<i class="fas fa-<?=$index != 0 ? 'plus': 'minus'?>"></i>
 							</button>
 						</div>
 					</div>
 					<!-- /.card-header -->
-					<div class="card-body" style="display: block;">
+					<div class="card-body" <?=$index != 0 ? 'style="display: none;"': 'style="display: block;"'?>>
 						<div class="form-group row">
 							<div class="col-sm-12 text-right">
 								<button id="btn_buscar_pregunta_<?=$e->id_evaluacion?>" class="btn btn-info btn-sm buscar_preguntas_evaluacion" data-toggle="tooltip"

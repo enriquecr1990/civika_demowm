@@ -13,6 +13,7 @@ class AlumnosEC extends CI_Controller {
         $this->load->model('EcInstrumentoAlumnoModel');
         $this->load->model('EcInstrumentoAlumnoComentarioModel');
         $this->load->model('EcInstrumentoAlumnoEvidenciasModel');
+        $this->load->model('EntregableAlumnoArchivoModel');
         $this->load->model('ECUsuarioHasExpedientePEDModel');
 		$this->load->model('EstandarCompetenciaModel');
 		$this->load->model('ECHasEvaluacionModel');
@@ -352,8 +353,7 @@ class AlumnosEC extends CI_Controller {
 				}
 			}
 			//Fin del apartado para la evidencia de trabajo del candidato
-			formatoArrayData($data);exit;
-			$this->load->view('alumno_ec/progreso_pasos/evidencias',$data);
+			$this->load->view('alumno_ec/progreso_pasos/evidencias_old',$data);
 		}catch (Exception $ex){
 			$response['success'] = false;
 			$response['msg'][] = 'Hubo un error en el sistema, intente nuevamente';
@@ -541,15 +541,15 @@ class AlumnosEC extends CI_Controller {
 		echo json_encode($response);exit;
 	}
 
-	public function actualizar_ati($id_ec_instrumento_alumno){
+	public function actualizar_ati($id_entregable,$id_alumno){
 		perfil_permiso_operacion('tecnicas_instrumentos.comentario');
 		try{
 			$post_update = $this->input->post();
-			$post_update['id_ec_instrumento_alumno'] = $id_ec_instrumento_alumno;
-			$update = $this->EcInstrumentoAlumnoEvidenciasModel->guardar_row($post_update);
+			$update = $this->EntregableAlumnoArchivoModel->guardar_archivo($post_update, $id_entregable, $id_alumno);
 			$response['success'] = $update['success'];
 			$response['msg'][] = $update['msg'];
 			$response['data']['id_insert'] = $update['id'];
+			$response['data']['id_entregable'] = $update['id_entregable'];
 		}catch (Exception $ex){
 			$response['success'] = false;
 			$response['msg'][] = 'Hubo un error en el sistema, intente nuevamente';

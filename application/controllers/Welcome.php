@@ -31,7 +31,7 @@ class Welcome extends CI_Controller {
 
 	public function sesion(){
 		//var_dump(perfil_permiso_operacion_menu('usuarios.consultar'));exit;
-		var_dump($this->session->userdata());exit;
+		dd($this->session->userdata());exit;
 	}
 
 	public function paginacion(){
@@ -216,5 +216,23 @@ class Welcome extends CI_Controller {
 		}catch (Exception $ex){
 			echo $ex->getMessage();
 		}
+	}
+
+	public function qrGenerate($nameQR){
+		$stringToQR = 'https://enriquecr.com/demos/civika/ped/PantallasPrototipo/progresoCandidato/1/1';
+		//var_dump('aqui toy');exit;
+		$this->load->library('ciqrcode');
+		pathDirectorioArchivos(RUTA_QR_FILES.'/demos');
+		$qr_image = $nameQR.'.png';
+		$params['data'] = $stringToQR;
+		$params['level'] = 'l';
+		$params['size'] = 300;
+		$params['savename'] =FCPATH.RUTA_QR_FILES.'/demos/'.$qr_image;
+		if(!file_exists($params['savename'])){
+		    $this->ciqrcode->generate($params);
+		}
+		echo 'se genero el qr';
+		echo '<br><label>'.$nameQR.'</label><br><br>';
+		echo '<img src="'.base_url().RUTA_QR_FILES.'/testing/'.$qr_image.'" alt="qr generaado">';
 	}
 }

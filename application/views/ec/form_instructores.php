@@ -10,8 +10,7 @@
 			<form id="form_agregar_modificar_ec_ati">
 				<input id="estandar_competencia_instructor" type="hidden" value="<?=isset($id_estandar_competencia) ? $id_estandar_competencia : ''?>">
 				<?php if((isset($estandar_competencia_instrumento) && sizeof($estandar_competencia_instrumento) != 0
-							&& isset($estandar_competencia_evaluacion) && is_object($estandar_competencia_evaluacion)
-							&& isset($estandar_competencia_has_requerimientos) && sizeof($estandar_competencia_has_requerimientos) != 0
+							
 							&& isset($instructores_asignados) && sizeof($instructores_asignados) != 0)
 						|| $tipo == 'instructor'): ?>
 					<div class="modal-body">

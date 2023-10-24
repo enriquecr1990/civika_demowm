@@ -42,6 +42,9 @@
 			<p class="login-box-msg">Ingrese sus datos para iniciar sesión</p>
 
 			<form id="form_login" method="post">
+				<?php if(isset($id_convocatoria) && $id_convocatoria != ''): ?>
+					<input type="hidden" name="id_convocatoria" value="<?=$id_convocatoria?>">
+				<?php endif; ?>
 				<div class="mb-3">
 					<input type="text" data-rule-required="true" name="usuario" class="form-control" placeholder="Nombre de usuario" value="<?=isset($usuario_login) ? $usuario_login:''?>" >
 				</div>

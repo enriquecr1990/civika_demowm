@@ -88,9 +88,11 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 define('EXTENSIONES_FILES_IMG', 'png|jpg|jpeg|gif|tiff');
 define('EXTENSIONES_FILES_PDF', 'pdf');
 define('EXTENSIONES_FILES_ATI', 'png|jpg|jpeg|gif|tiff|pdf');
+define('EXTENSIONES_FILES_ALL', 'png|jpg|jpeg|gif|tiff|pdf|doc|docx|xls|xlsx|ppt|pptx');
 define('MAX_FILESIZE', 15000000);
 define('RUTA_PDF_TEMP','files_usr/temp/');
 define('RUTA_PDF_PED','files_usr/ped/');
+define('RUTA_QR_FILES','files_usr/qr_generados');
 
 /**
  * constantes para los perfiles de usuario
@@ -111,7 +113,8 @@ define('ESTATUS_FINALIZADA',4);
  */
 define('EVALUACION_DIAGNOSTICA',1);
 define('EVALUACION_CUESTIONARIO_INSTRUMENTO',2);
-define('EVALUACION_ENCUESTA_SATISFACCION',3);
+define('EVALUACION_ENTREGABLE',3);
+define('EVALUACION_MODULO',4);
 
 /**
  * constantes para las opciones de pregunta
@@ -137,3 +140,4 @@ define('EXPEDIENTE_CERTIFICADO_EC',3);
 define('INSTRUMENTO_GUIA_OBSERVACION',1);
 define('INSTRUMENTO_LISTA_COTEJO',2);
 define('INSTRUMENTO_CUESTIONARIO',3);
+define('INSTRUMENTO_PREGUNTAS_ABIERTAS',4);

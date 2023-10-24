@@ -44,43 +44,14 @@
 											<tr>
 												<th>ID</th>
 												<th>Actividad</th>
-												<th>Instrucciones</th>
-												<th>Archivos y/o Videos</th>
 												<th>Operaciones</th>
 											</tr>
 											</thead>
 											<tbody>
-											<?php foreach ($eci->actividades as $a): ?>
+											<?php foreach ($eci->actividades as $index => $a): ?>
 												<tr>
-													<td><?=$a->id_ec_instrumento_has_actividad?></td>
+													<td><?=$index + 1?></td>
 													<td><?=$a->actividad?></td>
-													<td><?=$a->instrucciones?></td>
-													<td>
-														<?php if(isset($a->archivos_videos) && is_array($a->archivos_videos) && sizeof($a->archivos_videos) != 0): ?>
-															<ul style="list-style: none">
-																<?php foreach ($a->archivos_videos as $av): ?>
-																	<?php
-																		if(!is_null($av->id_archivo) && $av->id_archivo != ''){
-																			$href = base_url().$av->archivo;
-																			$icon = 'fa fa-file';
-																			$nombre = $av->nombre_archivo;
-																		}else{
-																			$href = $av->url_video;
-																			$icon = 'fa fa-video';
-																			$nombre = $av->url_video;
-																		}
-																	?>
-																	<li class="mb-1">
-																		<a href="<?=$href?>" target="_blank" class="btn btn-sm btn-outline-primary" data-toggle="tooltip" title="<?=$nombre?>">
-																			<i class="<?=$icon?>"></i> <?=substr($nombre,0,10).'...'?>
-																		</a>
-																	</li>
-																<?php endforeach; ?>
-															</ul>
-														<?php else: ?>
-															<span class="badge badge-primary">Sin archivos ni videos</span>
-														<?php endif;?>
-													</td>
 													<td>
 														<?php if(isset($existe_evidencia_alumnos) && !$existe_evidencia_alumnos): ?>
 															<?php if(perfil_permiso_operacion_menu('tecnicas_instrumentos.modificar')): ?>
@@ -97,11 +68,6 @@
 																	<i class="fas fa-trash"></i>
 																</button>
 															<?php endif; ?>
-														<?php endif; ?>
-														<?php if(perfil_permiso_operacion_menu('evaluacion.agregar') && $eci->id_cat_instrumento == INSTRUMENTO_CUESTIONARIO): ?>
-															<a href="<?=base_url()?>cuestionario_ati/<?=$estandar_competencia->id_estandar_competencia.'/'.$a->id_ec_instrumento_has_actividad?>" class="btn btn-sm btn-outline-dark" data-toggle="tooltip" title="Cuestionario de evaluación">
-																<i class="fa fa-file-alt"></i> Cuestionario
-															</a>
 														<?php endif; ?>
 													</td>
 												</tr>

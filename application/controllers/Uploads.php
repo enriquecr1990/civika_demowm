@@ -110,6 +110,35 @@ class Uploads extends CI_Controller {
 		echo json_encode($retorno);
 		exit;
 	}
+	public function uploadFileEntregable(){
+		$retorno['success'] = false;
+		$retorno['msg'] = 'No es posible adjuntar su archivo, favor de intentar con otro o más tarde';
+		if(is_ajax()){
+			if(isset($_FILES) && count($_FILES) != 0){
+				foreach ($_FILES as $name => $f){
+					$options['field'] = $name;
+					$options['path'] = getRouteFilesComun();
+					$options['pre'] = date('H_i_s').'-';
+					$data = upload_file_ati($f,$options);
+					if(!isset($data['error'])){
+						$retorno['success'] = true;
+						$retorno['msg'] = 'Se adjunto el archivo con éxito';
+						//falta guardar en BD el archivo
+						$datos_doc['nombre'] = $data['file_name'];
+						$datos_doc['ruta_directorio'] = $options['path'];
+						$datos_doc['fecha'] = date('Y-m-d H:i:s');
+
+						$id_archivo = $this->ArchivoModel->guardar_archivo_model($datos_doc);
+						$retorno['archivo'] = $this->ArchivoModel->obtener_archivo($id_archivo);
+					}else{
+						$retorno['msg'] = $data['error'];
+					}
+				}
+			}
+		}
+		echo json_encode($retorno);
+		exit;
+	}
 
 	public function uploadFileATICandidato(){
 		$retorno['success'] = false;
@@ -140,4 +169,33 @@ class Uploads extends CI_Controller {
 		exit;
 	}
 
+
+	public function uploadFileComunAll(){
+        $retorno['success'] = false;
+        $retorno['msg'] = 'No es posible adjuntar su archivo, favor de intentar con otro o más tarde';
+        if(is_ajax()){
+            if(isset($_FILES) && count($_FILES) != 0){
+                foreach ($_FILES as $name => $f){
+					$options['field'] = $name;
+					$options['path'] = getRouteFilesComun();
+					$options['pre'] = date('H_i_s').'-';
+					$data = upload_file_all($f,$options);
+					if(!isset($data['error'])){
+						$retorno['success'] = true;
+						$retorno['msg'] = 'Se adjunto el archivo con éxito';
+						//falta guardar en BD el archivo
+						$datos_doc['nombre'] = $data['file_name'];
+						$datos_doc['ruta_directorio'] = $options['path'];
+						$datos_doc['fecha'] = date('Y-m-d H:i:s');
+						$id_archivo = $this->ArchivoModel->guardar_archivo_model($datos_doc);
+						$retorno['archivo'] = $this->ArchivoModel->obtener_archivo($id_archivo);
+					}else{
+						$retorno['msg'] = $data['error'];
+					}
+                }
+            }
+        }
+        echo json_encode($retorno);
+        exit;
+    }
 }

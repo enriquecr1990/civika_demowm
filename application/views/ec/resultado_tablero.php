@@ -33,6 +33,13 @@
 						<hr>
 					<?php endif; ?>
 
+					<?php if(perfil_permiso_operacion_menu('estandar_competencia.modificar')): ?>
+						<a class="btn btn-sm btn-outline-primary contenidocurso"
+								data-toggle="tooltip" title="Contenido curso"
+								href="<?=base_url()?>campania/<?=$ec->id_estandar_competencia?>"><i class="fa fa-edit"></i>Contenido curso </a>
+					<?php endif; ?>
+
+
 					<?php if(perfil_permiso_operacion_menu('tecnicas_instrumentos.consultar')): ?>
 						<div class="btn-group">
 							<button type="button" class="btn btn-outline-info btn-sm"><i class="fa fa-clipboard-list"></i> Planes del EC</button>
@@ -43,6 +50,9 @@
 								<a class="dropdown-item" data-toggle="tooltip"
 								   title="Plan de evaluación"
 								   href="<?=base_url()?>tecnicas_instrumentos/<?=$ec->id_estandar_competencia?>">Plan de evaluación</a>
+								<a class="dropdown-item" data-toggle="tooltip"
+								   title="Evidencias esperadas"
+								   href="<?=base_url()?>evidencias_esperadas/<?=$ec->id_estandar_competencia?>">Evidencias esperadas</a>
 								<a class="dropdown-item lnk_agregar_modificacion_plan_requerimientos" data-id_estandar_competencia="<?=$ec->id_estandar_competencia?>"
 								   data-toggle="tooltip" title="Plan de requerimientos" role="button">
 									Plan de requerimientos
@@ -54,7 +64,14 @@
 					<?php if(perfil_permiso_operacion_menu('evaluacion.consultar')): ?>
 						<a class="btn btn-sm btn-outline-dark" data-toggle="tooltip"
 						   title="Evaluación al Estándar de competencia"
-						   href="<?=base_url()?>evaluacion_ec/<?=$ec->id_estandar_competencia?>"><i class="fa fa-file-alt"></i> Evaluación diagnóstica</a>
+						   href="<?=base_url()?>evaluacion_cerrada/<?=EVALUACION_DIAGNOSTICA.'/'.$ec->id_estandar_competencia?>"><i class="fa fa-file-alt"></i> Evaluación diagnóstica</a>
+					<?php endif; ?>
+
+					<?php if(perfil_permiso_operacion_menu('estandar_competencia.consultar')): ?>
+						<a class="btn btn-sm btn-outline-secondary" data-toggle="tooltip"
+						   title="Evaluación al Estándar de competencia"
+						   href="<?=base_url()?>estandar_competencia/convocatoria/<?=$ec->id_estandar_competencia?>"><i class="fa fa-file-alt"></i> Convocatoria</a>
+						<hr>
 					<?php endif; ?>
 
 					<?php if(perfil_permiso_operacion_menu('estandar_competencia.instructor')): ?>

@@ -45,7 +45,7 @@
 				</div>
 				<div class="row">
 					<div class="col-12">
-						<button type="button" id="recuerar_password" class="btn btn-primary btn-block">Solicitar cambio de contraseña</button>
+						<button type="button" id="recuperar_password" class="btn btn-primary btn-block">Solicitar cambio de contraseña</button>
 					</div>
 					<!-- /.col -->
 				</div>

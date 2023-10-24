@@ -104,10 +104,10 @@
 <div class="form-group row">
 	<label for="input_sector_productivo" class="col-sm-3 col-form-label">Sector productivo de trabajo</label>
 	<div class="col-sm-9">
-		<select class="custom-select" id="input_sector_productivo" data-rule-required="true" name="id_cat_sector_productivo">
+		<select class="custom-select" id="input_sector_productivo" data-rule-required="true" name="id_cat_sector_ec">
 			<option value="">--Seleccione--</option>
-			<?php foreach ($cat_sector_productivo as $csp): ?>
-				<option value="<?=$csp->id_cat_sector_productivo?>" <?=isset($usuario->id_cat_sector_productivo) && $usuario->id_cat_sector_productivo == $csp->id_cat_sector_productivo ? 'selected="selected"':'' ?> ><?=$csp->nombre?></option>
+			<?php foreach ($cat_sector_ec as $csp): ?>
+				<option value="<?=$csp->id_cat_sector_ec?>" <?=isset($usuario->id_cat_sector_ec) && $usuario->id_cat_sector_ec == $csp->id_cat_sector_ec ? 'selected="selected"':'' ?> ><?=$csp->nombre?></option>
 			<?php endforeach; ?>
 		</select>
 	</div>

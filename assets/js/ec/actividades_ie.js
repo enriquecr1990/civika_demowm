@@ -102,22 +102,10 @@ var ActividadesTecnicasInstrumentos = {
 	agregar_modificar_ec_ati : function(id_estandar_competencia,id_ec_instrumento_has_actividad = ''){
 		Comun.obtener_contenido_peticion_html(base_url + 'TecnicasInstrumentos/agregar_modificar_ati/'+id_estandar_competencia + '/' + id_ec_instrumento_has_actividad,{},
 			function(response){
-				$('#contenedor_formulario_ati').html(response);
-				$('#card_formulario_ati').fadeIn();
-				$('#card_resultados_ati').fadeOut();
-				//Comun.iniciar_editor_summernote('#txt_instrucciones','Describa las instrucciones del instrumento');
-				Comun.funcion_fileinput('#files_ati','Subir PDF o Imágen');
-				ActividadesTecnicasInstrumentos.iniciar_carga_archivos_ati(
-					'#files_ati',
-					function(archivo,div_procesando,file_destino,identificador){
-						var archivo = '<li style="list-style: none">' +
-							'<input type="hidden" name="archivo_video[][id_archivo]" value="'+archivo.id_archivo+'">' +
-							'<a href="'+base_url + archivo.ruta_directorio + archivo.nombre+'" class="btn btn-sm btn-outline-success mb-1" target="_blank"><i class="fa fa-eye"></i> Ver archivo</a>' +
-							'<button type="button" class="btn btn-sm btn-outline-danger eliminar_archivo_video_instrumento" data-toggle="tooltip" title="Eliminar archivo/video"><i class="fa fa-trash"></i></button>' +
-							'</li>';
-						$(div_procesando).html('');
-						$(file_destino).append(archivo);
-					});
+				$('#contenedor_modal_instrumento').html(response);
+				// $('#card_formulario_ati').fadeIn();
+				// $('#card_resultados_ati').fadeOut();
+				Comun.mostrar_ocultar_modal('#modal_form_instrumento',true);
 				Comun.tooltips();
 			});
 	},

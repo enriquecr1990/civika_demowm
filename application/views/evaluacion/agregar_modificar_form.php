@@ -2,7 +2,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title"><?=isset($evaluacion) ? 'Actualizar':'Nuevo'?></h4>
+				<h4 class="modal-title"><?=isset($evaluacion) ? 'Actualizar':'Agregar'?> evaluación </h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
@@ -13,14 +13,23 @@
 						<label for="cat_evaluacion" class="col-sm-3 col-form-label">Tipo de evaluacion</label>
 						<div class="col-sm-9">
 							<input type="hidden" name="id_cat_evaluacion" value="<?=isset($tipo) ? $tipo : EVALUACION_DIAGNOSTICA?>">
-							<select id="cat_evaluacion" class="custom-select form-control-border" disabled="disabled" >
-								<option value="">-- Seleccione --</option>
-								<?php if(isset($cat_evaluacion)): ?>
-									<?php foreach ($cat_evaluacion as $ce): ?>
-										<option value="<?=$ce->id_cat_evaluacion?>" <?=isset($tipo) && $ce->id_cat_evaluacion == $tipo ? 'selected="selected"':''?> ><?=$ce->nombre?></option>
-									<?php endforeach; ?>
-								<?php endif; ?>
-							</select>
+							<?php switch($tipo){
+								case EVALUACION_DIAGNOSTICA:
+									echo '<span class="badge badge-success">Diagnóstica</span>';
+									break;
+								case EVALUACION_CUESTIONARIO_INSTRUMENTO:
+									echo '<span class="badge badge-success">Cuestionario del instrumento</span>';
+									break;
+								case EVALUACION_ENTREGABLE:
+									echo '<span class="badge badge-success">Entregable esperado</span>';
+									break;
+								case EVALUACION_MODULO:
+									echo '<span class="badge badge-success">Módulo de campaña</span>';
+									break;
+								default:
+									echo '<span class="badge badge-success">Diagnóstica</span>';
+								break;
+							} ?>
 						</div>
 					</div>
 

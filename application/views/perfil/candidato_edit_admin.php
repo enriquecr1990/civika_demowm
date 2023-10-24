@@ -19,6 +19,7 @@
 							<ul class="nav nav-pills">
 								<li class="nav-item"><a class="nav-link active mi_perfil_mi_informacion" href="#mi_informacion" data-toggle="tab">Mi información</a></li>
 								<li class="nav-item"><a class="nav-link" id="tab_direcciones" data-id_usuario="<?=$datos_usuario_modificar->id_usuario?>" href="#content_tab_mi_direccion" data-toggle="tab">Direcciones</a></li>
+								<li class="nav-item"><a class="nav-link" data-id_usuario="<?=$datos_usuario_modificar->id_usuario?>" id="tab_datos_empresa" href="#content_tab_datos_empresa" data-toggle="tab">Datos de empresa</a></li>
 								<!--<li class="nav-item"><a class="nav-link" href="#seguridad" data-toggle="tab">Seguridad</a></li>-->
 								<li class="nav-item"><a class="nav-link" id="tab_curriculum" data-id_usuario="<?=$datos_usuario_modificar->id_usuario?>" href="#curriculum" data-toggle="tab">Experiencia curricular</a></li>
 								<li class="nav-item"><a class="nav-link" id="tab_expediente_digital" data-id_usuario="<?=$datos_usuario_modificar->id_usuario?>" href="#content_tab_expediente_digital" data-toggle="tab">Expediente digital</a></li>
@@ -30,7 +31,7 @@
 								<div class="active tab-pane" id="mi_informacion">
 									<div class="form-group row">
 										<label class="col-sm-3">Usuario del sistema</label>
-										<span class="col-sm-9"><?=isset($usuario) ? $usuario->usuario : ''?></span>
+										<span class="col-sm-9"><?=isset($usuario_modificar) ? $usuario_modificar->usuario : $usuario->usuario?></span>
 									</div>
 									<?php if(isset($datos_usuario_modificar)):?>
 										<div class="form-group row">
@@ -91,9 +92,9 @@
 
 								</div>
 
-								<div class="tab-pane" id="content_tab_mi_direccion">
+								<div class="tab-pane" id="content_tab_mi_direccion"></div>
 
-								</div>
+								<div class="tab-pane" id="content_tab_datos_empresa"></div>
 
 								<div class="tab-pane" id="seguridad">
 									<form id="actualizar_password_perfil">

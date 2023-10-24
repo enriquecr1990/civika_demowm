@@ -10,11 +10,13 @@ class EvaluadoresEC extends CI_Controller {
         parent:: __construct();
 		$this->load->model('ActividadIEModel');
 		$this->load->model('EcInstrumentoAlumnoComentarioModel');
+		$this->load->model('EntregableAlumnoComentariosModel');
         $this->load->model('EcInstrumentoAlumnoModel');
         $this->load->model('ECUsuarioHasExpedientePEDModel');
 		$this->load->model('EstandarCompetenciaModel');
 		$this->load->model('UsuarioHasECModel');
 		$this->load->model('UsuarioModel');
+		$this->load->model('EntregableECModel');
         if(sesionActive()){
 			$this->usuario = usuarioSession();
         }else{
@@ -152,6 +154,11 @@ class EvaluadoresEC extends CI_Controller {
 				}
 			}
 			//print_r($data);exit;
+
+			$datos = $this->EntregableECModel->obtener_entregables_candidato($id_estandar_competencia,$id_usuario_alumno);
+
+			$data['entregables'] = $datos;
+
 			$this->load->view('instructor_ec/modal_evidencia_ati_alumno',$data);
 		}catch (Exception $ex){
 			$response['success'] = false;
@@ -159,6 +166,14 @@ class EvaluadoresEC extends CI_Controller {
 			$response['msg'][] = $ex->getMessage();
 			echo json_encode($response);exit;
 		}
+	}
+
+	public function tablero_evaluador($id_estandar_competencia,$id_usuario_alumno){
+		$datos = $this->EntregableECModel->obtener_entregables_candidato($id_estandar_competencia,$id_usuario_alumno);
+
+		$data['entregables'] = $datos;
+
+		$this->load->view('entregables/evaluador/tablero_evidencias_evaluador',$data);
 	}
 
 	public function expediente_candidato($id_estandar_competencia, $id_usuario_alumno){
@@ -224,7 +239,7 @@ class EvaluadoresEC extends CI_Controller {
 			$validacion = Validaciones_Helper::formComentarioATI($post);
 			if($validacion['success']){
 				$post['fecha'] = date('Y-m-d H:i:s');
-				$guardar_comentario = $this->EcInstrumentoAlumnoComentarioModel->guardar_row($post);
+				$guardar_comentario = $this->EntregableAlumnoComentariosModel->guardar_comentario($post);
 				$response['success'] = $guardar_comentario['success'];
 				$response['msg'][] = $guardar_comentario['msg'];
 			}else{

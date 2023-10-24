@@ -19,6 +19,7 @@
 							<ul class="nav nav-pills">
 								<li class="nav-item"><a class="nav-link active mi_perfil_mi_informacion" href="#mi_informacion" data-toggle="tab">Mi información</a></li>
 								<li class="nav-item"><a class="nav-link" data-id_usuario="<?=isset($usuario) ? $usuario->id_usuario : ''?>" id="tab_direcciones" href="#content_tab_mi_direccion" data-toggle="tab">Direcciones</a></li>
+								<li class="nav-item"><a class="nav-link" data-id_usuario="<?=isset($usuario) ? $usuario->id_usuario : ''?>" id="tab_datos_empresa" href="#content_tab_datos_empresa" data-toggle="tab">Datos de empresa</a></li>
 								<li class="nav-item"><a class="nav-link" href="#seguridad" data-toggle="tab">Seguridad</a></li>
 								<li class="nav-item"><a class="nav-link" data-id_usuario="<?=isset($usuario) ? $usuario->id_usuario : ''?>" id="tab_curriculum" href="#curriculum" data-toggle="tab">Experiencia curricular</a></li>
 								<li class="nav-item"><a class="nav-link" data-id_usuario="<?=isset($usuario) ? $usuario->id_usuario : ''?>" id="tab_expediente_digital" href="#content_tab_expediente_digital" data-toggle="tab">Expediente digital</a></li>
@@ -90,9 +91,9 @@
 
 								</div>
 
-								<div class="tab-pane" id="content_tab_mi_direccion">
-
-								</div>
+								<div class="tab-pane" id="content_tab_mi_direccion"></div>
+								
+								<div class="tab-pane" id="content_tab_datos_empresa"></div>
 
 								<div class="tab-pane" id="seguridad">
 									<form id="actualizar_password_perfil">

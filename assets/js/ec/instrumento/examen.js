@@ -13,8 +13,8 @@ $(document).ready(function(){
 		Examen.guardar_form_decision_candidato();
 	});
 
-	if(es_pruebas == 1 || es_produccion == 1){
-	//if(true){
+	//if(es_pruebas == 1 || es_produccion == 1){
+	if(true){
 		$('#menu_lateral_izquierdo').fadeOut();
 		$('#menu_superior').fadeOut();
 
@@ -27,7 +27,7 @@ $(document).ready(function(){
 			if(Examen.intento_salir <= 1 ){
 				Comun.mostrar_mensaje_advertencia("Se detectó que quiere salir del evaluación, estó ocasionará el marcarlo como realizado y no podrá realizar otro");
 				Examen.intento_salir++;
-			}if(Examen.intento_salir == 2){
+			}if(Examen.intento_salir > 2){
 				Examen.intento_salir++;
 				Comun.mostrar_mensaje_advertencia("Se enviará de forma automática la evaluación diagnóstica, se pide que marque su selección de la decisión");
 				setTimeout(function(){
@@ -60,7 +60,7 @@ $(document).ready(function(){
 			if (c == 67) { // + C
 				e.preventDefault();
 				e.stopPropagation();
-				Comun.mostrar_mensaje_advertencia("Error, por razones de seguridad no esta permitido copiar información de la evaluación");
+				Comun.mostrar_mensaje_advertencia("Advertencia, por razones de seguridad no esta permitido copiar información de la evaluación");
 			}
 		}
 	});

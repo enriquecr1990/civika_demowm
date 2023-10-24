@@ -1,0 +1,16 @@
+#edit{
+	background: transparent !important;
+	border: none;
+}
+#edit[aria-expanded="true"]{
+	color: var(--blue);
+}
+#edit::after{
+	display: none;
+}
+
+.lines-2 {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+  }

@@ -11,8 +11,7 @@ class Informacion extends CI_Controller {
 		if(sesionActive()){
 			$this->usuario = usuarioSession();
 		}else{
-			$this->usuario = false;
-			redirect(base_url().'login');
+			$this->usuario = null;
 		}
 	}
 

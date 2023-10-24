@@ -13,6 +13,7 @@ class UsuarioModel extends ModeloBase
 		parent::__construct('usuario','u');
 		$this->load->model('PerfilModel');
 		$this->load->model('PerfilPermisoModel');
+		$this->load->model('EstandarCompetenciaConvocatoriaModel');
 		if(sesionActive()){
 			$this->usuario = usuarioSession();
 		}
@@ -26,7 +27,7 @@ class UsuarioModel extends ModeloBase
 			if(is_object($usuario)){
 				$pass_sha1 = sha1($data_login['password']);
 				if($pass_sha1 == $usuario->password){
-					if($usuario->activo == 'si'){
+					if($usuario->activo == 'si' && $usuario->eliminado == 'no'){
 						$result['success'] = true;
 						$result['msg'][] = 'Bienvenido al sistema '.$usuario->usuario;
 						unset($usuario->password);
@@ -37,7 +38,7 @@ class UsuarioModel extends ModeloBase
 						$result['usuario'] = $usuario;
 					}else{
 						$result['success'] = false;
-						$result['msg'] = 'Su cuenta, actualmente se encuentra desactivada, no podrá iniciar sesión actualmente, contacte al administrador';
+						$result['msg'] = 'Su cuenta, actualmente se encuentra eliminada/desactivada, no podrá iniciar sesión actualmente, contacte al administrador';
 					}
 				}else{
 					$result['success'] = false;
@@ -106,7 +107,7 @@ class UsuarioModel extends ModeloBase
 			from usuario u
 			  left join datos_usuario du on du.id_usuario = u.id_usuario
 			  left join cat_nivel_academico cna on cna.id_cat_nivel_academico = du.id_cat_nivel_academico
-			  left join cat_sector_productivo csp on csp.id_cat_sector_productivo = du.id_cat_sector_productivo
+			  left join cat_sector_ec csp on csp.id_cat_sector_ec = du.id_cat_sector_productivo
 			where u.id_usuario = $id_usuario";
 		$query = $this->db->query($consulta);
 		return $query->row();
@@ -166,6 +167,72 @@ class UsuarioModel extends ModeloBase
 		}catch (Exception $ex){
 			$resultado['success'] = false;
 			$resultado['msg'] = 'Ocurrio un error al tratar de guardar el candidato';
+		}
+		return $resultado;
+	}
+
+	public function guardar_usuario_candidato_convocatoria($data){
+		try{
+			if(isset($data['es_extranjero']) && $data['es_extranjero'] == 1){
+				$usuario = $this->obtener_usuario_by_usr($data['codigo_extranjero']);
+				if(is_object($usuario)){
+					$resultado['success'] = false;
+					$resultado['msg'] = 'Error, existe un regisro de un usuario con la Clave de indentificación proporcionado, inicie sesión para registrarse a la convocatoria';
+				}else{
+					$usuario_guardar = array(
+						'usuario' => $data['codigo_extranjero'],
+						'password' => sha1($data['codigo_extranjero']),
+					);
+					$id_usuario = $this->guardar_usuario($usuario_guardar);
+					$this->insertar_perfil_usuario($id_usuario,'candidato');
+					if($id_usuario){
+						$resultado['success'] = true;
+						$resultado['msg'] = 'Se registró su usuario en el sistema correctamente';
+						$resultado['data']['id_usuario'] = $id_usuario;
+					}
+				}
+			}else{
+				$usuario = $this->obtener_usuario_by_usr(substr($data['curp'],0,10));
+				if(is_object($usuario)){
+					$resultado['success'] = false;
+					$resultado['msg'] = 'Error, existe un regisro de un usuario con el CURP proporcionado, inicie sesión para ingresar a la convocatoria del Estandar de Competencia';
+				}else{
+					$curp_usuario = substr($data['curp'],0,10);
+					$usuario_guardar = array(
+						'usuario' => $curp_usuario,
+						'password' => sha1($curp_usuario),
+					);
+					$id_usuario = $this->guardar_usuario($usuario_guardar);
+					$this->insertar_perfil_usuario($id_usuario,'candidato');
+					if($id_usuario){
+						$resultado['success'] = true;
+						$resultado['msg'] = 'Se registró su usuario en el sistema correctamente';
+						$resultado['data']['id_usuario'] = $id_usuario;
+					}
+					
+				}
+			}
+			
+		}catch (Exception $ex){
+			$resultado['success'] = false;
+			$resultado['msg'] = 'Ocurrio un error al tratar de guardar el candidato';
+		}
+		return $resultado;
+	}
+
+	public function registrar_usuario_convocatoria_login($id_convocatoria,$id_usuario){
+		try{
+			//validar que no exista el registro como candidato inscrito al estandar de competencia de la convocatoria
+			if(!$this->UsuarioHasECModel->existe_registro_usuario_ec_by_convocatoria($id_convocatoria,$id_usuario)){
+				
+			}else{
+				$resultado['success'] = false;
+				$resultado['msg'] = 'Ya cuentas con un registro al Estándar de Competencia que se realizó en alguna convocatoria';
+			}
+
+		}catch (Exception $ex){
+			$resultado['success'] = false;
+			$resultado['msg'] = 'Ocurrio un error al tratar de registrar el usuario al estandar de competencia por medio de la convocatoria';
 		}
 		return $resultado;
 	}
@@ -335,7 +402,7 @@ class UsuarioModel extends ModeloBase
 			  u.id_usuario,u.usuario, u.password,u.activo,u.eliminado,cp.slug perfil 
 			from usuario u
 			  inner join usuario_has_perfil uhp on uhp.id_usuario = u.id_usuario
-			  inner join cat_perfil cp on cp.id_cat_perfil = uhp.id_cat_perfil
+			  left join cat_perfil cp on cp.id_cat_perfil = uhp.id_cat_perfil
 			where u.usuario = '$usuario' limit 1";
 		$query = $this->db->query($consulta);
 		if($query->num_rows() == 0){

@@ -1,9 +1,9 @@
 <!-- /.content-wrapper -->
 <footer class="main-footer">
-	<strong>Copyright &copy; 2021 - Civika Holding.</strong>
+	<strong>Copyright &copy; 2023 - Civika Holding.</strong>
 	Todos los derechos reservados
 	<div class="float-right d-none d-sm-inline-block">
-		<b>Version</b> 0.9.0
+		<b>Version</b> 0.5.0
 	</div>
 </footer>
 
@@ -35,8 +35,8 @@
 					<label id="msg_confirmacion_general"></label>
 				</div>
 				<div class="modal-footer justify-content-between">
-					<button type="button" class="btn btn-sm btn-outline-danger" data-dismiss="modal">No</button>
-					<button type="button" id="btn_confirmar_operacion_general" class="btn btn-sm btn-outline-primary">Si</button>
+					<button type="button" class="btn btn-sm btn-outline-danger" data-dismiss="modal">Cancelar</button>
+					<button type="button" id="btn_confirmar_operacion_general" class="btn btn-sm btn-outline-success">Aceptar</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -125,6 +125,7 @@
 	var extenciones_files_img = '<?=EXTENSIONES_FILES_IMG?>';
 	var extenciones_files_pdf = '<?=EXTENSIONES_FILES_PDF?>';
 	var extenciones_files_ati = '<?=EXTENSIONES_FILES_ATI?>';
+	var extenciones_files_all = '<?=EXTENSIONES_FILES_ALL?>';
 	var es_development = '<?=es_development()?>';
 	var es_pruebas = '<?=es_pruebas()?>';
 	var es_produccion = '<?=es_produccion()?>';

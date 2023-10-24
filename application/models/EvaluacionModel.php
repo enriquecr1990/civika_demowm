@@ -49,7 +49,13 @@ class EvaluacionModel extends ModeloBase
 			$criterios .= " and eiae.id_ec_instrumento_has_actividad = ".$data['id_ec_instrumento_has_actividad'];
 		}if(isset($data['id_cat_evaluacion']) && $data['id_cat_evaluacion'] != ''){
 			$criterios .= " and e.id_cat_evaluacion = ".$data['id_cat_evaluacion'];
-		}if(isset($this->usuario->perfil) && $this->usuario->perfil <> 'root'){
+		}if(isset($data['liberada']) && $data['liberada'] != ''){
+			$criterios .= " and eche.liberada = '".$data['liberada']."'";
+		}
+		//criterio especifico considerando el perfil
+		if(isset($data['eliminado']) && $data['eliminado'] != ''){
+			$criterios .= " and e.eliminado = '".$data['eliminado']."'";
+		}elseif(isset($this->usuario->perfil) && $this->usuario->perfil <> 'root'){
 			$criterios .= " and e.eliminado = 'no'";
 		}
 		return $criterios;
@@ -63,6 +69,10 @@ class EvaluacionModel extends ModeloBase
 				left join ec_instrumento_actividad_evaluacion eiae on eiae.id_evaluacion = e.id_evaluacion ".$this->criterios_busqueda($data);
 		$query = $this->db->query($consulta);
 		return $query->row()->total_registros;
+	}
+
+	public function order_by(){
+		return ' order by e.id_evaluacion desc ';
 	}
 
 }

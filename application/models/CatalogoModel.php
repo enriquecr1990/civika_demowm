@@ -83,4 +83,10 @@ class CatalogoModel extends CI_Model
 		}return $row;
 	}
 
+	public function cat_sector_ec(){
+		$this->db->order_by('nombre','asc');
+		$query = $this->db->get('cat_sector_ec');
+		return $query->result();
+	}
+
 }
