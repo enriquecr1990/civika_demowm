@@ -128,7 +128,11 @@ var PerfilCandidato = {
 	validar_form_direccion : function(){
 		var form_valido = Comun.validar_form('#form_agregar_modificar_domicilio',Comun.reglas_validacion_form());
 		if(form_valido){
-
+			if($('#input_id_archivo_logotipo').val() == ''){
+				form_valido = false;
+				Comun.mensaje_operacion('El archivo de imagen para el banner es requerido','error');
+				$('#procesando_img_logotipo_emp').html('<span class="badge badge-danger">El banner es requerido</span>')
+			}
 		}
 		return form_valido;
 	},
@@ -136,7 +140,11 @@ var PerfilCandidato = {
 	validar_form_empresa : function(){
 		var form_valido = Comun.validar_form('#form_agregar_modificar_empresa',Comun.reglas_validacion_form());
 		if(form_valido){
-
+			if($('#input_id_archivo_logotipo').val() == ''){
+				form_valido = false;
+				Comun.mensaje_operacion('El archivo de imagen/logitipo de la empresa es requerido','error');
+				$('#procesando_img_logotipo_emp').html('<span class="badge badge-danger">El logo de la empresa es requerido</span>')
+			}
 		}
 		return form_valido;
 	},
@@ -313,29 +321,30 @@ var PerfilCandidato = {
 	iniciar_carga_imagen_perfil : function (id_usuario) {
 		Comun.iniciar_carga_imagen('.img_foto_perfil','#procesando_img_foto_perfil',function(archivo){
 			Comun.obtener_contenido_peticion_json(
-				base_url + 'Perfil/actualizar_foto_perfil/'+archivo.id_archivo,{},
+				base_url + 'Perfil/actualizar_foto_perfil/'+archivo.id_archivo+'/'+id_usuario,{},
 				function(response){
 					if(response.success){
 						Comun.mensajes_operacion(response.msg,'success');
 						$('.img_foto_perfil').attr('src',base_url + archivo.ruta_directorio + archivo.nombre);
 						$('#procesando_img_foto_perfil').html('');
+						Comun.actualizar_btn_visor_img('#btn_visor_imagen_perfil',archivo);
 					}else{
 						Comun.mensajes_operacion(response.msg,'error');
 					}
 				}
 			);
 			//como para los alumnos aplica la foto de certificados se manda el mismo archivo con la funcionalidad del de certificados
-			Comun.obtener_contenido_peticion_json(
-				base_url + 'Perfil/actualizar_expediente_digital/'+archivo.id_archivo+'/2',{},
-				function(response){
-					if(response.success){
-						Comun.mensajes_operacion(response.msg,'success');
-						$('.img_foto_certificado').attr('src',base_url + archivo.ruta_directorio + archivo.nombre);
-					}else{
-						Comun.mensajes_operacion(response.msg,'error');
-					}
-				}
-			);
+			// Comun.obtener_contenido_peticion_json(
+			// 	base_url + 'Perfil/actualizar_expediente_digital/'+archivo.id_archivo+'/2',{},
+			// 	function(response){
+			// 		if(response.success){
+			// 			Comun.mensajes_operacion(response.msg,'success');
+			// 			$('.img_foto_certificado').attr('src',base_url + archivo.ruta_directorio + archivo.nombre);
+			// 		}else{
+			// 			Comun.mensajes_operacion(response.msg,'error');
+			// 		}
+			// 	}
+			// );
 		})
 	},
 
@@ -348,6 +357,7 @@ var PerfilCandidato = {
 						Comun.mensajes_operacion(response.msg,'success');
 						$('.img_foto_certificado').attr('src',base_url + archivo.ruta_directorio + archivo.nombre);
 						$(div_procesando).html('');
+						Comun.actualizar_btn_visor_img('#btn_visor_imagen_foto_certificados',archivo);
 					}else{
 						Comun.mensajes_operacion(response.msg,'error');
 					}
@@ -365,6 +375,7 @@ var PerfilCandidato = {
 						Comun.mensajes_operacion(response.msg,'success');
 						$('.img_foto_firma').attr('src',base_url + archivo.ruta_directorio + archivo.nombre);
 						$(div_procesando).html('');
+						Comun.actualizar_btn_visor_img('#btn_visor_imagen_foto_firma_digital',archivo);
 					}else{
 						Comun.mensajes_operacion(response.msg,'error');
 					}
@@ -382,6 +393,7 @@ var PerfilCandidato = {
 						Comun.mensajes_operacion(response.msg,'success');
 						$('.img_foto_ine_anverso').attr('src',base_url + archivo.ruta_directorio + archivo.nombre);
 						$(div_procesando).html('');
+						Comun.actualizar_btn_visor_img('#btn_visor_imagen_foto_ine_anverso',archivo);
 					}else{
 						Comun.mensajes_operacion(response.msg,'error');
 					}
@@ -399,6 +411,7 @@ var PerfilCandidato = {
 						Comun.mensajes_operacion(response.msg,'success');
 						$('.img_foto_ine_reverso').attr('src',base_url + archivo.ruta_directorio + archivo.nombre);
 						$(div_procesando).html('');
+						Comun.actualizar_btn_visor_img('#btn_visor_imagen_foto_ine_reverso',archivo);
 					}else{
 						Comun.mensajes_operacion(response.msg,'error');
 					}
@@ -416,6 +429,7 @@ var PerfilCandidato = {
 						Comun.mensajes_operacion(response.msg,'success');
 						$('.img_foto_cedula_anverso').attr('src',base_url + archivo.ruta_directorio + archivo.nombre);
 						$(div_procesando).html('');
+						Comun.actualizar_btn_visor_img('#btn_visor_imagen_foto_cedula_anverso',archivo);
 					}else{
 						Comun.mensajes_operacion(response.msg,'error');
 					}
@@ -433,6 +447,7 @@ var PerfilCandidato = {
 						Comun.mensajes_operacion(response.msg,'success');
 						$('.img_foto_cedula_reverso').attr('src',base_url + archivo.ruta_directorio + archivo.nombre);
 						$(div_procesando).html('');
+						Comun.actualizar_btn_visor_img('#btn_visor_imagen_foto_cedula_reverso',archivo);
 					}else{
 						Comun.mensajes_operacion(response.msg,'error');
 					}

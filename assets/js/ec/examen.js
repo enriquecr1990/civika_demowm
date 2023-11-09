@@ -15,6 +15,7 @@ $(document).ready(function(){
 
 	//if(es_pruebas == 1 || es_produccion == 1){
 	if(true){
+		//para validar que ya haya realizado la evaluacion el candidato y 
 		$('#menu_lateral_izquierdo').fadeOut();
 		$('#menu_superior').fadeOut();
 
@@ -22,24 +23,29 @@ $(document).ready(function(){
 			Examen.desabilitar_ctrl_actualizacion(e);
 		});
 		
+
 		//modal para mostrar el mensaje
 		$(document).on("mouseleave",function(){
-			if(Examen.intento_salir <= 1 ){
-				Comun.mostrar_mensaje_advertencia("Se detectó que quiere salir del evaluación, estó ocasionará el marcarlo como realizado y no podrá realizar otro");
-				Examen.intento_salir++;
-			}if(Examen.intento_salir == 2){
-				Examen.intento_salir++;
-				Comun.mostrar_mensaje_advertencia("Se enviará de forma automática la evaluación diagnóstica, se pide que marque su selección de la decisión");
-				setTimeout(function(){
-					Examen.enviar_formulario_respuestas();
-					Comun.mostrar_ocultar_modal('#modal_informacion_sistema',false);
-				},5000);
+			if(Examen.activar_intentos_salida_examen){
+				if(Examen.intento_salir <= 1 ){
+					Comun.mostrar_mensaje_advertencia("Se detectó que quiere salir del evaluación, estó ocasionará el marcarlo como realizado y no podrá realizar otro");
+					Examen.intento_salir++;
+				}if(Examen.intento_salir == 2){
+					Examen.intento_salir++;
+					Comun.mostrar_mensaje_advertencia("Se enviará de forma automática la evaluación diagnóstica, se pide que marque su selección de la decisión");
+					setTimeout(function(){
+						Examen.enviar_formulario_respuestas();
+						Comun.mostrar_ocultar_modal('#modal_informacion_sistema',false);
+					},5000);
+				}
 			}
 		});
 
 		window.onbeforeunload = function(){
-			if(Examen.intento_salir < 2){
-				return "Se detecto que quiere salir del evaluación, esto ocasionará el marcarlo como realizado y no podra realizar otro";
+			if(Examen.activar_intentos_salida_examen){
+				if(Examen.intento_salir < 2){
+					return "Se detecto que quiere salir del evaluación, esto ocasionará el marcarlo como realizado y no podra realizar otro";
+				}
 			}
 		}
 
@@ -72,6 +78,8 @@ $(document).ready(function(){
 var Examen = {
 
 	intento_salir : 0,
+
+	activar_intentos_salida_examen : true,
 
 	inicializar_funciones_examen : function(){
 		Examen.ocultar_menu_examen();
@@ -153,6 +161,7 @@ var Examen = {
 					$('#calificación_evaluacion').html(response.data.calificacion).addClass(response.data.tag);
 					$('#dictamen_calificacion').html(response.data.evaluacion_sistema).addClass(response.data.tag);
 					$('#input_id_evaluacion_realizada').val(response.data.id_usuario_has_evaluacion_realizada);
+					Examen.activar_intentos_salida_examen = false;
 				}else{
 					Comun.mensajes_operacion(response.msg,'error');
 				}

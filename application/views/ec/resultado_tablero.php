@@ -33,13 +33,6 @@
 						<hr>
 					<?php endif; ?>
 
-					<?php if(perfil_permiso_operacion_menu('estandar_competencia.modificar')): ?>
-						<a class="btn btn-sm btn-outline-primary contenidocurso"
-								data-toggle="tooltip" title="Contenido curso"
-								href="<?=base_url()?>campania/<?=$ec->id_estandar_competencia?>"><i class="fa fa-edit"></i>Contenido curso </a>
-					<?php endif; ?>
-
-
 					<?php if(perfil_permiso_operacion_menu('tecnicas_instrumentos.consultar')): ?>
 						<div class="btn-group">
 							<button type="button" class="btn btn-outline-info btn-sm"><i class="fa fa-clipboard-list"></i> Planes del EC</button>
@@ -59,7 +52,8 @@
 								</a>
 							</div>
 						</div>
-					<?php endif; ?>
+						<hr>
+					<?php endif; ?>			
 
 					<?php if(perfil_permiso_operacion_menu('evaluacion.consultar')): ?>
 						<a class="btn btn-sm btn-outline-dark" data-toggle="tooltip"
@@ -67,15 +61,20 @@
 						   href="<?=base_url()?>evaluacion_cerrada/<?=EVALUACION_DIAGNOSTICA.'/'.$ec->id_estandar_competencia?>"><i class="fa fa-file-alt"></i> Evaluación diagnóstica</a>
 					<?php endif; ?>
 
+					<?php if(perfil_permiso_operacion_menu('estandar_competencia.modificar')): ?>
+						<a class="btn btn-sm btn-outline-primary contenidocurso"
+								data-toggle="tooltip" title="Contenido de Módulos de capacitación"
+								href="<?=base_url()?>modulo_capacitacion/<?=$ec->id_estandar_competencia?>"><i class="fa fa-edit"></i>Módulos de capacitación </a>
+					<?php endif; ?>
+
 					<?php if(perfil_permiso_operacion_menu('estandar_competencia.consultar')): ?>
-						<a class="btn btn-sm btn-outline-secondary" data-toggle="tooltip"
+						<!-- <a class="btn btn-sm btn-outline-secondary" data-toggle="tooltip"
 						   title="Evaluación al Estándar de competencia"
-						   href="<?=base_url()?>estandar_competencia/convocatoria/<?=$ec->id_estandar_competencia?>"><i class="fa fa-file-alt"></i> Convocatoria</a>
+						   href="<?=base_url()?>estandar_competencia/convocatoria/<?=$ec->id_estandar_competencia?>"><i class="fa fa-file-alt"></i> Convocatoria</a> -->
 						<hr>
 					<?php endif; ?>
 
 					<?php if(perfil_permiso_operacion_menu('estandar_competencia.instructor')): ?>
-						<hr>
 						<button class="btn btn-sm btn-outline-warning btn_instructor_evaluador" data-toggle="tooltip"
 								data-id_estandar_competencia="<?=$ec->id_estandar_competencia?>"
 								title="Ver y/o asignar evaluador"><i class="fa fa-user-tie"></i> Evaluadores</button>

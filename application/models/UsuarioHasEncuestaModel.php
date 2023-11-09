@@ -30,6 +30,26 @@ class UsuarioHasEncuestaModel extends ModeloBase
 		return $query->row()->respuesta;
 	}
 
+	public function guardar_respuestas_candidato_derechos_obligaciones($id_usuario_has_ec,$data){
+		try{
+			$save['id_usuario_has_estandar_competencia'] = $id_usuario_has_ec;
+			$save['fecha_envio'] = date('Y-m-d H:i:s');
+			$usuario_has_encuesta_satisfacion =$this->guardar_row($save);
+			foreach ($data['respuesta'] as $id_cat_preguntas_encuesta => $r){
+				$respuesta['id_cat_preguntas_encuesta'] = $id_cat_preguntas_encuesta;
+				$respuesta['respuesta'] = $r;
+				$respuesta['id_usuario_has_encuesta_satisfaccion'] = $usuario_has_encuesta_satisfacion['id'];
+				$this->UsuarioHasRespuestaEncuestaModel->guardar_row($respuesta);
+			}
+			$response['success'] = true;
+			$response['msg'] = 'Se guardo la encuesta de satisfación con éxito';
+		}catch (Exception $ex){
+			$response['success'] = false;
+			$response['msg'] = $ex->getMessage();
+		}
+		return $response;
+	}
+
 	public function guardar_respuestas_candidato($id_usuario_has_ec,$data){
 		try{
 			$save['id_usuario_has_estandar_competencia'] = $id_usuario_has_ec;

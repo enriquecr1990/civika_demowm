@@ -107,7 +107,7 @@ class UsuarioModel extends ModeloBase
 			from usuario u
 			  left join datos_usuario du on du.id_usuario = u.id_usuario
 			  left join cat_nivel_academico cna on cna.id_cat_nivel_academico = du.id_cat_nivel_academico
-			  left join cat_sector_ec csp on csp.id_cat_sector_ec = du.id_cat_sector_productivo
+			  left join cat_sector_ec csp on csp.id_cat_sector_ec = du.id_cat_sector_ec
 			where u.id_usuario = $id_usuario";
 		$query = $this->db->query($consulta);
 		return $query->row();

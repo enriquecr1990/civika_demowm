@@ -52,12 +52,12 @@ class EvaluacionRespuestasUsuarioModel extends ModeloBase
 		}
 	}
 
-	public function obtener_calificacion_evaluacion($id_usuario_has_evaluacion_realizada){
+	public function obtener_calificacion_evaluacion($id_usuario_has_evaluacion_realizada,$id_evaluacion){
 		try{
 			$respuestas_candidato = $this->obtener_respuestas_candidato($id_usuario_has_evaluacion_realizada);
 			$usuario_has_evaluacion_realizada = $this->UsuarioHasEvaluacionRealizadaModel->obtener_row($id_usuario_has_evaluacion_realizada);
 			$ec_has_evaluacion = $this->ECHasEvaluacionModel->obtener_row($usuario_has_evaluacion_realizada->id_estandar_competencia_has_evaluacion);
-			$evaluacion_preguntas = $this->EvaluacionHasPreguntasModel->tablero(array('id_evaluacion' => $ec_has_evaluacion->id_evaluacion));
+			$evaluacion_preguntas = $this->EvaluacionHasPreguntasModel->tablero(array('id_evaluacion' => $id_evaluacion));
 			$preguntas_correctas = 0;
 			foreach ($respuestas_candidato as $pregunta){
 				$pregunta->correctas_alumno == $pregunta->numero_opciones_correctas && $pregunta->incorrectas_alumno == 0 ? $preguntas_correctas++ : false;

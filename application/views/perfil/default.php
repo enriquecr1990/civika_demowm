@@ -59,7 +59,7 @@
 				<strong><i class="fas fa-user-tie mr-1"></i> Nivel Acádemico</strong>
 
 				<p class="text-muted">
-					<span class="span_profesion"><?=$datos_usuario->nivel_academico != '' ? $datos_usuario->nivel_academico : 'Sin datos'?></span>
+					<span class="span_nivel_academico"><?=$datos_usuario->nivel_academico != '' ? $datos_usuario->nivel_academico : 'Sin datos'?></span>
 				</p>
 
 				<hr>

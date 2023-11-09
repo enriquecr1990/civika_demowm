@@ -41,7 +41,7 @@ var Curso = {
 		if(inicial){
 			$('#contenedor_resultados_cursos_ec').html(overlay);
 			Comun.obtener_contenido_peticion_html(
-				base_url + 'Curso/tablero/' + pagina + '/' + registros,
+				base_url + 'curso/tablero/' + pagina + '/' + registros,
 				post,
 				function(response){
 					$('#contenedor_resultados_cursos_ec').html(response);
@@ -52,7 +52,7 @@ var Curso = {
 		}else{
 			$('#overlay_full_page').fadeIn();
 			Comun.obtener_contenido_peticion_html(
-				base_url + 'Curso/tablero/' + pagina + '/' + registros,
+				base_url + 'curso/tablero/' + pagina + '/' + registros,
 				post,
 				function(response){
 					$('#contenedor_resultados_cursos_ec').append(response);
@@ -74,7 +74,7 @@ var Curso = {
 				Comun.tooltips();
 				Comun.funcion_fileinput('#img_banner_ec_curso','Imágen Banner');
 				Curso.iniciar_carga_img_banner();
-				Comun.iniciar_editor_summernote("#txt_que_aprenderas_curso", "Describa lo que aprendera el candidato en el curso");
+				Comun.iniciar_editor_summernote_link_video("#txt_que_aprenderas_curso", "Describa lo que aprendera el candidato en el curso");
 			});
 	},
 

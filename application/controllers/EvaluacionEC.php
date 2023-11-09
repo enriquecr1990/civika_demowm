@@ -12,9 +12,13 @@ class EvaluacionEC extends CI_Controller {
         $this->load->model('ArchivoModel');
         $this->load->model('BancoPreguntaModel');
         $this->load->model('CatalogoModel');
+        $this->load->model('EntregableECModel');
+        $this->load->model('EntregableHasEvaluacionModel');
         $this->load->model('EstandarCompetenciaModel');
         $this->load->model('EvaluacionHasPreguntasModel');
         $this->load->model('ECHasEvaluacionModel');
+	   $this->load->model('EcCursoModel');
+	   $this->load->model('EcCursoModuloModel');
         $this->load->model('EvaluacionModel');
         $this->load->model('OpcionPreguntaModel');
         $this->load->model('UsuarioHasEvaluacionRealizadaModel');
@@ -35,10 +39,16 @@ class EvaluacionEC extends CI_Controller {
 	* 2. la evaluacion del entregable sera en base a entregable
      */
 	public function index($evaluacion,$id_referencia){
-    	//tecnicas_instrumentos
+    		//var_dump($evaluacion,$id_referencia);exit;
 		perfil_permiso_operacion('evaluacion.consultar');
 		try{
 			switch($evaluacion){
+				case EVALUACION_ENTREGABLE:
+					$this->evaluacionEntregable($id_referencia);
+					break;
+				case EVALUACION_MODULO:
+					$this->evaluacionModulo($id_referencia);
+					break;
 				default:
 					$this->evaluacionDiagnostica($id_referencia);
 					break;
@@ -59,6 +69,12 @@ class EvaluacionEC extends CI_Controller {
 		perfil_permiso_operacion('evaluacion.consultar');
     		try{
 			switch($evaluacion){
+				case EVALUACION_ENTREGABLE:
+					$this->resultadoEvaluacionEntregable($id_referencia);
+					break;
+				case EVALUACION_MODULO:
+					$this->resultadoEvaluacionModulo($id_referencia);
+					break;
 				default:
 					$this->resultadoEvaluacionEC($id_referencia);
 					break;
@@ -74,17 +90,18 @@ class EvaluacionEC extends CI_Controller {
 	public function preguntas_evaluacion($id_evaluacion){
 		perfil_permiso_operacion('preguntas_evaluacion.consultar');
 		try{
-			$data = $this->EvaluacionHasPreguntasModel->tablero(array('id_evaluacion' => $id_evaluacion));
-			$evaluacion = $this->ECHasEvaluacionModel->tablero(array('id_evaluacion' => $id_evaluacion));
-			$data['estandar_competencia_has_evaluacion'] = $evaluacion['estandar_competencia_has_evaluacion'][0];
-			foreach ($data['preguntas_evaluacion'] as $pe){
-				$opciones_pregunta = $this->OpcionPreguntaModel->tablero(array('id_banco_pregunta' => $pe->id_banco_pregunta));
-				foreach ($opciones_pregunta['opcion_pregunta'] as $op){
-					$op->archivo_imagen_respuesta = isset($op->id_archivo) && !is_null($op->id_archivo) ? $this->ArchivoModel->obtener_row($op->id_archivo) : false;
-				}
-				$pe->opciones_pregunta = $opciones_pregunta['opcion_pregunta'];
+			$evaluacion = $this->EvaluacionModel->obtener_row($id_evaluacion);
+			switch($evaluacion->id_cat_evaluacion){
+				case EVALUACION_ENTREGABLE:
+					$this->obtenerComplementoPreguntasEvaluacionEntregable($id_evaluacion);
+					break;
+				case EVALUACION_MODULO:
+					$this->obtenerComplementoPreguntasEvaluacionModulo($id_evaluacion);
+					break;
+				default: 
+					$this->obtenerComplementoPreguntasEvaluacionDiagnostica($id_evaluacion);
+					break;
 			}
-			$this->load->view('evaluacion/tablero_preguntas_evaluacion',$data);
 		}catch (Exception $ex){
 			$response['success'] = false;
 			$response['msg'][] = 'Hubo un error en el sistema, intente nuevamente';
@@ -221,6 +238,12 @@ class EvaluacionEC extends CI_Controller {
 		perfil_permiso_operacion('evaluacion.agregar');
 		try{
 			switch($tipo){
+				case EVALUACION_ENTREGABLE:
+					$response = $this->guardarEvaluacionEntregable($id_referencia,$id_evaluacion);
+					break;
+				case EVALUACION_MODULO:
+					$response = $this->guardarEvaluacionModulo($id_referencia,$id_evaluacion);
+					break;
 				default:
 					$response = $this->guardarEvaluacionEstandarCompetencia($id_referencia,$id_evaluacion);
 				break;
@@ -464,8 +487,8 @@ class EvaluacionEC extends CI_Controller {
 	}
 
 	/**
-	 * 
-	 */
+	 * evaluacion cerrada para la evaluacion diagnostica
+	 * */
 	private function evaluacionDiagnostica($id_estandar_competencia){
 		$data['titulo_pagina'] = 'Evaluación diagnóstica del Estándar de Competencia';
 		$data['migas_pan'] = array(
@@ -544,6 +567,244 @@ class EvaluacionEC extends CI_Controller {
 			$response['msg'] = $validacion['msg'];
 		}		
 		return $response;
+	}
+
+	/**
+	 * evaluacion cerrada para la evaluacion de un modulo
+	 * */
+	private function evaluacionEntregable($id_entregable){
+		$data['titulo_pagina'] = 'Evaluación del entregable del Estándar de Competencia';
+		$data['entregable'] = $this->EntregableECModel->obtener_row($id_entregable);
+		$data['migas_pan'] = array(
+			array('nombre' => 'Inicio','activo' => false,'url' => base_url()),
+			array('nombre' => 'Estándar de competencias','activo' => false,'url' => base_url().'estandar_competencia'),
+			array('nombre' => 'Entregables esperados','activo' => false,'url' => base_url().'/evidencias_esperadas/'.$data['entregable']->id_estandar_competencia),
+			array('nombre' => 'Evaluaciones de la EC','activo' => true,'url' => '#'),
+		);
+		$data['sidebar'] = 'estandar_competencias';
+		$data['usuario'] = $this->usuario;
+		//$data['id_'] = $id_entregable;
+		$data['extra_js'] = array(
+			base_url().'assets/js/ec/evaluacion.js',
+			base_url().'assets/frm/fileinput/js/fileinput.js',
+			base_url().'assets/frm/fileupload/js/vendor/jquery.ui.widget.js',
+			base_url().'assets/frm/fileupload/js/jquery.iframe-transport.js',
+			base_url().'assets/frm/fileupload/js/jquery.fileupload.js',
+		);
+		$data['extra_css'] = array(
+			base_url().'assets/frm/adm_lte/plugins/summernote/summernote-bs4.min.css',
+			base_url().'assets/frm/fileinput/css/fileinput.css',
+			base_url().'assets/frm/fileupload/css/jquery.fileupload.css',
+		);
+		$data['entregable_ec'] = $this->EntregableECModel->obtener_row($id_entregable);
+		$busqueda = array(
+			'id_ec_curso_modulo' => $id_entregable,
+			'id_cat_evaluacion' => EVALUACION_ENTREGABLE,
+			'eliminado' => 'no'
+		);
+		$evaluacionLiberada = $this->EntregableHasEvaluacionModel->tablero($busqueda);
+		$data['existe_evaluacion_modulo'] = $evaluacionLiberada['total_registros'] != 0;
+		//apoyo de variables para la busqueda
+		$data['tipo_evaluacion'] = EVALUACION_ENTREGABLE;
+		$data['id_referencia'] = $id_entregable;
+		//dd($data);exit;
+		$this->load->view('evaluacion/entregable/tablero',$data);
+	}
+
+	private function resultadoEvaluacionEntregable($id_entregable){
+		$data['entregable_ec'] = $this->EntregableECModel->obtener_row($id_entregable);
+		$busqueda = array(
+			'id_entregable' => $id_entregable,
+			'id_cat_evaluacion' => EVALUACION_ENTREGABLE,
+			'eliminado' => 'no'
+		);
+		$evaluacionLiberada = $this->EntregableHasEvaluacionModel->tablero($busqueda);
+		if($evaluacionLiberada['total_registros'] != 0){
+			$data['evaluacion'] = $this->EvaluacionModel->obtener_row($evaluacionLiberada['entregable_has_evaluacion'][0]->id_evaluacion);
+			$data['entregable_has_evaluacion'] = $evaluacionLiberada['entregable_has_evaluacion'][0]; //asumimos que simpre traera un registro :-D
+		}
+		//dd($data);dd($evaluacionLiberada);exit;
+		$this->load->view('evaluacion/entregable/resultado',$data);
+	}
+
+	private function guardarEvaluacionEntregable($id_entregable, $id_evaluacion = false){
+		$post = $this->input->post();
+		$validacion = Validaciones_Helper::formEvaluacionEC($post);
+		if($validacion['success']){
+			$id_evaluacion ? $post['fecha_actualizacion'] = date('Y-m-d H:i:s') : $post['fecha_creacion'] = date('Y-m-d H:i:s');
+			$evaluacion = $this->EvaluacionModel->existe_evalucion_entregable($id_entregable);
+			//var_dump($evaluacion);exit;
+			if(!$evaluacion){
+				$guardar = $this->EvaluacionModel->guardar_row($post,$id_evaluacion);
+				$id_evaluacion ? false : $id_evaluacion = $guardar['id'];
+				$response['success'] = $guardar['success'];
+				$response['msg'] = array($guardar['msg']);
+				if($guardar['success']){
+					$guardar_modulo_eva = $this->EntregableHasEvaluacionModel->actualizar_row_criterios(['id_entregable' => $id_entregable],['id_evaluacion' => $id_evaluacion]);
+					if(!$guardar_modulo_eva['success']){
+						$response['success'] = false;
+						$response['msg'] = array('No fue posible guardar la evaluación del entregable seleccionada, favor de intentar más tarde');
+					}else{
+						//asumimos que no existia el registro para actualizar
+						$nuevo = $this->EntregableHasEvaluacionModel->guardar_row(['id_entregable' => $id_entregable,'id_evaluacion' => $id_evaluacion]);
+						if(!$nuevo['success']){
+							$response['success'] = false;
+							$response['msg'] = array('No fue posible guardar la evaluación del entregable seleccionada, favor de intentar más tarde');
+						}
+					}
+				}
+			}else{
+				$response['success'] = false;
+				$response['msg'][] = 'Existe una evaluación al entregable esperado que esta en proceso de carga o ha sido liberado al candidato';	
+			}
+		}else{
+			$response['success'] = false;
+			$response['msg'] = $validacion['msg'];
+		}		
+		return $response;
+	}
+
+
+	/**
+	 * evaluacion cerrada para la evaluacion de un modulo
+	 * */
+	private function evaluacionModulo($id_ec_curso_modulo){
+		$data['titulo_pagina'] = 'Evaluación del Módulo del Estándar de Competencia';
+		$data['migas_pan'] = array(
+			array('nombre' => 'Inicio','activo' => false,'url' => base_url()),
+			array('nombre' => 'Estándar de competencias','activo' => false,'url' => base_url().'estandar_competencia'),
+			array('nombre' => 'Evaluaciones de la EC','activo' => true,'url' => '#'),
+		);
+		$data['sidebar'] = 'estandar_competencias';
+		$data['usuario'] = $this->usuario;
+		$data['id_ec_curso_modulo'] = $id_ec_curso_modulo;
+		$data['extra_js'] = array(
+			base_url().'assets/js/ec/evaluacion.js',
+			base_url().'assets/frm/fileinput/js/fileinput.js',
+			base_url().'assets/frm/fileupload/js/vendor/jquery.ui.widget.js',
+			base_url().'assets/frm/fileupload/js/jquery.iframe-transport.js',
+			base_url().'assets/frm/fileupload/js/jquery.fileupload.js',
+		);
+		$data['extra_css'] = array(
+			base_url().'assets/frm/adm_lte/plugins/summernote/summernote-bs4.min.css',
+			base_url().'assets/frm/fileinput/css/fileinput.css',
+			base_url().'assets/frm/fileupload/css/jquery.fileupload.css',
+		);
+		$data['ec_curso_modulo'] = $this->EcCursoModuloModel->obtener_row($id_ec_curso_modulo);
+		$busqueda = array(
+			'id_ec_curso_modulo' => $id_ec_curso_modulo,
+			'id_cat_evaluacion' => EVALUACION_MODULO,
+			'eliminado' => 'no'
+		);
+		$evaluacionLiberada = $this->EvaluacionModel->tablero($busqueda);
+		$data['existe_evaluacion_modulo'] = $evaluacionLiberada['total_registros'] != 0;
+		//apoyo de variables para la busqueda
+		$data['tipo_evaluacion'] = EVALUACION_MODULO;
+		$data['id_referencia'] = $id_ec_curso_modulo;
+		//dd($data);exit;
+		$this->load->view('evaluacion/modulo/tablero',$data);
+	}
+
+	private function resultadoEvaluacionModulo($id_ec_curso_modulo){
+		$busqueda = array(
+			'id_ec_curso_modulo' => $id_ec_curso_modulo
+		);
+		$data = $this->EcCursoModuloModel->tablero($busqueda);
+		$data['ec_curso_modulo'] = $this->EcCursoModuloModel->obtener_row($id_ec_curso_modulo);
+		$data['ec_curso'] = $this->EcCursoModel->obtener_row($data['ec_curso_modulo']->id_ec_curso);
+		if(!is_null($data['ec_curso_modulo']->id_evaluacion)){
+			$data['evaluacion'] = $this->EvaluacionModel->obtener_row($data['ec_curso_modulo']->id_evaluacion);
+		}
+		//dd($data);exit;
+		$this->load->view('evaluacion/modulo/resultado',$data);
+	}
+
+	private function guardarEvaluacionModulo($id_ec_curso_modulo, $id_evaluacion = false){
+		$post = $this->input->post();
+		$validacion = Validaciones_Helper::formEvaluacionEC($post);
+		if($validacion['success']){
+			$id_evaluacion ? $post['fecha_actualizacion'] = date('Y-m-d H:i:s') : $post['fecha_creacion'] = date('Y-m-d H:i:s');
+			$evaluacion = $this->EvaluacionModel->existe_evaluacion_ec_curso_modulo($id_ec_curso_modulo);
+			//var_dump($evaluacion);exit;
+			if(!$evaluacion){
+				$guardar = $this->EvaluacionModel->guardar_row($post,$id_evaluacion);
+				$response['success'] = $guardar['success'];
+				$response['msg'] = array($guardar['msg']);
+				if($guardar['success']){
+					$guardar_modulo_eva = $this->EcCursoModuloModel->guardar_row(['id_evaluacion'=>$guardar['id']],$id_ec_curso_modulo);
+					if(!$guardar_modulo_eva['success']){
+						$response['success'] = false;
+						$response['msg'] = array('No fue posible guardar la evaluación del módulo seleccionada, favor de intentar más tarde');
+					}
+				}
+			}else{
+				$response['success'] = false;
+				$response['msg'][] = 'Existe una evaluación al modulo que esta en en proceso de carga o ha sido liberado el Contenido del módulo al candidato';	
+			}
+		}else{
+			$response['success'] = false;
+			$response['msg'] = $validacion['msg'];
+		}		
+		return $response;
+	}
+
+	/**
+	 * para las preguntas de la evaluacion
+	 */
+	private function obtenerComplementoPreguntasEvaluacionDiagnostica($id_evaluacion){
+		$data = $this->EvaluacionHasPreguntasModel->tablero(array('id_evaluacion' => $id_evaluacion));
+		//dd($evaluacion);exit;
+		$evaluacion = $this->ECHasEvaluacionModel->tablero(array('id_evaluacion' => $id_evaluacion));
+		
+		$data['estandar_competencia_has_evaluacion'] = $evaluacion['estandar_competencia_has_evaluacion'][0];
+		foreach ($data['preguntas_evaluacion'] as $pe){
+			$opciones_pregunta = $this->OpcionPreguntaModel->tablero(array('id_banco_pregunta' => $pe->id_banco_pregunta));
+			foreach ($opciones_pregunta['opcion_pregunta'] as $op){
+				$op->archivo_imagen_respuesta = isset($op->id_archivo) && !is_null($op->id_archivo) ? $this->ArchivoModel->obtener_row($op->id_archivo) : false;
+			}
+			$pe->opciones_pregunta = $opciones_pregunta['opcion_pregunta'];
+		}
+		$this->load->view('evaluacion/tablero_preguntas_evaluacion',$data);
+	}
+
+	public function obtenerComplementoPreguntasEvaluacionEntregable($id_evaluacion){
+		$data = $this->EvaluacionHasPreguntasModel->tablero(array('id_evaluacion' => $id_evaluacion));
+		foreach ($data['preguntas_evaluacion'] as $pe){
+			$opciones_pregunta = $this->OpcionPreguntaModel->tablero(array('id_banco_pregunta' => $pe->id_banco_pregunta));
+			foreach ($opciones_pregunta['opcion_pregunta'] as $op){
+				$op->archivo_imagen_respuesta = isset($op->id_archivo) && !is_null($op->id_archivo) ? $this->ArchivoModel->obtener_row($op->id_archivo) : false;
+			}
+			$pe->opciones_pregunta = $opciones_pregunta['opcion_pregunta'];
+		}
+		$busqueda = array(
+			'id_evaluacion' => $id_evaluacion,
+			'id_cat_evaluacion' => EVALUACION_ENTREGABLE,
+			'eliminado' => 'no'
+		);
+		$evaluacionLiberada = $this->EntregableHasEvaluacionModel->tablero($busqueda);
+		if($evaluacionLiberada['total_registros'] != 0){
+			//$data['evaluacion'] = $this->EvaluacionModel->obtener_row($evaluacionLiberada['entregable_has_evaluacion'][0]->id_evaluacion);
+			$data['entregable_has_evaluacion'] = $evaluacionLiberada['entregable_has_evaluacion'][0]; //asumimos que simpre traera un registro :-D
+		}
+		//asumimos que ya existe el curso modulo dado que estamos agregan una evaluacion al mismo
+		//$data['ec_curso'] = $this->EcCursoModel->obtener_row($tablero['ec_curso_modulo'][0]->id_ec_curso);	
+		//dd($data);exit;	
+		$this->load->view('evaluacion/entregable/tablero_preguntas_evaluacion',$data);
+	}
+
+	private function obtenerComplementoPreguntasEvaluacionModulo($id_evaluacion){
+		$data = $this->EvaluacionHasPreguntasModel->tablero(array('id_evaluacion' => $id_evaluacion));
+		foreach ($data['preguntas_evaluacion'] as $pe){
+			$opciones_pregunta = $this->OpcionPreguntaModel->tablero(array('id_banco_pregunta' => $pe->id_banco_pregunta));
+			foreach ($opciones_pregunta['opcion_pregunta'] as $op){
+				$op->archivo_imagen_respuesta = isset($op->id_archivo) && !is_null($op->id_archivo) ? $this->ArchivoModel->obtener_row($op->id_archivo) : false;
+			}
+			$pe->opciones_pregunta = $opciones_pregunta['opcion_pregunta'];
+		}
+		$tablero = $this->EcCursoModuloModel->tablero(['id_evaluacion' => $id_evaluacion]);
+		//asumimos que ya existe el curso modulo dado que estamos agregan una evaluacion al mismo
+		$data['ec_curso'] = $this->EcCursoModel->obtener_row($tablero['ec_curso_modulo'][0]->id_ec_curso);		
+		$this->load->view('evaluacion/modulo/tablero_preguntas_evaluacion',$data);
 	}
 
 }

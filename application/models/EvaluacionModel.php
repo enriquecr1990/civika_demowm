@@ -71,6 +71,39 @@ class EvaluacionModel extends ModeloBase
 		return $query->row()->total_registros;
 	}
 
+	public function existe_evaluacion_ec_curso_modulo($id_ec_curso_modulo){
+		$consulta = "
+			select 
+				count(*) total_registros 
+			from evaluacion e 
+				inner join ec_curso_modulo ecm on ecm.id_evaluacion = e.id_evaluacion
+			where e.eliminado = 'no'
+				and ecm.id_ec_curso_modulo = $id_ec_curso_modulo";
+		$query = $this->db->query($consulta);
+		$existe = false;
+		if($query->row()->total_registros != 0){
+			$existe = true;
+		}
+		return $existe;
+	}
+
+	public function existe_evalucion_entregable($id_entregable){
+		$consulta = "
+				select 
+					count(*) total_registros
+				from evaluacion e
+					inner join entregable_has_evaluacion ehe on ehe.id_evaluacion = e.id_evaluacion
+				where ehe.id_entregable = $id_entregable
+					and e.eliminado = 'no'
+			";
+		$query = $this->db->query($consulta);
+		$existe = false;
+		if($query->row()->total_registros != 0){
+			$existe = true;
+		}
+		return $existe;
+	}
+
 	public function order_by(){
 		return ' order by e.id_evaluacion desc ';
 	}

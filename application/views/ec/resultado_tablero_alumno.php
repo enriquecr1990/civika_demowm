@@ -7,11 +7,14 @@
 				<div class="widget-user-header text-white" style="background: url(<?=base_url().$ec->ruta_directorio.$ec->nombre?> ) center center; background-size: cover">
 <!--					<h3 class="widget-user-desc text-center" ><?=$ec->codigo?></h3>-->
 				</div>
-				<div class="widget-user-image">
-					<img class="img-circle" src="<?=isset($ec->instructor->foto_perfil) ? $ec->instructor->foto_perfil : base_url().'assets/imgs/iconos/admin.png' ?>"
-						 alt="<?=$ec->instructor->nombre.' '.$ec->instructor->apellido_p?>">
-				</div>
-				<div class="card-body mt-2">
+				
+				<div class="card-body">
+					<div class="row from-group " >
+						<div class="col-12 centrado">
+							<img class="img-circle img-perfil-usuario-tablero" src="<?=isset($ec->instructor->foto_perfil) ? $ec->instructor->foto_perfil : base_url().'assets/imgs/iconos/admin.png' ?>"
+								alt="<?=$ec->instructor->nombre.' '.$ec->instructor->apellido_p?>">
+						</div>
+					</div>
 					<div class="row text-justify">
 						<?php if(strlen($ec->codigo.'-'.$ec->titulo) > 140): ?>
 							<p>
@@ -19,7 +22,9 @@
 								<button type="button" class="btn btn-sm btn-default btn_ver_titulo_completo_ec mostrar_todo"><i class="fa fa-eye"></i></button>
 							</p>
 						<?php else: ?>
-							<?=$ec->codigo.'-'.$ec->titulo?>
+							<p>
+								<?=$ec->codigo.'-'.$ec->titulo?>
+							</p>
 						<?php endif ?>
 						<p>
 							<b>Evaluador: </b><?=$ec->instructor->nombre.' '.$ec->instructor->apellido_p.' '.$ec->instructor->apellido_m?>
@@ -41,6 +46,6 @@
 		</div>
 	<?php endforeach; ?>
 <?php else: ?>
-	<?php $this->load->view('default/sin_datos'); ?>
+	<?php $this->load->view('default/sin_datos_candidato'); ?>
 <?php endif; ?>
 <!-- /.card-body -->

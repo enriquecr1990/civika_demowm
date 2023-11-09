@@ -225,7 +225,10 @@
 							<?php endif; ?>
 
 							<?php if ($entregable->tipo_entregable == "cuest") : ?>
-								<a class="btn btn-sm btn-primary">Responder</a>
+								<button class="btn btn-sm btn-success boton-enviar-entregable"
+										data-id_entregable="<?= $entregable->id_entregable ?>">Enviar a evaluador
+								</button>
+								<a href="<?=base_url().'evaluacion_entregable/'.$entregable->id_entregable.'/'.$entregable->evaluacion->id_evaluacion ?>" class="btn btn-sm btn-primary">Responder</a>
 							<?php endif; ?>
 						</div>
 					</div>

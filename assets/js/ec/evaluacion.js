@@ -8,7 +8,7 @@ $(document).ready(function(){
 		//var tipo_evaluacion = $(this).data('tipo_evaluacion');
 		var id_referencia = $('#input_id_referencia').val();
 		var tipo_evaluacion = $('#input_tipo_evaluacion').val();
-		EvaluacionEC.agregar_modificar_evaluacion_ec(tipo_evaluacion,id_referencia);
+		EvaluacionEC.agregar_modificar_evaluacion_ec(tipo_evaluacion);
 	});
 
 	$(document).on('click','.modificar_evaluacion_ec',function(){
@@ -108,7 +108,7 @@ var EvaluacionEC = {
 		);
 	},
 
-	agregar_modificar_evaluacion_ec : function(tipo='diagnostica',id_evaluacion = ''){
+	agregar_modificar_evaluacion_ec : function(tipo,id_evaluacion = ''){
 		Comun.obtener_contenido_peticion_html(
 			base_url + 'EvaluacionEC/agregar_modificar_ec/'+tipo+'/' + id_evaluacion,{},
 			function(response){

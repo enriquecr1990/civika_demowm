@@ -14,6 +14,15 @@
 							&& isset($instructores_asignados) && sizeof($instructores_asignados) != 0)
 						|| $tipo == 'instructor'): ?>
 					<div class="modal-body">
+
+						<?php if(isset($tipo) && $tipo != 'instructor'): ?>
+							<div class="callout callout-danger">
+								<h5>Información importante</h5>
+								<p>Para poder registrar el candidato no olvide selecionar el instructor y despues del boton de guardar <button type="button" class="btn btn-sm btn-success" ><i class="fa fa-save"></i></button></p>
+							</div>
+						<?php endif; ?>
+						
+
 						<?php if(isset($usuarios) && is_array($usuarios) && sizeof($usuarios) > 0): ?>
 							<?php if($tipo == 'alumno'): ?>
 								<div id="listado_usuarios_evaluadores_asignados" style="display: none">
@@ -86,7 +95,7 @@
 						<?php endif; ?>
 					</div>
 					<div class="modal-footer text-right">
-						<button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Aceptar</button>
+						<button type="button" class="btn btn-info btn-sm" data-dismiss="modal">Cerrar</button>
 					</div>
 				<?php else: ?>
 					<div class="modal-body">
@@ -94,9 +103,9 @@
 							<h5>Lo siento</h5>
 							<p>Para poder asignar los alumnos es necesario que registre:</p>
 							<ol>
-								<li>Las actividades, tecnicas e instrumentos de evaluación con sus cuestionarios liberados (si aplica) <span class="badge badge-dark"><?=isset($estandar_competencia_instrumento) && sizeof($estandar_competencia_instrumento) != 0 && $evaluacion_instrumento_liberados ? 'OK':'Falta'?></span></li>
+								<li>Las actividades, tecnicas e instrumentos de evaluación <span class="badge badge-dark"><?=isset($estandar_competencia_instrumento) && sizeof($estandar_competencia_instrumento) != 0 && $evaluacion_instrumento_liberados ? 'OK':'Falta'?></span></li>
 								<li>Los requerimientos de evaluación <span class="badge badge-dark"><?=isset($estandar_competencia_has_requerimientos) && sizeof($estandar_competencia_has_requerimientos) != 0 ? 'OK':'Falta'?></span></li>
-								<li>La evaluación diagnostica liberada <span class="badge badge-dark"><?=isset($estandar_competencia_evaluacion) && is_object($estandar_competencia_evaluacion) != 0 ? 'OK':'Falta'?></span></li>
+								<li>La evaluación diagnóstica liberada <span class="badge badge-dark"><?=isset($estandar_competencia_evaluacion) && is_object($estandar_competencia_evaluacion) != 0 ? 'OK':'Falta'?></span></li>
 								<li>Asignar por lo menos un evaluador al Estándar de competencia <span class="badge badge-dark"><?=isset($instructores_asignados) && sizeof($instructores_asignados) != 0 ? 'OK':'Falta'?></span></li>
 							</ol>
 						</div>

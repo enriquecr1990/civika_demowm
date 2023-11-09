@@ -779,6 +779,23 @@ var Comun = {
 		});
 	},
 
+	iniciar_editor_summernote_link_video : function(textarea,placeholder,minHeight = 300){
+		$(textarea).summernote({
+			minHeight : minHeight,
+			lang : 'es-ES',
+			placeholder : placeholder,
+			codeviewFilter: false,
+			codeviewIframeFilter: true,
+			toolbar : [
+				['style', ['bold', 'italic', 'underline']],
+				['font',['fontname','fontsize','forecolor']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['insert', ['link', 'video']],
+				['view', [ 'help']],
+			]
+		});
+	},
+
 	iniciar_carga_documento_all : function(input_file,div_procesando,funcion_response,id = false){
 		//funcion para cargar archivo via ajax
 		var nombre_archivo;
@@ -831,5 +848,10 @@ var Comun = {
 		$("#"+formulario).find(".is-invalid").removeClass("is-invalid");
 		$("#"+formulario).find(".invalid-feedback").remove();
 
+	},
+
+	actualizar_btn_visor_img : function(selectorBtn,archivo){
+		$(selectorBtn).data('nombre_archivo',archivo.nombre);
+		$(selectorBtn).data('src_image',base_url + archivo.ruta_directorio + archivo.nombre);
 	}
 };

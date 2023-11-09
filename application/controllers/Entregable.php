@@ -24,7 +24,7 @@ class entregable extends CI_Controller
 			$data['titulo_pagina'] = 'Entregables esperados';
 			$data['migas_pan'] = array(
 				array('nombre' => 'Inicio','activo' => false,'url' => base_url()),
-				array('nombre' => 'Estándar de competencias','activo' => false,'url' => '#'),
+				array('nombre' => 'Estándar de competencias','activo' => false,'url' => base_url().'estandar_competencia'),
 				array('nombre' => 'Entregables esperados','activo' => true,'url' => '#'),
 			);
 			$data['sidebar'] = '';
@@ -46,12 +46,13 @@ class entregable extends CI_Controller
 
 
 
-			$data['instrumentos'] = $this->ActividadIEModel->obtener_instrumentos_ec_entregable($id_estandar_competencia);
+			$data['instrumentos'] = $this->ActividadIEModel->obtener_instrumentos_ec($id_estandar_competencia);
 
 			$datos = $this->EntregableECModel->obtener_entregables(1,10,$id_estandar_competencia);
 
-			$data['entregables'] = $datos;
-
+			$data['entregables'] = $datos['data'];
+			$data['liberado'] = $datos['liberado'];
+			$data['btn_liberar'] = $datos['btn_liberar'];
 			$this->load->view('entregables/evidencias_esperadas',$data);
 		}catch (Exception $ex){
 			$response['success'] = false;
@@ -86,6 +87,7 @@ class entregable extends CI_Controller
 			$datos = $this->EntregableECModel->obtener_entregables_candidato($id_estandar_competencia,$id_usuario);
 
 			$data['entregables'] = $datos;
+			//var_dump($data);exit;
 			$this->load->view('entregables/candidato/evidencias_candidato',$data);
 		}catch (Exception $ex){
 			$response['success'] = false;
@@ -100,10 +102,10 @@ class entregable extends CI_Controller
 
 
 			$post = $this->input->post();
-			$rules = array("tema" => array('required'),
-				'nombre' => array("required","maxLength"=>45),
-				'descripcion' => array("required","maxLength"=>100),
-				'instrucciones' => array("required","maxLength"=>250),
+			$rules = array(
+				'nombre' => array("required","maxLength"=>150),
+				'descripcion' => array("required","maxLength"=>1000),
+				'instrucciones' => array("required"),
 				'tipo_entregable' => array("required"),
 				'instrumentos' => array("required")
 			);
@@ -146,13 +148,19 @@ class entregable extends CI_Controller
 		$post = $this->input->post();
 		$datos = $this->EntregableECModel->obtener_entregables($pagina,$limit,$post['id_estandar_competencia']);
 
-		$data['entregables'] = $datos;
+		$data['entregables'] = $datos['data'];
+		$data['liberado'] = $datos['liberado'];
+		$data['btn_liberar'] = $datos['btn_liberar'];
+
 		$this->load->view('entregables/cards_evidencias',$data);
 	}
-	public function obtener_entregable($id,$id_estandar){
-		$data['entregable'] = $this->EntregableECModel->obtener_entregable($id);
+	public function obtener_entregable($id_estandar,$id =0){
 
-		$data['instrumentos'] = $this->ActividadIEModel->obtener_instrumentos_ec_entregable($id_estandar);
+		if ($id > 0){
+			$data['entregable'] = $this->EntregableECModel->obtener_entregable($id);
+		}
+
+		$data['instrumentos'] = $this->ActividadIEModel->obtener_instrumentos_ec($id_estandar);
 
 		$this->load->view('entregables/modal_formulario',$data);
 	}
@@ -193,7 +201,7 @@ class entregable extends CI_Controller
 		}
 		echo json_encode($response);
 	}
-	public function cambiar_estatus($id_entregable, $id_estatus, $id_alumno, $id_formulario){
+	public function cambiar_estatus($id_entregable, $id_estatus, $id_alumno, $id_formulario = false){
 		try{
 			$data =  $this->EcEntregableAlumno->cambiar_estatus($id_entregable, $id_alumno, $id_estatus,$id_formulario);
 			if($data['success']){

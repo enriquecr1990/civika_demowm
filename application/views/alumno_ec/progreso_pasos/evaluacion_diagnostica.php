@@ -20,7 +20,7 @@
 					</tr>
 					</thead>
 					<tbody>
-					<?php if(isset($ec_has_evaluacion)): ?>
+					<?php if(isset($ec_has_evaluacion) && is_array($ec_has_evaluacion) && !empty($ec_has_evaluacion)): ?>
 						<?php foreach ($ec_has_evaluacion as $index => $ecc):?>
 							<?php $calificaciones[$index] = array(); ?>
 							<tr>
@@ -40,7 +40,7 @@
 									<?php endif; ?>
 									<?php if(isset($usuario) && $usuario->perfil == 'alumno'): ?>
 										<?php if(sizeof($ecc->evaluaciones_realizadas) < $ecc->intentos): ?>
-											<a href="<?=base_url()?>evaluacion/<?=$ecc->id_estandar_competencia.'/'.$ecc->id_evaluacion?>" class="btn btn-sm btn-outline-danger" >
+											<a href="<?=base_url()?>evaluacion_diagnostica/<?=$ecc->id_estandar_competencia.'/'.$ecc->id_evaluacion?>" class="btn btn-sm btn-outline-danger" >
 												<i class="fa fa-check"></i> Realizar examen
 											</a>
 										<?php endif; ?>
@@ -92,6 +92,11 @@
 								</tr>
 							<?php endif; ?>
 						<?php endforeach; ?>
+					<?php else: ?>
+						<div class="callout callout-warning">
+							<h5>Lo siento</h5>
+							<p>En este momento no se encuentra dado de alta la evaluación diagnóstica en el sistema, espere a que el administrador o el evaluador la suba y liberé para que pueda continuar en el proceso de certificación</p>
+						</div>
 					<?php endif; ?>
 					</tbody>
 				</table>
@@ -101,9 +106,14 @@
 </div>
 
 <div class="form-group row">
-	<div class="col-12 text-right">
-		<button type="button" <?=sizeof($ecc->evaluaciones_realizadas) != 0 ? '':'disabled="disabled"'?>
-				data-siguiente_link="#tab_derechos_obligaciones-tab" data-numero_paso="1"
+	<div class="col-lg-6 text-left">
+		<button type="button" class="btn btn-sm btn-outline-info btn_paso_anterior_pasos" data-anterior_link="#tab_derechos_obligaciones-tab">
+			<i class="fa fa-backward"></i> Anterior
+		</button>
+	</div>
+	<div class="col-6 text-right">
+		<button type="button" <?=isset($ecc->evaluaciones_realizadas) && sizeof($ecc->evaluaciones_realizadas) != 0 ? '':'disabled="disabled"'?>
+				data-siguiente_link="#tab_evaluacion_requerimientos-tab" data-numero_paso="2"
 				class="btn btn-outline-success guardar_progreso_pasos">Siguiente <i class="fa fa-forward"></i></button>
 	</div>
 </div>

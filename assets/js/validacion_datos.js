@@ -26,7 +26,7 @@ var ValidacionDatos = {
 									'a continuación aparece un listado de los datos que le faltan' +
 								'</p>' +
 								'<p>'+msg_validacion+'</p>' +
-								'<p>Puede dar click <a href="'+base_url+'perfil">aqui</a> para poder actualizar sus datos</p>' +
+								'<p>Puede dar clic <a href="'+base_url+'perfil">aquí</a> para poder actualizar sus datos.</p>' +
 							'</div>';
 
 						Comun.mostrar_mensaje_advertencia(msg_general);

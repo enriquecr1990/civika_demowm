@@ -42,18 +42,18 @@ $(document).ready(function (){
 
 var methods = {
 	agregarModificar : function(id = 0){
-		if (id !== 0){
-			Comun.obtener_contenido_peticion_html(base_url +'Entregable/obtener_entregable/'+id+'/'+this.idEstandar(),{},function (response) {
+		// if (id !== 0){
+			Comun.obtener_contenido_peticion_html(base_url +'Entregable/obtener_entregable/'+this.idEstandar()+'/'+id,{},function (response) {
 				$('#contenedor_modal_entregable').html(response);
 				Comun.mostrar_ocultar_modal('#modal_form_entregable',true);
 				Comun.funcion_fileinput('#material_apoyo','Archivo de apoyo');
 				methods.iniciar_carga_material_apoyo();
 			})
-		}else{
-			Comun.mostrar_ocultar_modal('#modal_form_entregable',true);
-			Comun.funcion_fileinput('#material_apoyo','Archivo de apoyo');
-			methods.iniciar_carga_material_apoyo();
-		}
+		// }else{
+		// 	Comun.mostrar_ocultar_modal('#modal_form_entregable',true);
+		// 	Comun.funcion_fileinput('#material_apoyo','Archivo de apoyo');
+		// 	methods.iniciar_carga_material_apoyo();
+		// }
 
 
 	},
@@ -67,7 +67,7 @@ var methods = {
 				if(response.success){
 					Comun.mostrar_ocultar_modal('#modal_form_entregable',false);
 					Comun.mensajes_operacion(response.msg,'success');
-					Comun.recargar_pagina(base_url + 'evidencias_esperadas/'+ methods.idEstandar(),2000);
+					// Comun.recargar_pagina(base_url + 'evidencias_esperadas/'+ methods.idEstandar(),2000);
 					methods.buscarEntregables();
 				}else{
 					if(response.code === 400){
@@ -92,6 +92,7 @@ var methods = {
 			function(response){
 				if(response.success){
 					Comun.mensajes_operacion(response.msg,'success');
+					Comun.recargar_pagina(base_url + 'evidencias_esperadas/'+ methods.idEstandar(),1000);
 				}else{
 					Comun.mensajes_operacion(response.msg,'error',5000);
 				}
@@ -104,7 +105,6 @@ var methods = {
 			base_url +'Entregable/obtener_entregables/'+pagina+'/'+registros,{id_estandar_competencia : this.idEstandar()},
 			function(response){
 				$('#contenedor_entregables').html(response);
-
 			},
 		);
 	},

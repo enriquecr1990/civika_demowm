@@ -5,6 +5,11 @@ $(document).ready(function(){
 		EncuestaSatisfaccion.enviar_encuesta(id_usuario_has_ec);
 	});
 
+	$(document).on('click','#btn_guardar_encuesta_satisfaccion_derechos_obligaciones',function(){
+		var id_usuario_has_ec = $(this).data('id_usuario_has_ec');
+		EncuestaSatisfaccion.enviar_encuesta_pasos_derechos_obligaciones(id_usuario_has_ec);
+	});
+
 	$(document).on('click','#btn_guardar_encuesta_satisfaccion_pasos',function(){
 		var id_usuario_has_ec = $(this).data('id_usuario_has_ec');
 		EncuestaSatisfaccion.enviar_encuesta_pasos(id_usuario_has_ec);
@@ -43,10 +48,32 @@ var EncuestaSatisfaccion = {
 		);
 	},
 
+	enviar_encuesta_pasos_derechos_obligaciones : function(id_usuario_has_ec){
+		if(EncuestaSatisfaccion.validar_form_encuesta()){
+			EncuestaSatisfaccion.guardar_encuesta_satisfacion_pasos_derechos_obligaciones(id_usuario_has_ec)
+		}
+	},
+
 	enviar_encuesta_pasos : function(id_usuario_has_ec){
 		if(EncuestaSatisfaccion.validar_form_encuesta()){
 			EncuestaSatisfaccion.guardar_encuesta_satisfacion_pasos(id_usuario_has_ec)
 		}
+	},
+
+	guardar_encuesta_satisfacion_pasos_derechos_obligaciones : function(id_usuario_has_ec){
+		Comun.enviar_formulario_post(
+			'#form_encuesta_satisfaccion',
+			base_url + 'EncuestaSatisfaccion/guardar_encuesta_satisfacion_derechos_obligaciones/' + id_usuario_has_ec,
+			function(response){
+				if(response.success){
+					Comun.mensajes_operacion(response.msg);
+					//CandidatoEC.pasos.encuesta_satisfaccion();
+					$('#btn_siguiente_tab_derechos_obligaciones').removeAttr('disabled');
+				}else{
+					Comun.mensajes_operacion(response.msg,'error');
+				}
+			}
+		);
 	},
 
 	guardar_encuesta_satisfacion_pasos : function(id_usuario_has_ec){

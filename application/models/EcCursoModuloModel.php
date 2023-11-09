@@ -22,6 +22,15 @@ class EcCursoModuloModel extends ModeloBase
 		if(isset($data['id_ec_curso']) && $data['id_ec_curso'] != ''){
 			$criterios .= " and eccm.id_ec_curso = ".$data['id_ec_curso'];
 		}
+
+		if(isset($data['id_evaluacion']) && $data['id_evaluacion']){
+			$criterios .= " and eccm.id_evaluacion = ".$data['id_evaluacion'];
+		}
+
+		if(isset($data['id_evaluacion_not_null']) && $data['id_evaluacion_not_null']){
+			$criterios .= " and eccm.id_evaluacion IS NOT NULL";
+		}
+
 		return $criterios;
 	}
 
@@ -58,10 +67,11 @@ class EcCursoModuloModel extends ModeloBase
 		try{
 
 			$criterios_busqueda = array(
-				'id_ec_curso_modulo' => $id_ec_curso_modulo
+				'id_ec_curso_modulo' => $id_ec_curso_modulo,
+				'id_evaluacion' => "IS NOT NULL"
 			);
 
-			$varaiable_datos = $this->EcCursoModuloTemarioModel->tablero($criterios_busqueda);
+			$varaiable_datos = $this->EcCursoModuloTemarioModel->tablero($criterios_busqueda, 1, 100);
 			return $varaiable_datos['ec_curso_modulo_temario'];
 		} catch(Exception $ex){
 			log_message('error','ec_curso_modulo_temario->tablero');
@@ -71,5 +81,37 @@ class EcCursoModuloModel extends ModeloBase
 
 
 	}
+
+	public function getModuloByCurso($id_ec_curso){
+
+		try{
+
+			$criterios_busqueda = array(
+				'id_ec_curso' => $id_ec_curso,
+				//'id_evaluacion_not_null' => true,
+			);
+
+			$consulta = $this->obtener_query_base().' '.$this->criterios_join().' '.$this->criterios_busqueda($criterios_busqueda).' '.$this->group_by().' '.$this->order_by();
+			$query = $this->db->query($consulta);
+			$retorno['success'] = true;
+			$result = $query->result();
+
+			
+			foreach($result as $r){
+				$r->ec_curso_modulo_temario = $this->getTemarioByModulo($r->id_ec_curso_modulo);
+			}
+			$retorno["ec_curso_modulo"] = $result;
+
+			//dd($result); exit();
+			return $retorno["ec_curso_modulo"];
+		} catch(Exception $ex){
+			log_message('error','ec_curso_modulo->tablero');
+			log_message('error',$ex->getMessage());
+			return false;
+		}
+
+
+	}
+	
 }
 

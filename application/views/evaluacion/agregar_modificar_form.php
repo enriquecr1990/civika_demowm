@@ -24,7 +24,7 @@
 									echo '<span class="badge badge-success">Entregable esperado</span>';
 									break;
 								case EVALUACION_MODULO:
-									echo '<span class="badge badge-success">Módulo de campaña</span>';
+									echo '<span class="badge badge-success">Módulo</span>';
 									break;
 								default:
 									echo '<span class="badge badge-success">Diagnóstica</span>';

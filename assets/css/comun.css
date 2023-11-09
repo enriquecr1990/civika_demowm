@@ -51,7 +51,7 @@ input[type=number] {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-image: url('../imgs/logos/walmart_fondo.png');
+	background-image: url('../imgs/logos/fondo_wmped.jpg');
 	background-repeat: unset;
 	background-size: 80%;
 	/*-webkit-transform: rotate(5deg);
@@ -77,7 +77,7 @@ input[type=number] {
 }
 
 .content-wrapper{
-	background-image: url('../imgs/logos/walmart_fondo.png');
+	background-image: url('../imgs/logos/fondo_wmped.jpg');
 	background-repeat: unset;
 	background-size: 80%;
 	filter:alpha(opacity=0.2);

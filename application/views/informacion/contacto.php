@@ -32,7 +32,11 @@
 									</li>
 									<li>
 										<i class="fab fa-whatsapp"></i>
-										<a href="https://api.whatsapp.com/send?phone=522411356252" target="_blank">241 135 62 52</a>
+										<a href="https://api.whatsapp.com/send?phone=522221233936" target="_blank">222 123 3936</a>
+									</li>
+									<li>
+										<i class="fab fa-whatsapp"></i>
+										<a href="https://api.whatsapp.com/send?phone=522411318840" target="_blank">241 131 8840</a>
 									</li>
 									<li>
 										<i class="fa fa-envelope-o"></i>

@@ -47,7 +47,7 @@ class Perfil extends CI_Controller {
 		);
 		$data['usuario'] = $this->usuario;
 		$data['datos_usuario'] = $this->UsuarioModel->obtener_usuario_modificar_id($this->usuario->id_usuario);
-		//dd($data);exit;
+		//var_dump($data);exit;
 		$switch_perfil = $this->usuario->perfil;
 		switch ($switch_perfil){
 			case 'root':case 'admin':
@@ -95,7 +95,10 @@ class Perfil extends CI_Controller {
 		$data['usuario_modificar'] = $this->UsuarioModel->obtener_usuario_by_usr($usuario->usuario);
 		$data['datos_usuario_modificar'] = $this->UsuarioModel->obtener_usuario_modificar_id($id_usuario);
 		$data['usuario_modificar']->datos_usuario = $data['datos_usuario_modificar'];
+		$foto_perfil = $this->PerfilModel->foto_perfil($id_usuario);
+		//$data['usuario_modificar']->foto_perfil = $usuario->;
 		$switch_perfil = $data['usuario_modificar']->perfil;
+		$data['usuario_modificar']->foto_perfil = is_object($foto_perfil) ? base_url().$foto_perfil->ruta_directorio.$foto_perfil->nombre : false;
 		switch ($switch_perfil){
 			case 'root':case 'admin':case 'instructor':
 				redirect(base_url().'404');

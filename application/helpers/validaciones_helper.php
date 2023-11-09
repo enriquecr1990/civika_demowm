@@ -436,6 +436,9 @@ class Validaciones_Helper {
 		}if(!isset($data['representante_trabajadores']) || self::isCampoVacio($data['representante_trabajadores'])){
 			$result['success'] = false;
 			$result['msg'][] = 'El campo representante trabajadores es requerido';
+		}if(!isset($data['id_archivo_logotipo']) || self::isCampoVacio($data['id_archivo_logotipo'])){
+			$result['success'] = false;
+			$result['msg'][] = 'La imagen/logitpo de la empresa es requerido';
 		}
 		return $result;
 	}
@@ -525,6 +528,25 @@ class Validaciones_Helper {
 		if(!isset($data['observaciones']) || self::isCampoVacio($data['observaciones'])){
 			$result['success'] = false;
 			$result['msg'][] = 'El campo de observaciones requerido';
+		}
+		return $result;
+	}
+
+	public static function formEncuestaSatisfacionDerechosObligaciones($data){
+		$result['success'] = true;
+		$result['msg'] = array();
+		if(!isset($data['respuesta']) || sizeof($data['respuesta']) == 0){
+			$result['success'] = false;
+			$result['msg'][] = 'Faltan las respuestas a las preguntas de la encuesta de satisfacción';
+		}else{
+			$index = 0;
+			foreach ($data['respuesta'] as $r){
+				$index++;
+				if(self::isCampoVacio($r)){
+					$result['success'] = false;
+					$result['msg'][] = 'La respuesta de la pregunta '.$index.' es requerido';
+				}
+			}
 		}
 		return $result;
 	}
@@ -660,12 +682,25 @@ class Validaciones_Helper {
 			
 		]; */
 
+		foreach ($rules as $key => $rule){
+
+			if (!isset($post[$key])){
+				$result['messages'][$key] = "Campo requerido";
+				$result['success'] = false;
+			}
+		}
+
+
 		foreach($post as $index=>$campo){
 		
 			if(isset($rules[$index])){
 
 				if(in_array("required",$rules[$index] )){
-
+					if (is_array($campo) && empty($campo)){
+						$result['messages'][$index] = "Campo requerido";
+						$result['success'] = false;
+						continue;
+					}
 					if(empty($campo) || $campo == "<p><br></p>" || $campo == "<br>"){
 						//var_dump('si entrooo');
 						$result['messages'][$index] = "Campo requerido";
@@ -682,11 +717,42 @@ class Validaciones_Helper {
 						continue;
 					}
 				}
-
-				
-
 			}
+		}
 		
+		return $result;
+
+	}
+
+	public static function validatePublicateModuloCapacitacion($data_curso){
+
+		$result = array(
+			'success' => true,
+			'msg'=> array()
+		);
+		
+		if($data_curso['success'] && isset($data_curso['ec_curso'])){
+
+			if(isset($data_curso['ec_curso_modulos']) && !empty($data_curso['ec_curso_modulos'])){
+				foreach($data_curso['ec_curso_modulos'] as $modulo){		
+					if(!isset($modulo->ec_curso_modulo_temario) || empty($modulo->ec_curso_modulo_temario)){
+						$result['success']		= false;
+						$result['msg'][]	= "Es necesario agregar por lo menos un temario en el módulo: <strong>".$modulo->descripcion."</strong>.";  
+					}
+
+					if(!isset($modulo->id_evaluacion) || $modulo->id_evaluacion == null){
+						$result['success']		= false;
+						$result['msg'][]	= "Es necesario agregar una evaluación en el módulo: <strong>".$modulo->descripcion."</strong>.";  
+					}
+				}
+
+			} else {
+				$result['success']		= false;
+				$result['msg'][]	= 'Es necesario registrar por lo menos 1 módulo para poder publicar.';
+			}
+		} else {
+			$result['success']		= false;
+			$result['msg'][]	= 'Ocurrio un problema al obtener los datos para realizar la validación. Por favor, intentar mas tarde.';
 		}
 		
 		

@@ -73,6 +73,13 @@ class CatalogoModel extends CI_Model
 		return $query->result();
 	}
 
+	public function cat_preguntas_encuesta_uno(){
+		$this->db->where('eliminado','no');
+		$this->db->order_by('id_cat_preguntas_encuesta','asc');
+		$query = $this->db->get('cat_preguntas_encuesta');
+		return $query->row();
+	}
+
 	public function cat_msg_bienvenida(){
 		$query = $this->db->get('cat_msg_bienvenida');
 		$row = $query->row();

@@ -12,6 +12,7 @@ class EcCursoModel extends ModeloBase
 	{
 		parent::__construct('ec_curso', 'ecc');
 		
+		$this->load->model('EcCursoModuloModel');
 	}
 
 	public function criterios_join()
@@ -29,7 +30,7 @@ class EcCursoModel extends ModeloBase
 		return $criterios;
 	}
 
-	public function obtener_ec_curso($id_ec_curso){
+	public function obtener_ec_curso($id_ec_curso, $id_estandar_competencia = false, $curso_publicado = false){
 		$consulta = "select 
 		  ecc.id_ec_curso,
 		  ecc.nombre_curso,
@@ -45,12 +46,38 @@ class EcCursoModel extends ModeloBase
 		  a.fecha,
 		  a.tipo
 		from ec_curso ecc
-			inner join archivo a on a.id_archivo = ecc.id_archivo 
-		where ecc.id_ec_curso = $id_ec_curso";
+			inner join archivo a on a.id_archivo = ecc.id_archivo ";
+		if($curso_publicado !== false){
+			$consulta .= " 
+			where ecc.id_estandar_competencia = $id_estandar_competencia
+			and ecc.publicado = 'si'";
+		} else {
+			$consulta .= " 
+			where ecc.id_ec_curso = $id_ec_curso";
+		}
 		$query = $this->db->query($consulta);
 		if($query->num_rows() == 0){
 			return false;
 		}
 		return $query->row();
 	}
+
+	public function getCursoModuloTemario($id_ec_curso){
+		try{
+			$result['success'] = true;
+
+			$consulta = $this->obtener_row($id_ec_curso);			
+
+			$result["ec_curso"] = $consulta;
+			$result['ec_curso_modulos'] = $this->EcCursoModuloModel->getModuloByCurso($id_ec_curso);
+
+			return $result;
+		}catch (Exception $ex){
+			log_message('error','ec_curso->getCursoModuloTemario');
+			log_message('error',$ex->getMessage());
+			return false;
+		}
+	}
+
+	
 }

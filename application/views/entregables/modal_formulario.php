@@ -16,14 +16,15 @@
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="nombre" data-rule-required="true"
 								   name="nombre" placeholder="Nombre del entregable"
-								   value="<?= old($entregable,'nombre')?>">
+								   value="<?= old($entregable, 'nombre') ?>">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="input_nombre" class="col-sm-3 col-form-label">Descripción</label>
 						<div class="col-sm-9">
 							<textarea type="text" class="form-control" id="descripcion" data-rule-required="true"
-									  name="descripcion" placeholder="Descripción del entregable"><?=old($entregable,'descripcion')?></textarea>
+									  name="descripcion"
+									  placeholder="Descripción del entregable"><?= old($entregable, 'descripcion') ?></textarea>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -31,7 +32,7 @@
 						<div class="col-sm-9">
 							<textarea type="text" class="form-control" id="instrucciones" data-rule-required="true"
 									  name="instrucciones" placeholder="Instrucciones del entregable"
-									  ><?=old($entregable, 'instrucciones')?></textarea>
+							><?= old($entregable, 'instrucciones') ?></textarea>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -60,11 +61,12 @@
 						<label for="input_nombre" class="col-sm-3 col-form-label">Material de de apoyo </label>
 						<div class="col-sm-9">
 							<input type="hidden" id="input_material_apoyo" name="id_archivo"
-								   value="<?= isset($entregable) ? $entregable->id_archivo : '' ?>">
+								   value="<?= isset($entregable->id_archivo) ? $entregable->id_archivo : '' ?>">
 							<input type="file" id="material_apoyo" name="material_apoyo" class="col-sm-3" accept="/*">
 							<div id="procesando_material_apoyo" class="col-sm-5">
-								<?php if (isset($entregable)): ?>
-								<p> <?= old($entregable,'archivo') ?><em class="fa fa-times-circle eliminar_archivo" style="color: red"></em></p>
+								<?php if (isset($entregable->archivo)): ?>
+									<p> <?= old($entregable, 'archivo') ?><em
+											class="fa fa-times-circle eliminar_archivo" style="color: red"></em></p>
 								<?php endif; ?>
 							</div>
 						</div>
@@ -75,17 +77,21 @@
 						<div class="col-sm-9">
 							<label for="instrumentos"></label>
 							<select multiple="multiple" class="form-control" id="instrumentos" name="instrumentos[]">
+
 								<?php if (isset($instrumentos)): ?>
-									<?php foreach ($instrumentos as $item): ?>
+								<?php foreach ($instrumentos as $instrumento): ?>
+								<optgroup label="<?= $instrumento->nombre ?>">
+									<?php foreach ($instrumento->actividades as $item): ?>
 										<option value="<?= $item->id_ec_instrumento_has_actividad ?>"
 											<?php if (isset($entregable)): ?>
-												<?=in_array($item->id_ec_instrumento_has_actividad, old($entregable, 'instrumentos')) ? 'selected' : ''?>
+												<?= in_array($item->id_ec_instrumento_has_actividad, old($entregable, 'instrumentos')) ? 'selected' : '' ?>
 											<?php endif; ?>
 										> <?= $item->actividad ?>
 
-									</option>
-								<?php endforeach; ?>
-								<?php endif; ?>
+										</option>
+									<?php endforeach; ?>
+									<?php endforeach; ?>
+									<?php endif; ?>
 
 							</select>
 							<small id="emailHelp" class="form-text text-muted">Precione la tecla CTRL para seleccionar

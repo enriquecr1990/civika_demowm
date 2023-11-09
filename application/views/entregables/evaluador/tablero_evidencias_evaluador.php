@@ -155,26 +155,9 @@
 					</div>
 
 
-					<div class="row">
-							<?php if ($entregable->id_estatus == 2) : ?>
-								<div class="col">
-									<button class="btn btn-sm btn-danger rechazar-entregable"
-											data-id_entregable="<?= $entregable->id_entregable ?>"
-											data-id_entregable_formulario="<?= $entregable->id_entregable_formulario ?>"
-									><em
-											class="fa fa-exclamation-circle"></em> Rechazar
-									</button>
-								</div>
-								<div class="col <?= $entregable->tipo_entregable == 'prod' ? 'text-rigth' : 'text-center' ?>">
-									<button class="btn btn-sm btn-success liberar-entregable"
-											data-id_entregable_formulario="<?= $entregable->id_entregable_formulario ?>"
-											data-id_entregable="<?= $entregable->id_entregable ?>"><em
-											class="fa fa-check-circle"></em> Liberar
-									</button>
-								</div>
-							<?php endif; ?>
+					<div class="row form-group">
 						<?php if ($entregable->tipo_entregable != "prod") : ?>
-							<div class="col text-right">
+							<div class="col-12 mb-2 text-right">
 								<?php if ($entregable->tipo_entregable == "form") : ?>
 									<button class="btn btn-sm btn-primary mostrar_formulario"
 											data-id_entregable="<?=$entregable->id_entregable?>"
@@ -185,7 +168,30 @@
 							</div>
 
 						<?php endif; ?>
+						<?php if ($entregable->id_estatus == 2) : ?>
+							<div class="col-6 text-left">
+								<?php if ($entregable->tipo_entregable != "cuest") : ?>
+									<button class="btn btn-sm btn-danger rechazar-entregable"
+											data-id_entregable="<?= $entregable->id_entregable ?>"
+											data-id_entregable_formulario="<?= $entregable->id_entregable_formulario ?>">
+											<em class="fa fa-exclamation-circle"></em> Rechazar
+									</button>
+								<?php else: ?>
+									<div class="callout callout-success">
+										<h5>Recordatorio</h5>
+										<p>Recuerde que puede realizar un comentario al candidato antes de liberar su entregable</p>
+									</div>
 
+								<?php endif; ?>
+							</div>
+							<div class="col-6 text-right">
+								<button class="btn btn-sm btn-success liberar-entregable"
+										data-id_entregable_formulario="<?= $entregable->id_entregable_formulario ?>"
+										data-id_entregable="<?= $entregable->id_entregable ?>"><em
+										class="fa fa-check-circle"></em> Liberar
+								</button>
+							</div>
+						<?php endif; ?>
 					</div>
 
 				</div>

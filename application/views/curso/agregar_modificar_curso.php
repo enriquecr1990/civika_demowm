@@ -2,7 +2,7 @@
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title"><?= isset($ec_curso) ? 'Modificar  curso' : 'Agregar  curso' ?> </h4>
+				<h4 class="modal-title"><?= isset($ec_curso) ? 'Modificar  módulo de capacitación' : 'Agregar módulo de capacitación' ?> </h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
@@ -17,9 +17,9 @@
 				<div class="modal-body">
 					
 					<div class="form-group row" id="div_nombre_curso">
-						<label for="nombre_curso" class="col-sm-3 col-form-label" >Nombre curso</label>
+						<label for="nombre_curso" class="col-sm-3 col-form-label" >Nombre módulo de capacitación</label>
 						<div class="col-sm-9">
-							<input id="nombre_curso" type="text" placeholder="Escriba el nombre del curso"
+							<input id="nombre_curso" type="text" placeholder="Escriba el nombre del módulo de capacitación"
 								class="form-control" name="nombre_curso" data-rule-required="true" 
 								value="<?= isset($ec_curso->nombre_curso) ? $ec_curso->nombre_curso : '' ?>">
 						</div>
@@ -27,14 +27,14 @@
 					<div class="form-group row" id="div_descripcion_curso">
 						<label for="txt_descripcion_curso" class="col-sm-3 col-form-label">Descripción</label>
 						<div class="col-sm-9">
-							<textarea id="txt_descripcion_curso" class="form-control" placeholder="Describa el curso" data-rule-required="true"
+							<textarea id="txt_descripcion_curso" class="form-control" placeholder="Describa el módulo de capacitación" data-rule-required="true"
 								name="descripcion"><?= isset($ec_curso->descripcion) ? $ec_curso->descripcion : '' ?></textarea>
 						</div>
 					</div>
 					<div class="form-group row" id="div_que_aprenderas_curso">
 						<label for="txt_que_aprenderas_curso" class="col-sm-3 col-form-label" >¿Que aprenderas?</label>
 						<div class="col-sm-9">
-							<textarea id="txt_que_aprenderas_curso" class="form-control" placeholder="Describa el curso" data-rule-required="true"
+							<textarea id="txt_que_aprenderas_curso" class="form-control" placeholder="Describa el módulo de capacitación" data-rule-required="true"
 								name="que_aprenderas"><?= isset($ec_curso->que_aprenderas) ? $ec_curso->que_aprenderas : '' ?></textarea>
 						</div>
 					</div>

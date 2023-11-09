@@ -569,12 +569,12 @@ function dd($data){
 function old( &$object, $atributo ){
 	if (isset($object)){
 		if (is_array($object)){
-			return  $object[$atributo] ;
+			return  $object[$atributo];
 		}else{
 			return $object->{$atributo};
 		}
 	}
-	return null;
+	return '';
 }
 
 

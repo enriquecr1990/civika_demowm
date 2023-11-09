@@ -155,7 +155,26 @@ class UsuarioHasECModel extends ModeloBase
 			$query = $this->db->query($consulta);
 			return $query->row()->existe_registro;
 		}catch (Exception $ex){
-			log_message('error','UsuarioHasECModel->obtener_usuario_registrado_por_convocatoria');
+			log_message('error','UsuarioHasECModel->existe_registro_usuario_ec_by_convocatoria');
+			log_message('error',$ex->getMessage());
+			return 0;
+		}
+	}
+
+	public function existe_progreso_candidato_convocatoria($id_estandar_compentencia,$id_usuario){
+		try{
+			$consulta = 'SELECT 
+					count(*) progreso_pasos 
+				FROM usuario_has_estandar_competencia uhec
+					INNER JOIN usuario_has_ec_progreso uhecp ON uhecp.id_usuario_has_estandar_competencia = uhec.id_usuario_has_estandar_competencia
+				WHERE uhec.id_estandar_competencia ='.$id_estandar_compentencia.'
+					AND uhec.id_usuario = '.$id_usuario;
+			$query = $this->db->query($consulta);
+			if($query->row()->progreso_pasos != 0){
+				return true;
+			}return false;
+		}catch (Exception $ex){
+			log_message('error','UsuarioHasECModel->existe_progreso_candidato_convocatoria');
 			log_message('error',$ex->getMessage());
 			return 0;
 		}

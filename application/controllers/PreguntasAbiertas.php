@@ -12,6 +12,7 @@ class PreguntasAbiertas extends CI_Controller {
         $this->load->model('CatalogoPreguntaFormAbiertoModel');
         $this->load->model('RespuestaPreguntaFormAbiertoModel');
 		$this->load->model('EstandarCompetenciaModel');
+		$this->load->model('EntregableECModel');
         $this->load->model('UsuarioHasECModel');
         if(sesionActive()){
 			$this->usuario = usuarioSession();
@@ -28,9 +29,10 @@ class PreguntasAbiertas extends CI_Controller {
 			
 
 			$data['titulo_pagina'] = 'Formulario de preguntas';
-			$data['estandar_competencia'] = $this->EstandarCompetenciaModel->obtener_row($id_entregable_evidencia);
+			$data['entregable'] = $this->EntregableECModel->obtener_row($id_entregable_evidencia);
 			$data['migas_pan'] = array(
 				array('nombre' => 'Inicio','activo' => false,'url' => base_url()),
+				array('nombre' => 'Entregables esperados','activo' => false,'url' => base_url().'/evidencias_esperadas/'.$data['entregable']->id_estandar_competencia),
 				array('nombre' => 'Formulario de preguntas','activo' => true,'url' => '#'),
 			);
 			$data['sidebar'] = 'estandar_competencias';

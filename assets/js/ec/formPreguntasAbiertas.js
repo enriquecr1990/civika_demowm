@@ -131,8 +131,8 @@ var FormPreguntasAbiertas = {
 			base_url + 'PreguntasAbiertas/guardar_respuestas_alumno/'+id_entregable_formulario+'/'+id_usuario,
 			function(response){
 				if(response.success){
-
 					Comun.mensajes_operacion(response.msg,'success');
+					history.go(-1);
 				}else{
 					Comun.mensajes_operacion(response.msg,'error',5000);
 				}

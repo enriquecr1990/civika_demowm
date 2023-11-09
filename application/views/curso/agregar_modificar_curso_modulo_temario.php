@@ -41,11 +41,12 @@
 				
 					<div class="form-group row">
 						<label for="archivo_eccmt" class="col-sm-3 col-form-label">Archivo:</label>
-						<input type="hidden" id="input_id_archivo_ec_curso_modulo_temario" name="id_archivo" value="<?=isset($ec_curso_modulo_temario) ? $ec_curso_modulo_temario->id_archivo : ''?>">
+						<input type="hidden" id="id_archivo" name="id_archivo" value="<?=isset($ec_curso_modulo_temario) ? $ec_curso_modulo_temario->id_archivo : ''?>">
 						<input type="file" id="archivo_eccmt" name="archivo_eccmt" class="col-sm-3" accept="*/*" >
 						<div id="procesando_archivo_eccmt" class="col-sm-5">
-							<?php if (isset($ec_curso_modulo_temario)): ?>
-								<p> <?= old($ec_curso_modulo_temario,'archivo') ?><em class="fa fa-times-circle eliminar_archivo" style="color: red"></em></p>
+							<?php if (isset($archivo)): ?>
+								<p><a href="<?= base_url().$archivo->ruta_directorio.$archivo->nombre?>" target="_blank"><?= $archivo->nombre ?> </a><em class="fa fa-times-circle eliminar_archivo" style="color: red"></em></p>
+								<!-- <p> <?= old($archivo,'nombre') ?><em class="fa fa-times-circle eliminar_archivo" style="color: red"></em></p> -->
 							<?php endif; ?>
 						</div>
 					</div>

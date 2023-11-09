@@ -56,18 +56,18 @@
 			<!-- /.card-header -->
 			<div class="card-body">
 
-				<strong><i class="fas fa-user-tie mr-1"></i> Profesión / Cargo</strong>
+				<strong><i class="fas fa-user-tie mr-1"></i> Nivel Acádemico</strong>
 
 				<p class="text-muted">
-					<span class="span_profesion"><?=$datos_usuario_modificar->profesion != '' ? $datos_usuario_modificar->profesion : 'Sin datos'?></span> / <span class="span_puesto_laboral"><?=$datos_usuario_modificar->puesto != '' ? $datos_usuario_modificar->puesto : 'Sin datos'?></span>
+					<span class="span_nivel_academico"><?=$datos_usuario_modificar->nivel_academico != '' ? $datos_usuario_modificar->nivel_academico : 'Sin datos'?></span>
 				</p>
 
 				<hr>
 
-				<strong><i class="fas fa-pencil-alt mr-1"></i> Habilidades</strong>
+				<strong><i class="fas fa-user-tie mr-1"></i> Profesión</strong>
 
 				<p class="text-muted">
-					<span class="span_habilidades"><?=$datos_usuario_modificar->habilidades != '' ? $datos_usuario_modificar->habilidades : 'Sin datos'?></span>
+					<span class="span_profesion"><?=$datos_usuario_modificar->profesion != '' ? $datos_usuario_modificar->profesion : 'Sin datos'?></span>
 				</p>
 
 				<hr>

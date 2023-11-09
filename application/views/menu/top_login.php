@@ -3,7 +3,7 @@
 	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
 		<img src="<?=isset($usuario->foto_perfil) ? $usuario->foto_perfil : base_url('/assets/imgs/iconos/admin.png')?>" class="user-image img-circle elevation-2 img_foto_perfil" alt="Imagen de perfil">
 		<span class="d-none d-md-inline">
-			<?php if(isset($datos_usuario) && is_object($datos_usuario)): ?>
+			<?php if(isset($datos_usuario->nombre) && !is_null($datos_usuario->nombre)): ?>
 				<?=$datos_usuario->nombre .' '. $datos_usuario->apellido_p ?>
 			<?php else: ?>
 				<?=$usuario->usuario?>

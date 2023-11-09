@@ -103,4 +103,29 @@ class EncuestaSatisfaccion extends CI_Controller {
 		echo json_encode($response);
 	}
 
+	public function guardar_encuesta_satisfacion_derechos_obligaciones($id_usuario_has_ec){
+		try{
+			$post = $this->input->post();
+			$validaciones = Validaciones_Helper::formEncuestaSatisfacionDerechosObligaciones($post);
+			if($validaciones['success']){
+				$guardar = $this->UsuarioHasEncuestaModel->guardar_respuestas_candidato_derechos_obligaciones($id_usuario_has_ec,$post);
+				if($guardar['success']){
+					$response['success'] = true;
+					$response['msg'][] = $guardar['msg'];
+				}else{
+					$response['success'] = false;
+					$response['msg'][] = 'No fue posible guardar la encuesta, favor de intentar más tarde';
+				}
+			}else{
+				$response['success'] = false;
+				$response['msg'] = $validaciones['msg'];
+			}
+		}catch (Exception $ex){
+			$response['success'] = false;
+			$response['msg'][] = 'Ocurrio un error al intentar guardar';
+			$response['msg'][] = $ex->getMessage();
+		}
+		echo json_encode($response);
+	}
+
 }

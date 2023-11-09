@@ -102,12 +102,12 @@
 
 	<div class="form-group row justify-content-between">
 		<div class="col-lg-6 text-left">
-			<button type="button" class="btn btn-sm btn-outline-info btn_paso_anterior_pasos" data-anterior_link="#tab_derechos_obligaciones-tab">
+			<button type="button" class="btn btn-sm btn-outline-info btn_paso_anterior_pasos" data-anterior_link="#tab_evaluacion_diagnostica-tab">
 				<i class="fa fa-backward"></i> Anterior
 			</button>
 		</div>
 		<div class="col-lg-6 text-right">
-			<button type="button" data-siguiente_link="#tab_evidencias-tab" data-numero_paso="3"
+			<button type="button" data-siguiente_link="#tab_modulo_capacitacion-tab" data-numero_paso="3"
 					class="btn btn-outline-success btn-sm guardar_progreso_pasos">Siguiente <i class="fa fa-forward"></i></button>
 		</div>
 	</div>
@@ -115,7 +115,7 @@
 <?php else: ?>
 	<div class="callout callout-danger">
 		<h5>Información importante</h5>
-		<p>No es posible cargar la evidencia de las tecnicas, instrumentos y actividades del estándar de competencia hasta que realize la evaluación diagnóstica</p>
+		<p>No es posible cargar la evidencia de las tÉcnicas, instrumentos y actividades del estándar de competencia hasta que realize la evaluación diagnóstica</p>
 	</div>
 <?php endif; ?>
 
